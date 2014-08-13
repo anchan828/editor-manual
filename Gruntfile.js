@@ -6,14 +6,15 @@ module.exports = function(grunt) {
       }
     },
     watch: {
-      files: ['**/*.re','**/*.png','**/*.jpg','!book/__build/**/*'],
+      files: ['**/*.re','**/*.png','**/*.jpg','!book/__build/*','!book/__build/**/*'],
       tasks: ['exec:build_html'],
       options: {
         livereload: true
       }
     },
     exec: {
-        build_html: 'sh build.sh html'
+        build_html: 'sh build.sh html',
+        build_pdf: 'sh build.sh pdf'
     }
   });
 

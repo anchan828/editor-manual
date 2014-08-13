@@ -25,7 +25,7 @@ if [ "$1" = "html" ];then
 
 cd $build_dir
 rm ./*.html
-review2html -a
+review2html -a --stylesheet=../stylesheet.css
 rm ./*.re
 fi
 
@@ -39,8 +39,7 @@ cd $build_dir
 
 review-pdfmaker config.yml
 mv book.pdf ../book.pdf
-cd ../
-rm -rf $build_dir
+# rm ./*.re
 fi
 
 

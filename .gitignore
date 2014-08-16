@@ -14,3 +14,5 @@
 book/__build
 book.pdf
 node_modules
+*.csproj
+*.sln

@@ -68,13 +68,46 @@ Editor拡張入門
 * PrefabUtility
 * Selection
 * DragAndDrop
+* ControlID
+* Event
+* ObjectPicker
 
 
 
-## 気になる内容
+
+### 気になる内容
 
 * MaterialDrawer
 * SaveAssetsProcessor
 * ShaderGUI
 * ConstantDataAttribute
 * SelectionBaseAttribute
+
+
+## 書けそうな構成
+
+*  仕組みはわからないけどとりあえずエディタ拡張の機能を使える章
+	* あくまで「使う側」としての読み物にする
+* 仕組みを理解して何かを自作する 章
+	* 比較的軽いもの
+		* SerializedPropertyのパスやObjectPicker
+* もっと仕組みを理解して何かを自作する章
+	* コントロールID
+	* Event
+	* Serialize 
+
+* どういう仕組みかわからなくても使える技術
+	* MenuItem実行する
+	* EditorWindow作成する
+	* PropertyDrawerつかう
+	* Callbacks
+	* EditorApplication
+	* EditorGUI
+	* Selection
+* （SerializedObjectとか）仕組みを理解しないと使えない技術
+	* Undo
+	* DragAndDrop
+	* Event
+	* ObjectPicker
+	* ControlID
+	* AnimationUtility

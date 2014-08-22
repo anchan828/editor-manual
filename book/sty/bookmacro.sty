@@ -17,11 +17,13 @@
 \setlength{\headheight}{29pt}
 
 \pagestyle{fancy}
-\lhead{\gtfamily\sffamily\bfseries\upshape \leftmark}
+\lhead{}
 \chead{}
 \rhead{}
 \cfoot{}
 \rfoot{\thepage}
+\fancyhead[L]{\gtfamily\sffamily\bfseries\upshape \leftmark}
+\fancyhead[R]{\gtfamily\sffamily\bfseries\upshape \rightmark}
 \renewcommand{\sectionmark}[1]{\markright{\thesection~#1}{}}
 \renewcommand{\chaptermark}[1]{\markboth{\prechaptername\ \thechapter\ \postchaptername~#1}{}}
 \renewcommand{\headfont}{\gtfamily\sffamily\bfseries}

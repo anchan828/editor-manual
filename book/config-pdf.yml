@@ -44,7 +44,7 @@ description: Unityのエディタ拡張入門
 # LaTeX用のスタイルファイル(styディレクトリ以下に置くこと)
 texstyle: bookmacro
 # LaTeX用のdocumentclassを指定する
-texdocumentclass: ["jsbook", "twoside,14pt"]
+texdocumentclass: ["jsbook", "a5paper,twoside,12pt"]
 # LaTeX用のコマンドを指定する(platex or lualatex)
 # texcommand: "platex"
 # 目次として抽出するレベル

@@ -2,7 +2,6 @@ cd book
 
 
 build_dir='__build'
-
 mkdir $build_dir
 
 
@@ -12,7 +11,7 @@ postdef=$(find postdef -name "*.re")
 
 for file in ${predef} ${chaps} ${postdef};do
 
-ln ${file} $build_dir/
+ln ${file} $build_dir
 
 done
 
@@ -26,7 +25,7 @@ if [ "$1" = "html" ];then
 cd $build_dir
 rm ./*.html
 review2html -a --stylesheet=../stylesheet.css
-rm ./*.re
+# rm ./*.re
 fi
 
 if [ "$1" = "pdf" ];then

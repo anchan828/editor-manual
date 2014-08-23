@@ -16,3 +16,4 @@ book.pdf
 node_modules
 *.csproj
 *.sln
+*.userprefs

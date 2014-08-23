@@ -656,3 +656,9 @@ body .highlight .gc {
   color: #999;
   background-color: #EAF2F5;
 }
+
+/* Re:VIEW style */
+
+div.image {
+  text-align: center;
+}

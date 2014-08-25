@@ -46,10 +46,10 @@ using UnityEditor;
 
 public class NewBehaviourScript
 {
-	[MenuItem("CustomMenu/Example")]
-	static void Example ()
-	{
-	}
+    [MenuItem("CustomMenu/Example")]
+    static void Example ()
+    {
+    }
 }
 //}
 
@@ -65,10 +65,10 @@ using UnityEditor;
 
 public class NewBehaviourScript
 {
-	[MenuItem("Assets/Example")]
-	static void Example ()
-	{
-	}
+    [MenuItem("Assets/Example")]
+    static void Example ()
+    {
+    }
 }
 //}
 
@@ -83,15 +83,15 @@ using UnityEditor;
 
 public class NewBehaviourScript
 {
-	[MenuItem("CustomMenu/Example/Child1/Grandchild")]
-	static void Example1 ()
-	{
-	}
+    [MenuItem("CustomMenu/Example/Child1/Grandchild")]
+    static void Example1 ()
+    {
+    }
 
-	[MenuItem("CustomMenu/Example/Child2/Grandchild")]
-	static void Example2 ()
-	{
-	}
+    [MenuItem("CustomMenu/Example/Child2/Grandchild")]
+    static void Example2 ()
+    {
+    }
 }
 
 //}
@@ -118,23 +118,23 @@ using UnityEditor;
 
 public class NewBehaviourScript
 {
-	[MenuItem("CustomMenu/Example/Child1")]
-	static void Example1 ()
-	{
-	}
+    [MenuItem("CustomMenu/Example/Child1")]
+    static void Example1 ()
+    {
+    }
 
-	// isValidateFunctionがfalse
-	[MenuItem("CustomMenu/Example/Child2")]
-	static void Example2 ()
-	{
-	}
+    // isValidateFunctionがfalse
+    [MenuItem("CustomMenu/Example/Child2")]
+    static void Example2 ()
+    {
+    }
 
-	// isValidateFunctionがtrue
-	[MenuItem("CustomMenu/Example/Child2", true)]
-	static bool ValidateExample2 ()
-	{
-		return false; // 今回はfalse固定
-	}
+    // isValidateFunctionがtrue
+    [MenuItem("CustomMenu/Example/Child2", true)]
+    static bool ValidateExample2 ()
+    {
+        return false; // 今回はfalse固定
+    }
 }
 //}
 
@@ -151,10 +151,10 @@ using UnityEditor;
 
 public class NewBehaviourScript
 {
-	[MenuItem("Assets/Example", false, 1)]
-	static void Example ()
-	{
-	}
+    [MenuItem("Assets/Example", false, 1)]
+    static void Example ()
+    {
+    }
 }
 //}
 
@@ -177,20 +177,20 @@ using UnityEditor;
 
 public class NewBehaviourScript
 {
-	[MenuItem("CustomMenu/Example1", false, 1)]
-	static void Example1 ()
-	{
-	}
+    [MenuItem("CustomMenu/Example1", false, 1)]
+    static void Example1 ()
+    {
+    }
 
-	[MenuItem("CustomMenu/Example2", false, 2)]
-	static void Example2 ()
-	{
-	}
+    [MenuItem("CustomMenu/Example2", false, 2)]
+    static void Example2 ()
+    {
+    }
 
-	[MenuItem("CustomMenu/Example3", false, 13)]
-	static void Example3 ()
-	{
-	}
+    [MenuItem("CustomMenu/Example3", false, 13)]
+    static void Example3 ()
+    {
+    }
 }
 //}
 
@@ -210,13 +210,13 @@ using UnityEditor;
 
 public class NewBehaviourScript
 {
-	[MenuItem("CustomMenu/Example")]
-	static void Example ()
-	{
-		var menuPath = "CustomMenu/Example";
-		var @checked = Menu.GetChecked (menuPath);
-		Menu.SetChecked (menuPath, !@checked);
-	}
+    [MenuItem("CustomMenu/Example")]
+    static void Example ()
+    {
+        var menuPath = "CustomMenu/Example";
+        var @checked = Menu.GetChecked (menuPath);
+        Menu.SetChecked (menuPath, !@checked);
+    }
 }
 //}
 
@@ -231,34 +231,34 @@ using UnityEngine;
 
 public class NewBehaviourScript
 {
-	// command(ctrl) + shift + g で実行
-	[MenuItem("CustomMenu/Example %#g")]
-	static void Example ()
-	{
-		Debug.Log ("実行されました");
-	}
+    // command(ctrl) + shift + g で実行
+    [MenuItem("CustomMenu/Example %#g")]
+    static void Example ()
+    {
+        Debug.Log ("実行されました");
+    }
 }
 //}
 
 //table[shortcut][修飾子キーを表す特殊文字]{
-特殊文字			修飾＆特殊キー
+特殊文字				修飾＆特殊キー
 ----------------------------------------
-%				Ctrl(Windows)または command(MacOSX)
-#				Shift
-&				Alt(Windows)または option(Mac OS X)
-_				修飾子キー無し
-F1 ... F12		ファンクションキー
-HOME			Homeキー
-END				Endキー
-PGUP			PageUpキー
-PGDN			PageDownキー
-KP0 ... KP9		0から9までの数字キー
-KP.				..
-KP+				+
-KP-				-
-KP*				*
-KP/				/
-KP=				=
+%					Ctrl(Windows)または command(MacOSX)
+#					Shift
+&					Alt(Windows)または option(Mac OS X)
+_					修飾子キー無し
+F1 ... F12			ファンクションキー
+HOME				Homeキー
+END					Endキー
+PGUP				PageUpキー
+PGDN				PageDownキー
+KP0 ... KP9			0から9までの数字キー
+KP.					..
+KP+					+
+KP-					-
+KP*					*
+KP/					/
+KP=					=
 //}
 
 
@@ -278,23 +278,23 @@ using UnityEditor;
 
 public class NewBehaviourScript
 {
-	// Transformにメニューを追加
-	[MenuItem("CONTEXT/Transform/Example1")]
-	static void Example1 ()
-	{
-	}
+    // Transformにメニューを追加
+    [MenuItem("CONTEXT/Transform/Example1")]
+    static void Example1 ()
+    {
+    }
 
-	// コンポーネント（全て）にメニューを追加
-	[MenuItem("CONTEXT/Component/Example2")]
-	static void Example2 ()
-	{
-	}
+    // コンポーネント（全て）にメニューを追加
+    [MenuItem("CONTEXT/Component/Example2")]
+    static void Example2 ()
+    {
+    }
 
-	// ExampleScript（スクリプト）にメニューを追加
-	[MenuItem("CONTEXT/ExampleScript/Example3")]
-	static void Example3 ()
-	{
-	}
+    // ExampleScript（スクリプト）にメニューを追加
+    [MenuItem("CONTEXT/ExampleScript/Example3")]
+    static void Example3 ()
+    {
+    }
 }
 //}
 
@@ -310,12 +310,12 @@ using UnityEngine;
 
 public class NewBehaviourScript
 {
-	[MenuItem("CONTEXT/Transform/Example1")]
-	static void Example1 (MenuCommand menuCommand)
-	{
-		// 実行したTransformの情報が取得できる
-		Debug.Log (menuCommand.context);
-	}
+    [MenuItem("CONTEXT/Transform/Example1")]
+    static void Example1 (MenuCommand menuCommand)
+    {
+        // 実行したTransformの情報が取得できる
+        Debug.Log (menuCommand.context);
+    }
 }
 //}
 
@@ -339,47 +339,47 @@ using System.IO;
 
 public class NewBehaviourScript
 {
-	[MenuItem("Assets/Create/TemplateFolder/Editor", false, 1)]
-	static void CreateEditorFolder ()
-	{
-		CreateFolder ("Editor");
-	}
+    [MenuItem("Assets/Create/TemplateFolder/Editor", false, 1)]
+    static void CreateEditorFolder ()
+    {
+        CreateFolder ("Editor");
+    }
 
-	[MenuItem("Assets/Create/TemplateFolder/Resources", false, 2)]
-	static void CreateResourcesFolder ()
-	{
-		CreateFolder ("Resources");
-	}
+    [MenuItem("Assets/Create/TemplateFolder/Resources", false, 2)]
+    static void CreateResourcesFolder ()
+    {
+        CreateFolder ("Resources");
+    }
 
-	[MenuItem("Assets/Create/TemplateFolder/Scripts", false, 3)]
-	static void CreateScriptsFolder ()
-	{
-		CreateFolder ("Scripts");
-	}
+    [MenuItem("Assets/Create/TemplateFolder/Scripts", false, 3)]
+    static void CreateScriptsFolder ()
+    {
+        CreateFolder ("Scripts");
+    }
 
-	[MenuItem("Assets/Create/TemplateFolder/Prefabs", false, 4)]
-	static void CreatePrefabsFolder ()
-	{
-		CreateFolder ("Prefabs");
-	}
+    [MenuItem("Assets/Create/TemplateFolder/Prefabs", false, 4)]
+    static void CreatePrefabsFolder ()
+    {
+        CreateFolder ("Prefabs");
+    }
     
-	[MenuItem("Assets/Create/TemplateFolder/Shaders", false, 5)]
-	static void CreateShadersFolder ()
-	{
-		CreateFolder ("Shaders");
-	}
+    [MenuItem("Assets/Create/TemplateFolder/Shaders", false, 5)]
+    static void CreateShadersFolder ()
+    {
+        CreateFolder ("Shaders");
+    }
 
-	static void CreateFolder (string name)
-	{
-		string path = "Assets";
+    static void CreateFolder (string name)
+    {
+        string path = "Assets";
 
-		if (Selection.activeObject != null) {
-			var assetPath = AssetDatabase.GetAssetPath (Selection.activeObject);
-			path = Directory.Exists (assetPath) ? assetPath : Path.GetDirectoryName (assetPath);
-		}
-	
-		AssetDatabase.CreateFolder (path, name);
-	}
+        if (Selection.activeObject != null) {
+            var assetPath = AssetDatabase.GetAssetPath (Selection.activeObject);
+            path = Directory.Exists (assetPath) ? assetPath : Path.GetDirectoryName (assetPath);
+        }
+    
+        AssetDatabase.CreateFolder (path, name);
+    }
 
 }
 //}

@@ -5,6 +5,7 @@ PREDEF:
 CHAPS:
  - part1.re:
    - part1-menuitem.re
+   - part1-editorwindow.re
  - part2.re:
    - dummy2.re
  - part3.re:

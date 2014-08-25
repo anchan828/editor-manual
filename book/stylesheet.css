@@ -662,3 +662,13 @@ body .highlight .gc {
 div.image {
   text-align: center;
 }
+
+.lead {
+
+  background-color: #dff0d8;
+  padding: 15px;
+}
+
+.lead p {
+  margin: auto;
+}

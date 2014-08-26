@@ -18,6 +18,7 @@ Editor拡張入門
 		* Editorの設定を行うときはPreferenceWindowにメニューを追加しよう
 	* PopupWindow
 	* IHasCustomMenu
+	* ScriptableWizard
 * xxDrawer
 	* PropertyDrawer
 		* すでに用意されているPropertyDrawer

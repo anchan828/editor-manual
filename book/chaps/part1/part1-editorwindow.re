@@ -279,7 +279,7 @@ public class ExamplePupupContent : PopupWindowContent
 === ShowAuxWindow
 
 タブウィンドウとして扱えないウィンドウを作成します。見た目は@<code>{ShowUtility}と同じですが他のウィンドウにフォーカスを当てるとウィンドウは削除されます。
-無駄にウィンドウの数を増やさないので、ちょっとした設定・操作で使用することをオススメします。
+ウィンドウの消し忘れが起こらないので数を増やすことがなく、ちょっとした設定・操作で使用することをオススメします。
 
 //image[ss09][見た目だけではShowUtilityかShowAuxWindowなのか判断は難しい]{
 
@@ -287,10 +287,214 @@ public class ExamplePupupContent : PopupWindowContent
 
 === ShowAsDropDown
 
+Popupと同じウィンドウタイトルと閉じるボタンが無いウィンドウです。
+ただし、PCの画面サイズを考慮し表示させようとしている位置で十分な広さを確保できなかった場合、ウィンドウの表示領域を守るためにX/Y軸の位置が自動的にズレるようになります。言い換えると、画面の隅っこでウィンドウを出したとしても必ずPCの表示領域にすべて表示されます。
+
+//image[ss10][黒いのがShowAsDropDownで表示したウィンドウだとする]{
+
+//}
+
+//emlist{
+using UnityEditor;
+using UnityEngine;
+
+public class Example : EditorWindow
+{
+    static Example exampleWindow;
+    
+    [MenuItem("Window/Example")]
+    static void Open ()
+    {
+        if (exampleWindow == null) {
+            exampleWindow = CreateInstance<Example> ();
+        }
+      
+        exampleWindow.ShowAsDropDown (new Rect (100, 100, 300, 100), new Vector2 (300, 100));
+    }
+}
+//}
+
+これ以外はPopupと同じ機能です。
+
 === ScriptableWizard
+
+ * GameObjectを作る
+ * Prefabを作る
+ * アセットを作る
+
+このように何かを「作る」時に使用するウィンドウです。
+ScriptableWizardは今まで紹介してきたウィンドウとは少し異なります。
+
+==== ScriptableWizardの作り方
+
+1.  ScriptableWizardを継承したクラスを作成します。
+
+//emlist{
+using UnityEditor;
+
+public class Example : ScriptableWizard
+{
+}
+//}
+
+
+2. 次にScriptableWizardを表示するためのトリガーとしてメニューを追加します。MenuItemについては@<chapref>{part1-menuitem}を御覧ください。
+
+//emlist{
+using UnityEditor;
+
+public class Example : ScriptableWizard
+{
+    [MenuItem("Window/Example")]
+    static void Open ()
+    {
+    }
+}
+//}
+
+3. ScriptableWizardを表示します。表示は@<code>{ScriptableWizard.DisplayWizard}で行います。
+
+//emlist{
+using UnityEditor;
+
+public class Example : ScriptableWizard
+{
+    [MenuItem("Window/Example")]
+    static void Open ()
+    {
+        DisplayWizard<Example> ("Example Wizard");
+    }
+}
+//}
+
+//image[ss11][標準で右下にCreateボタンが表示される]{
+
+//}
+
+==== ScriptableWizardにはクラスのフィールドが表示される
+
+他のEditorWindowではGUIの表示にEditorGUIクラスを使用しますがScriptableWizardでは使用することが出来ません。ScriptableWizardではインスペクターで表示されるような「publicなフィールド」「シリアライズ可能なフィールド」がウィンドウに表示されます。
+
+//image[ss12][インスペクターで表示されるようなものがそのまま表示されるイメージ]{
+
+//}
+
+//emlist{
+using UnityEditor;
+
+public class Example : ScriptableWizard
+{
+    public string gameObjectName;
+
+    [MenuItem("Window/Example")]
+    static void Open ()
+    {
+        DisplayWizard<Example> ("Example Wizard");
+    }
+}
+//}
+
+
+==== OnWizardCreate
+
+ScriptableWizardの右下にある@<b>{Create}ボタンを押した時に呼び出されるメソッドです。
+
+//emlist{
+using UnityEditor;
+using UnityEngine;
+
+public class Example : ScriptableWizard
+{
+    public string gameObjectName;
+
+    [MenuItem("Window/Example")]
+    static void Open ()
+    {
+        DisplayWizard<Example> ("Example Wizard");
+    }
+
+    void OnWizardCreate ()
+    {
+        new GameObject (gameObjectName);
+    }
+}
+//}
+
+==== OnWizardOtherButton
+
+@<b>{Create}ボタンの他にもう1つボタンを追加することが出来ます。作成に関して2つのパターンを作りたい場合に使用してください。
+ボタンを追加するには@<code>{ScriptableWizard.DisplayWizard}の第3引数でボタン名を指定する必要があります。
+
+//emlist{
+using UnityEditor;
+using UnityEngine;
+
+public class Example : ScriptableWizard
+{
+    public string gameObjectName;
+
+    [MenuItem("Window/Example")]
+    static void Open ()
+    {
+        DisplayWizard<Example> ("Example Wizard", "Create", "Find");
+    }
+
+    void OnWizardCreate ()
+    {
+        new GameObject (gameObjectName);
+    }
+
+    void OnWizardOtherButton ()
+    {
+        var gameObject = GameObject.Find (gameObjectName);
+
+        if (gameObject == null)
+        {
+            Debug.Log ("ゲームオブジェクトが見つかりません");
+        }
+    }
+}
+//}
+
+
+==== OnWizardUpdate
+
+すべてのフィールドの値を対象に、値の変更があった場合に呼び出されるメソッドです。
+
+
+//emlist{
+using UnityEditor;
+using UnityEngine;
+
+public class Example : ScriptableWizard
+{
+    public string gameObjectName;
+
+    [MenuItem("Window/Example")]
+    static void Open ()
+    {
+        DisplayWizard<Example> ("Example Wizard");
+    }
+
+    void OnWizardUpdate ()
+    {
+        Debug.Log ("Update");
+    }
+}
+//}
+
+==== OnGUIメソッドは使用しないこと
+
+ScriptableWizardクラスはEditorWindowを継承しています。なのでOnGUIメソッドを使用すると通常のEditorWindowとしての表示となってしまい、フィールドの値やCreateボタンが表示されなくなってしまいます。
+
+//image[ss13][OnGUIメソッドを記述するとCreateボタンが消えてしまう]{
+
+//}
 
 === PreferenceWindow
 
+
+== IHasCustomMenu
 
 == EditorWindowのサイズを変更できないようにする
 
@@ -301,3 +505,6 @@ public class ExamplePupupContent : PopupWindowContent
 == GetWindowを使わずに既にあるEditorWindowを取得するには？
 
 #@# Resources.FindObjectsOfTypeAll
+
+
+== なにか作ってみよう

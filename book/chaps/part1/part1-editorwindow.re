@@ -494,17 +494,85 @@ ScriptableWizardクラスはEditorWindowを継承しています。なのでOnGU
 === PreferenceWindow
 
 
-== IHasCustomMenu
+== メニューを追加するIHasCustomMenu
+
+タブ上で右クリック、または ≡ をクリックすることで表示されるコンテキストメニューにメニューを追加します。
+
+//image[ss14][exampleとexample2が追加された]{
+
+//}
+
+IHasCustomMenuはインターフェースとして実装されています。
+
+//emlist{
+using UnityEditor;
+using UnityEngine;
+
+public class Example : EditorWindow, IHasCustomMenu
+{
+
+    public void AddItemsToMenu (GenericMenu menu)
+    {
+        menu.AddItem (new GUIContent ("example"), false, () => {
+
+        });
+
+        menu.AddItem (new GUIContent ("example2"), true, () => {
+            
+        });
+    }
+
+    [MenuItem("Window/Example")]
+    static void Open ()
+    {
+        GetWindow<Example> ();
+    }
+}
+//}
 
 == EditorWindowのサイズを変更できないようにする
 
-== メニューを追加する
+//image[ss15][右下にあるリサイズするための三角マークが消えている]{
 
-#@# IHasCustomMenu
+//}
+
+@<code>{EditorWindow.minSize}と@<code>{EditorWindow.maxSize}によってEditorWindowの大きさの制限を行うことが出来ます。最小値と最大値が同じであればEditorWindowの大きさを変更する必要がないと判断され右下に表示されていた三角マークが非表示となります。
+
+//emlist{
+using UnityEditor;
+using UnityEngine;
+
+public class Example : EditorWindow
+{
+    [MenuItem("Window/Example")]
+    static void Open ()
+    {
+        var window = GetWindow<Example> ();
+        window.maxSize = window.minSize = new Vector2 (300, 300);
+    }
+}
+//}
 
 == GetWindowを使わずに既にあるEditorWindowを取得するには？
 
-#@# Resources.FindObjectsOfTypeAll
+自前でシングルトンを実装するか、GetWindowによって内部にキャッシュしておく方法でEditorWindowへとアクセスすることが出来ます。しかし、先ほど上げた2つの方法が使えない状況も出てきます。その時は@<b>{Resources}クラスにある@<b>{Resources.FindObjectsOfTypeAll}を使用します。
+
+@<code>{FindObjectsOfTypeAll}は@<b>{現在ロードされている全てのオブジェクトから特定のオブジェクトを検索し、取得}します。これはランタイムで使用するオブジェクトだけではなく、エディタで使用するオブジェクトも検索対象となります。
+
+//emlist{
+using UnityEditor;
+using UnityEngine;
+
+public class Example : EditorWindow
+{
+    [MenuItem("Window/Example")]
+    static void Open ()
+    {
+        // 全てのシーンビューを取得する
+        var sceneViews = Resources.FindObjectsOfTypeAll<SceneView> ();
+    }
+}
+//}
 
 
 == なにか作ってみよう

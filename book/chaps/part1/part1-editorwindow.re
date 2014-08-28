@@ -491,7 +491,31 @@ ScriptableWizardクラスはEditorWindowを継承しています。なのでOnGU
 
 //}
 
-=== PreferenceWindow
+=== PreferenceItem
+
+PreferenceItemはUnity Preferencesにメニューを追加するための機能です。
+Unity PreferencesにはUnityエディタ全体に影響のある設定を行うためにあります。
+
+
+//image[ss16][追加されるメニューは一番最後の位置に追加される]{
+
+//}
+
+
+//emlist{
+using UnityEditor;
+
+public class Example
+{
+    [PreferenceItem("Example")]
+    static void OnPreferenceGUI ()
+    {
+
+    }
+}
+//}
+
+
 
 
 == メニューを追加するIHasCustomMenu

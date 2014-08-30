@@ -2,6 +2,12 @@ cd book
 
 
 build_dir='__build'
+
+
+if [ "$1" = "pdf" ];then
+rm -rf $build_dir
+fi
+
 mkdir $build_dir
 
 

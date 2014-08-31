@@ -8,7 +8,7 @@ CHAPS:
    - part1-editorwindow.re
    - part1-editorgui.re
  - part2.re:
-   - dummy2.re
+   - part2-beginner.re
  - part3.re:
    - dummy3.re
  - part4.re:

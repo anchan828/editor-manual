@@ -1,51 +1,148 @@
+#!/bin/sh
+
 cd book
 
+bookname=book
 
-build_dir='__build'
-
-
-if [ "$1" = "pdf" ];then
-rm -rf $build_dir
+if [ -d ${bookname}-pdf ];then
+		rm -rf ${bookname}-pdf
 fi
 
-mkdir $build_dir
+HTML_DIR='__html'
+ARCHIVE_DIR='archives'
+
+refreshDirectory()
+{
+	if [ -d $HTML_DIR ];then
+		rm -rf $HTML_DIR
+	fi
+
+	mkdir $HTML_DIR
+}
+
+pdf_maker()
+{
+	cp -f config.yml.template config.yml
+
+	echo "texstyle: $1" >> config.yml
+	echo "texdocumentclass: [\"jsbook\", \"$2\"]" >> config.yml
+
+	review-pdfmaker --ignore-errors config.yml
+	rm -f config.yml
+
+	if [ -e ${bookname}.pdf ];then
+
+		if [ ! -d "../${ARCHIVE_DIR}" ];then
+			mkdir "../${ARCHIVE_DIR}"
+		fi
+
+		mv ${bookname}.pdf "../${ARCHIVE_DIR}/"$3
+	fi
+}
+
+epub_maker()
+{
+	review-epubmaker config.yml.template
+
+	if [ -e ${bookname}.epub ];then
+
+		if [ ! -d "../${ARCHIVE_DIR}" ];then
+			mkdir "../${ARCHIVE_DIR}"
+		fi
+
+		mv ${bookname}.epub "../${ARCHIVE_DIR}"
+	fi
+}
+
+re_build_catalog()
+{
+	backup_catalog
+
+	echo "CHAPS:" >> catalog.yml
+
+	for file in $(find . -name "*.re");do
+		conti=1
+		for c in $(cat catalog.yml);do
+			if [ "${file#*\./}" == $c ];then
+				conti=0
+			fi
+		done
+
+		if [ $conti == 0 ];then
+			continue
+		fi
+
+		echo " - ${file#*\./}" >> catalog.yml
+	done
+}
+
+backup_catalog()
+{
+	CATALOG='catalog.yml'
+
+	if [ -e $CATALOG ];then
+		cp -f $CATALOG $CATALOG.bak
+	fi
+
+	cp $CATALOG.template $CATALOG
+}
+
+undo_catalog()
+{
+	mv "${CATALOG}.bak" $CATALOG
+}
 
 
-predef=$(find predef -name "*.re")
-chaps=$(find chaps -name "*.re")
-postdef=$(find postdef -name "*.re")
+build_jenkins()
+{
 
-for file in ${predef} ${chaps} ${postdef};do
+	re_build_catalog
+	epub_maker
+	pdf_maker ${bookname}macro 'a5paper,14pt,oneside' ${bookname}.pdf
+	pdf_maker ${bookname}macro-bookbinding 'a5paper,14pt' ${bookname}-bookbinding.pdf
+	undo_catalog
+	rm -f ${bookname}-cover.html
+}
 
-ln ${file} $build_dir
+build()
+{
+	pdf_maker ${bookname}macro 'a5paper,14pt,oneside' ${bookname}.pdf
+}
 
-done
+build_release()
+{
+	cp -f catalog-release.yml catalog.yml
+	epub_maker
+	pdf_maker ${bookname}macro 'a5paper,14pt,oneside' ${bookname}.pdf
+	pdf_maker ${bookname}macro-bookbinding 'a5paper,14pt' ${bookname}-bookbinding.pdf
+	rm -f ${bookname}-cover.html
+}
 
-rm -rf ${build_dir}/images
-cp -r images ${build_dir}
+build_html()
+{
+	refreshDirectory
+	re_build_catalog
 
+	cp -f layouts/_layout.html.erb layouts/layout.html.erb
 
+	review-compile -a --stylesheet=stylesheet.cs --target=html
+	undo_catalog
+	rm -f layouts/layout.html.erb
+	cp -f stylesheet.css $HTML_DIR
 
-if [ "$1" = "html" ];then
+	for file in $(find . -name "*.html");do
 
-cd $build_dir
-rm ./*.html
-review2html -a --stylesheet=../stylesheet.css
-# rm ./*.re
-fi
+		mv ${file} $HTML_DIR
 
-if [ "$1" = "pdf" ];then
+	done
 
-cp -r sty ${build_dir}
-cp catalog.yml ${build_dir}/catalog.yml
-cp config-pdf.yml ${build_dir}/config.yml
+	cp -rf images "${HTML_DIR}/images"
+}
 
-cd $build_dir
-
-review-pdfmaker config.yml
-mv book.pdf ../book.pdf
-# rm ./*.re
-fi
-
-
-
+case $1 in
+	"html") build_html;;
+	"epub") epub_maker;;
+	"jenkins") build_jenkins;;
+	"release") build_release;;
+	*) build;;
+esac

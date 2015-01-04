@@ -16,12 +16,15 @@
 %%\usepackage{supertabular}
 \setlength{\headheight}{29pt}
 
-\pagestyle{fancy}
-\lhead{\gtfamily\sffamily\bfseries\upshape \leftmark}
+\pagestyle{fancy}%
+\lhead{}
 \chead{}
 \rhead{}
 \cfoot{}
-\rfoot{\thepage}
+\lfoot{}
+\fancyhead[LE]{\gtfamily\sffamily\bfseries\upshape \leftmark}
+\fancyfoot[RHO]{\gtfamily\sffamily\bfseries\upshape \rightmark}
+\fancyfoot[LE,RO]{\thepage}
 \renewcommand{\sectionmark}[1]{\markright{\thesection~#1}{}}
 \renewcommand{\chaptermark}[1]{\markboth{\prechaptername\ \thechapter\ \postchaptername~#1}{}}
 \renewcommand{\headfont}{\gtfamily\sffamily\bfseries}

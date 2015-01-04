@@ -3,17 +3,9 @@ PREDEF:
  - about_this_book.re
  - about_editor_extension.re
 CHAPS:
- - part1.re:
-   - part1-menuitem.re
-   - part1-editorwindow.re
-   - part1-editorgui.re
- - part2.re:
-   - part2-beginner.re
- - part3.re:
-   - dummy3.re
- - part4.re:
-   - dummy4.re
- - part5.re:
-   - dummy5.re
- - part6.re:
-   - dummy6.re
+ - part1-editorgui.re
+ - part1-editorwindow.re
+ - part1-menuitem.re
+ - part2-beginner.re
+ - part2-standardextension.re
+ - part3-usefulextensions.re

@@ -17,3 +17,5 @@ node_modules
 *.csproj
 *.sln
 *.userprefs
+book/__html
+archives

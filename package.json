@@ -1,17 +1,12 @@
 {
   "name": "editor-manual",
   "version": "0.0.0",
-  "description": "editor-manual =============",
   "main": "Gruntfile.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
   "repository": {
     "type": "git",
     "url": "https://github.com/anchan828/editor-manual.git"
   },
-  "author": "",
-  "license": "ISC",
+  "author": "Keigo Ando",
   "bugs": {
     "url": "https://github.com/anchan828/editor-manual/issues"
   },

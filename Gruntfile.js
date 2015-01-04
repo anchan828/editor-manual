@@ -2,19 +2,25 @@ module.exports = function(grunt) {
   grunt.initConfig({
     pkg: grunt.file.readJSON('package.json'),
     connect: {
-      site: {
+      server: {
+        options: {
+          base: './book/__html',
+          livereload: 8002,
+          port: 8000
+        }
       }
     },
     watch: {
-      files: ['**/*.re','**/*.png','**/*.jpg','!book/__build/*','!book/__build/**/*'],
+      files: ['**/*.re', '**/*.png', '**/*.jpg', '!**/*.erb',
+        '!book/__html/*', '!book/__html/**/*'
+      ],
       tasks: ['exec:build_html'],
       options: {
-        livereload: true
+        livereload: 8002
       }
     },
     exec: {
-        build_html: 'sh build.sh html',
-        build_pdf: 'sh build.sh pdf'
+      build_html: 'sh build.sh html'
     }
   });
 
@@ -22,5 +28,5 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-watch');
   grunt.loadNpmTasks('grunt-exec');
 
-  grunt.registerTask('default', ['connect','watch']);
+  grunt.registerTask('default', ['connect', 'watch']);
 };

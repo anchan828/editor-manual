@@ -29,7 +29,7 @@ public class NewBehaviourScript : EditorWindow
 
     void OnGUI ()
     {
-        EditorGUILayout.LabelField ("Example Label");  
+        EditorGUILayout.LabelField ("Example Label");
     }
 }
 //}
@@ -58,7 +58,7 @@ public class NewBehaviourScript : EditorWindow
     void OnGUI ()
     {
         EditorGUI.BeginChangeCheck ();
-        
+
         // toggleをマウスでクリックして値を変更する
         toggleValue = EditorGUILayout.ToggleLeft ("Toggle", toggleValue);
 
@@ -89,11 +89,11 @@ void OnGUI ()
 {
     // BeginChangeCheckの役割
     {
-        // 先頭に値をpush 
+        // 先頭に値をpush
         stack.Push (GUI.changed);
         GUI.changed = false;
     }
-    
+
 
     toggleValue = EditorGUILayout.ToggleLeft ("Toggle", toggleValue);
 
@@ -104,9 +104,9 @@ void OnGUI ()
         bool changed = GUI.changed;
 
         // どちらかがtrueであれば以降はすべて変更されているものとする
-        GUI.changed |= stack.Pop (); 
+        GUI.changed |= stack.Pop ();
     }
-    
+
     if (changed) {
 
     }
@@ -219,7 +219,7 @@ public class NewBehaviourScript : EditorWindow
             // 値が変わるごとにEditorWindowを再描画する
             var env = new UnityEvent ();
             env.AddListener (() => Repaint ());
-            animFloat.valueChanged = env; 
+            animFloat.valueChanged = env;
         }
 
         EditorGUILayout.BeginHorizontal ();

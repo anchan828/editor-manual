@@ -675,4 +675,13 @@ div.image {
 
 .emlist {
   font-size: 70%;
+  border-radius: 3px;
+}
+
+.inline-code{
+  padding: 0.2em;
+  margin: 0;
+  font-size: 85%;
+  background-color: rgba(0,0,0,0.04);
+  border-radius: 3px;
 }

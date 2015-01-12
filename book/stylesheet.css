@@ -672,3 +672,7 @@ div.image {
 .lead p {
   margin: auto;
 }
+
+.emlist {
+  font-size: 70%;
+}

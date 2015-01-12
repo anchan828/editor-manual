@@ -74,11 +74,11 @@ public class Example : EditorWindow
 
 == EditorWindow.GetWindow
 
-EditorWindowを作成する場合、「@<b>{複数の存在を許可EditorWindow}」と「@<b>{単数のみ許可するEditorWindow}」の2種類が考えられます。@<b>{複数の存在を許可EditorWindow}は先ほど説明した@<code>{EditorWindow.CreateInstance}を使ってEditorWindowを作成し表示していきます。
+EditorWindowを作成する場合、「@<b>{複数の存在を許可するEditorWindow}」と「@<b>{単数のみ許可するEditorWindow}」の2種類が考えられます。@<b>{複数の存在を許可EditorWindow}は先ほど説明した@<code>{EditorWindow.CreateInstance}を使ってEditorWindowを作成し表示していきます。
 
 === 単数のみ許可するEditorWindow
 
-単数のみになると「既にEditorWindowが存在している場合は生成しない」というチェックを入れなければいけません。そのチェックを加えたものが以下のコードになります。
+単数のみになると「既にEditorWindowが存在している場合は生成しない」というチェックを実装しなければいけません。そのチェックを加えたものが以下のコードになります。
 
 //emlist{
 using UnityEditor;
@@ -134,11 +134,11 @@ public class Example : EditorWindow
 }
 //}
 
-== 特殊なEditorWindow
+== どのShow関数を呼ぶかで変わる特殊なEditorWindow
 
-今までこの章で扱ってEditorWidowはデフォルト状態のタブウィンドウです。この他にもUnityで作成できるEditorWindowは複数存在します。
+今までこの章で扱ったEditorWidowはデフォルト状態のタブウィンドウです。この他にもUnityで作成できるEditorWindowは複数存在します。
 
-どの@<code>{Show○○}関数を呼び出すかでどのタイプのEditorWindowを表示するかが決定します。
+どの@<code>{Show}関数を呼び出すかでどのタイプのEditorWindowを表示するかが決定します。
 
 === Show
 

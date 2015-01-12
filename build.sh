@@ -141,6 +141,7 @@ build_html()
 
 case $1 in
 	"html") build_html;;
+	"pdf") build;;
 	"epub") epub_maker;;
 	"jenkins") build_jenkins;;
 	"release") build_release;;

@@ -7,15 +7,15 @@
  * EditorUtility.DisplayDialog
  * EditorUtility.DisplayDialogComplex
  * AssetDatabase.CopyAsset
+ * FileUtil.ReplaceFile
  * AssetDatabase.DeleteAsset
  * AssetDatabase.ImportAsset
- * AssetDatabase.Refresh
 
 == 本章で使用するソースコード
 
 @<href>{https://gist.github.com/anchan828/1a95a3f6b88c81053582}
 
-//table[][]{
+//table[t1][]{
 ファイル	説明
 ------------------------
 OverwriteAsset.cs	アセット管理
@@ -155,13 +155,15 @@ static void OnPostprocessAllAssets (
 
 ダイアログの表示には@<b>{EditorUtility.DisplayDialogComplex}を使用します。
 
-//indepimage[ss07]
 
-同じ機能として@<b>{EditorUtility.DisplayDialog}がありますが、こちらはボタンが2つになります。「はい」「いいえ」の2択で表現できるときのみ使用しましょう。
+//image[ss08][今回は「置き換える」「両方とも残す」「中止」の3択が必要となるのでDisplayDialogComplexとなります。]{
 
-//indepimage[ss08]
+//}
 
-今回は「置き換える」「両方とも残す」「中止」の3択が必要となるのでDisplayDialogComplexとなります。
+//image[ss07][同じ機能として@<b>{EditorUtility.DisplayDialog}がありますが、こちらはボタンが2つになります。「はい」「いいえ」の2択で表現できるときのみ使用しましょう。]{
+
+//}
+
 
 //emlist{
 var result = EditorUtility.DisplayDialogComplex (
@@ -180,7 +182,7 @@ if (result == 0) {
 
 == 上書き
 
-Unityに上書きするという機能はありません。なので@<b>{System.IO.File}のCopy関数を使用します。
+AssetDatabaseクラスにはCopyAsset関数がありますが、上書きするという機能はありません。厳密に言うと上書きできてしまうのですが、Unityのデータベースに不具合が生じます。詳しくは「@<column>{copy}」で紹介します。 今回はアセットの上書きに@<b>{FileUtil.ReplaceFile}関数を使用します。
 上書きコピーが完了した後、別アセットとしてインポートされたものは@<b>{AssetDatabase.DeleteAsset}で削除します。
 
 @<b>{重要:} 最後に、@<b>{System.IO.File}によって外部からのデータ変更されたものをUnityが把握するために@<b>{AssetDatabase.ImportAsset}を実行します。
@@ -188,8 +190,7 @@ Unityに上書きするという機能はありません。なので@<b>{System.
 //emlist{
 public void Overwrite ()
 {
-    // 第3引数が上書きするかどうかの設定
-    File.Copy (assetPath, originalAssetPath, true);
+    FileUtil.ReplaceFile (assetPath, originalAssetPath);
     Delete ();
     AssetDatabase.ImportAsset (originalAssetPath);
 }
@@ -200,86 +201,109 @@ public void Delete ()
 }
 //}
 
+===[column]{copy}AssetDatabase.CopyAssetの不具合
+
+アセットをコピーして複製するにはこの関数を使用します。ですがこの関数はアセットの上書きを考慮しておらず、Unity側のデータベースに不具合が生じます。
+
+//image[ss09][同じ名前のhogeアセットが2つ表示されている。この画像では正しくインスペクターに情報が表示されているが...]{
+
+//}
+
+//image[ss10][こちらではインスペクターに情報が表示されていない]{
+
+//}
+
+//image[ss11][Finderで見ると片方の画像しか無いことがわかる]{
+
+//}
+
+この不具合から元に戻すには、@<code>{ReImport All}をしてLibraryにあるのデータベースを再生成しなければいけません。
+
+===[/column]
+
 //emlist{
-using UnityEngine;
-using UnityEditor;
-using System.Text.RegularExpressions;
 using System.IO;
+using System.Text.RegularExpressions;
+using UnityEditor;
+
+public class OverwriteAsset
+{
+    public string originalAssetPath {
+        get {
+            return Path.Combine (directoryName, filename + "." + extension);
+        }
+    }
+    
+    public bool exists { get; private set; }
+    
+    public string filename { get; private set; }
+    
+    public string extension { get; private set; }
+    
+    private string directoryName;
+    private string assetPath;
+    const string pattern = "^(?<name>.*)\\s\\d+\\.(?<extension>.*)$";
+    
+    public OverwriteAsset (string assetPath)
+    {
+        this.assetPath = assetPath;
+        directoryName = Path.GetDirectoryName (assetPath);
+        var match = Regex.Match (Path.GetFileName (assetPath), pattern);
+        
+        exists = match.Success;
+        
+        if (exists) {
+            filename = match.Groups ["name"].Value;
+            extension = match.Groups ["extension"].Value;
+        }
+    }
+    
+    public void Overwrite ()
+    {
+        FileUtil.ReplaceFile (assetPath, originalAssetPath);
+        Delete ();
+        AssetDatabase.ImportAsset (originalAssetPath);
+    }
+    
+    public void Delete ()
+    {
+        AssetDatabase.DeleteAsset (assetPath);
+    }
+}
+//}
+
+//emlist{
+using UnityEditor;
+using UnityEngine;
 
 public class Overwriter : AssetPostprocessor
 {
 
-	const string message = "\"{0}.{1}\"という名前のアセットが既にこの場所にあります。アセットを置き換えますか？";
+    const string message = "\"{0}.{1}\"という名前のアセットが既にこの場所にあります。アセットを置き換えますか？";
 
-	static void OnPostprocessAllAssets (string[] importedAssets, string[] deletedAssets, string[] movedAssets, string[] movedFromPath)
-	{
-		if (Event.current == null || Event.current.type != EventType.DragPerform)
-			return;
+    static void OnPostprocessAllAssets (string[] importedAssets, string[] deletedAssets, string[] movedAssets, string[] movedFromPath)
+    {
+        if (Event.current == null || Event.current.type != EventType.DragPerform)
+            return;
 
-		foreach (var assetPath in importedAssets) {
+        foreach (var assetPath in importedAssets) {
 
-			var asset = new OverwriteAsset (assetPath);
+            var asset = new OverwriteAsset (assetPath);
 
-			if (asset.exists) {
+            if (asset.exists) {
 
-				var overwriteMessage = string.Format (message, asset.filename, asset.extension);
+                var overwriteMessage = string.Format (message, asset.filename, asset.extension);
 
-				var result = EditorUtility.DisplayDialogComplex (asset.originalAssetPath, overwriteMessage, "置き換える", "両方とも残す", "中止");
+                var result = EditorUtility.DisplayDialogComplex (asset.originalAssetPath, overwriteMessage, "置き換える", "両方とも残す", "中止");
 
-				if (result == 0) {
-					asset.Overwrite ();
-				} else if (result == 2) {
-					asset.Delete ();
-				}
+                if (result == 0) {
+                    asset.Overwrite ();
+                } else if (result == 2) {
+                    asset.Delete ();
+                }
 
-			}
-		}
-	}
-
-	class OverwriteAsset
-	{
-		public string originalAssetPath {
-			get {
-				return Path.Combine (directoryName, filename + "." + extension);
-			}
-		}
-
-		public bool exists { get; private set; }
-		
-		public string filename { get; private set; }
-
-		public string extension { get; private set; }
-
-		private string directoryName;
-		private string assetPath;
-		const string pattern = "^(?<name>.*)\\s\\d+\\.(?<extension>.*)$";
-
-		public OverwriteAsset (string assetPath)
-		{
-			this.assetPath = assetPath;
-			directoryName = Path.GetDirectoryName (assetPath);
-			var match = Regex.Match (Path.GetFileName (assetPath), pattern);
-
-			exists = match.Success;
-
-			if (exists) {
-				filename = match.Groups ["name"].Value;
-				extension = match.Groups ["extension"].Value;
-			}
-		}
-
-		public void Overwrite ()
-		{
-			File.Copy (assetPath, originalAssetPath, true);
-			Delete ();
-			AssetDatabase.ImportAsset (originalAssetPath);
-		}
-
-		public void Delete ()
-		{
-			AssetDatabase.DeleteAsset (assetPath);
-		}
-	}
-
+            }
+        }
+    }
 }
 //}

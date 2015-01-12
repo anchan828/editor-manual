@@ -12,3 +12,6 @@ CHAPS:
  - overwriter.re
  - assetpostprocessor.re
  - scripttemplates.re
+ - undo.re
+ - guicreation.re
+ - serializedobject.re

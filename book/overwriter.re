@@ -3,6 +3,7 @@
 == この章で得られる知識
 
  * Unityの管理外でファイルの変更が非推奨なワケ
+ * AssetDatabase.CopyAssetの不具合？
  * AssetPostprocessor.OnPostprocessAllAssets
  * EditorUtility.DisplayDialog
  * EditorUtility.DisplayDialogComplex
@@ -201,7 +202,7 @@ public void Delete ()
 }
 //}
 
-===[column]{copy}AssetDatabase.CopyAssetの不具合
+===[column]{copy}AssetDatabase.CopyAssetの不具合？
 
 アセットをコピーして複製するにはこの関数を使用します。ですがこの関数はアセットの上書きを考慮しておらず、Unity側のデータベースに不具合が生じます。
 

@@ -2,18 +2,96 @@
 = Undoについて
 
 
-Unity4.3よりUnityEditor.UndoのAPIが一新されました。
+//lead{
+エディタ拡張によって変更した状態は「元に戻す」処理を自分で実装しなければいけません。そこでこの章では簡単なサンプルを元にUndoの使い方をマスターしていきます。
+//}
 
 
+== Undoの操作を実感してみる
 
-格段と使いやすくなったので1つ1つ紹介していきます。
+まずはどのような操作がUndoなのか実感してみましょう。
+
+最初にCubeを作成します。
+
+//image[ss01][@<code>{Assets/Create/3D Object/Cube}で作成した状態]{
+
+//}
+
+次に@<code>{Edit/Undo Create Cube}を実行します。ショートカットキーで実行する場合は「command/ctrl + Z」です。
+
+//image[ss02][メニュー名が@<code>{Undo Create Cube}ではない場合、余計な操作を行っている可能性があります。もう一度Cubeを生成しなおしてみましょう。]{
+//}
+
+生成されたCubeが削除されましたか？Cubeを生成する前に戻ったことになります。これが「元に戻る = Undo」という操作です。
+
+
+== Undoを実装してみる
+
+Undoの操作を実感してみたところで、次はUndoを実装してみましょう。
+ 
+//quote{
+前回のUndo履歴をリセットするために@<code>{File/New Scene}で新規シーンにしておきましょう。
+//}
+
+下記コードはCubeを生成するためのコードです。@<code>{Example/Create Cube}を実行することによってCubeを生成することが出来ます。
+
+//emlist{
+using UnityEngine;
+using UnityEditor;
+
+public class Example
+{
+    [MenuItem("Example/Create Cube")]
+    static void CreateCube ()
+    {
+        GameObject.CreatePrimitive (PrimitiveType.Cube);
+    }
+}
+//}
+
+Cubeを生成してもUndoを行うことは出来ません。これはUndoの実装がおこなれていないためです。
+
+//image[ss03][Undoという文字が灰色になって選択できないことがわかる]{
+
+//}
+
+さっそく@<b>{Undoクラス}を使って実装します。
+
+今回は@<code>{Undo.RegisterCreatedObjectUndo}関数を使用します。この関数はオブジェクトが生成された時に使用するUndoで、この関数でUndo登録されたオブジェクトは、Undo実行時に破棄されます。
+
+下記コードのように実装して、実際に実行してみましょう。
+
+//quote{
+またUndo履歴をリセットするために@<code>{File/New Scene}で新規シーンにしましょう。
+//}
+
+//emlist{
+using UnityEngine;
+using UnityEditor;
+
+public class Example
+{
+    [MenuItem("Example/Create Cube")]
+    static void CreateCube ()
+    {
+        var cube = GameObject.CreatePrimitive (PrimitiveType.Cube);
+        Undo.RegisterCreatedObjectUndo (cube, "Create Cube");
+    }
+}
+//}
+
+下の画像のようにUndoが登録されていれば成功です。実際にUndoしてみましょう。
+
+この時、Undoを更に元に戻す（取り消す）、Redoも実行することが出来ます。
+
+//indepimage[ss04]
 
 
 == Undoの対象
 
 
 Undoの対象となるものは@<b>{UnityEngine.Object}を継承した、@<strong>{シリアライズ可能なオブジェクト}です。
-グループという概念があるのですが難しいので一番最後に書きました。
+グループという概念があるのですが難しいので一番最後に掲載しています。
 
 
 === よくUndo実装で対象となるもの

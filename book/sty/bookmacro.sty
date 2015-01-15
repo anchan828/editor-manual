@@ -68,12 +68,12 @@
 
 %%list
 \renewenvironment{reviewemlist}{%
-  \medskip\scriptsize\begin{shaded}\setlength{\baselineskip}{1.3zw}\begin{alltt}}{%
+  \medskip\footnotesize\begin{shaded}\setlength{\baselineskip}{1.3zw}\begin{alltt}}{%
   \end{alltt}\end{shaded}}
 
 %%table
 \renewenvironment{reviewtable}[1]{%
-  \begin{center}\scriptsize\setlength{\baselineskip}{1.5zw}
+  \begin{center}\footnotesize\setlength{\baselineskip}{1.5zw}
     \renewcommand\arraystretch{1.5}
     \begin{tabular}{#1}}{%
     \end{tabular}
@@ -83,7 +83,6 @@
 \backmatter%
 \fancyhead{}
 }
-
 \def\@makechapterhead#1{\hbox{}%
 \vskip-1\Cvs
 {\parindent\z@
@@ -99,8 +98,11 @@
 %\vskip\baselineskip %縦方向に空白
 %%\hrule height1pt %太さ1ptの横罫線を引く
 %%\vskip.1\baselineskip
-\vtop\textgt{\LARGE\hsize\@tempdima#1}%章のタイトル出力
 
+
+\includegraphics[bb=0 0 595 842,width=150mm]{./images/cover.jpg}%
+\vspace{-10zh}
+\vtop\textgt{\LARGE\hsize\@tempdima#1}%章のタイトル出力
 \vskip.5\baselineskip %縦方向に空白
 %%\hrule height1pt %太さ1ptの横罫線を引く
 \fi}\vskip1\Cvs}

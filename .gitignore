@@ -11,12 +11,10 @@
 /*.userprefs
 /*.pidb
 /*.booproj
-book/__build
-book.pdf
-node_modules
 *.csproj
 *.sln
 *.userprefs
-book/__html
-archives
 *.unityproj
+node_modules
+archives
+__html

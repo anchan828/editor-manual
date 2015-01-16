@@ -8,8 +8,8 @@ if [ -d ${bookname}-pdf ];then
 		rm -rf ${bookname}-pdf
 fi
 
-HTML_DIR='__html'
-ARCHIVE_DIR='archives'
+HTML_DIR='../__html'
+ARCHIVE_DIR='../archives'
 
 refreshDirectory()
 {
@@ -32,11 +32,11 @@ pdf_maker()
 
 	if [ -e ${bookname}.pdf ];then
 
-		if [ ! -d "../${ARCHIVE_DIR}" ];then
-			mkdir "../${ARCHIVE_DIR}"
+		if [ ! -d "${ARCHIVE_DIR}" ];then
+			mkdir "${ARCHIVE_DIR}"
 		fi
 
-		mv ${bookname}.pdf "../${ARCHIVE_DIR}/"$3
+		mv ${bookname}.pdf "${ARCHIVE_DIR}/"$3
 	fi
 }
 
@@ -46,11 +46,11 @@ epub_maker()
 
 	if [ -e ${bookname}.epub ];then
 
-		if [ ! -d "../${ARCHIVE_DIR}" ];then
-			mkdir "../${ARCHIVE_DIR}"
+		if [ ! -d "${ARCHIVE_DIR}" ];then
+			mkdir "${ARCHIVE_DIR}"
 		fi
 
-		mv ${bookname}.epub "../${ARCHIVE_DIR}"
+		mv ${bookname}.epub "${ARCHIVE_DIR}"
 	fi
 }
 
@@ -92,6 +92,19 @@ undo_catalog()
 	mv "${CATALOG}.bak" $CATALOG
 }
 
+md2re()
+{
+	for file in $(find . -name "*.md");do
+		md2review $file > ${file%.*}.re
+	done
+}
+
+remove_md2re_files()
+{
+	for file in $(find . -name "*.md");do
+		rm ${file%.*}.re
+	done
+}
 
 build_jenkins()
 {
@@ -139,6 +152,8 @@ build_html()
 	cp -rf images "${HTML_DIR}/images"
 }
 
+# md2re
+
 case $1 in
 	"html") build_html;;
 	"pdf") build;;
@@ -147,3 +162,4 @@ case $1 in
 	"release") build_release;;
 	*) build;;
 esac
+# remove_md2re_files

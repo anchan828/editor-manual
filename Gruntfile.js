@@ -1,32 +1,33 @@
-module.exports = function(grunt) {
-  grunt.initConfig({
-    pkg: grunt.file.readJSON('package.json'),
-    connect: {
-      server: {
-        options: {
-          base: './book/__html',
-          livereload: 8002,
-          port: 8000
+var shell = require('shelljs');
+
+module.exports = function (grunt) {
+    grunt.initConfig({
+        pkg: grunt.file.readJSON('package.json'),
+        connect: {
+            server: {
+                options: {
+                    base: '__html',
+                    livereload: 8002,
+                    port: 8000
+                }
+            }
+        },
+        watch: {
+            files: ['**/*.re', '**/*.md', '**/*.png', '**/*.jpg','**/*.erb', '!__html/*', '!__html/**/*','!book/layouts/layout.html.erb'],
+            options: {
+                livereload: 8002
+            }
         }
-      }
-    },
-    watch: {
-      files: ['**/*.re', '**/*.png', '**/*.jpg', '!**/*.erb',
-        '!book/__html/*', '!book/__html/**/*'
-      ],
-      tasks: ['exec:build_html'],
-      options: {
-        livereload: 8002
-      }
-    },
-    exec: {
-      build_html: 'sh build.sh html'
-    }
-  });
+    });
 
-  grunt.loadNpmTasks('grunt-contrib-connect');
-  grunt.loadNpmTasks('grunt-contrib-watch');
-  grunt.loadNpmTasks('grunt-exec');
+    grunt.event.on('watch', function(action, filepath, target) {
+        if (filepath.match(/(.*)(?:\.([^.]+$))/)[2] == "re" && action != "changed")
+            return
+        shell.exec("sh build.sh html")
+    });
 
-  grunt.registerTask('default', ['connect', 'watch']);
+    grunt.loadNpmTasks('grunt-contrib-connect');
+    grunt.loadNpmTasks('grunt-contrib-watch');
+
+    grunt.registerTask('default', ['connect', 'watch']);
 };

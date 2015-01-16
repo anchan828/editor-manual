@@ -30,4 +30,8 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-contrib-watch');
 
     grunt.registerTask('default', ['connect', 'watch']);
+    grunt.registerTask('start','', function(){
+        shell.exec('open *.sublime-project');
+        grunt.task.run('connect', 'watch');
+    });
 };

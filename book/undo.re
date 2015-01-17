@@ -27,7 +27,9 @@
 
 == Undoの仕組み
 
-Undoの管理はスタックで行われています。
+Undoの管理はスタックで行われています。@<fn>{LIFO}
+
+//footnote[LIFO][スタックは、後から入れたものを先に出す「LIFO（後入先出）」です。]
 
 //image[stack][スタックをイメージするとこんな感じ]{
 
@@ -45,6 +47,8 @@ Undoの操作を実感してみたところで、次はUndoを実装してみま
 //quote{
 前回のUndo履歴をリセットするために@<code>{File/New Scene}で新規シーンにしておきましょう。
 //}
+
+=== オブジェクトの作成に対するUndo
 
 下記コードはCubeを生成するためのコードです。@<code>{Example/Create Cube}を実行することによってCubeを生成することが出来ます。
 
@@ -72,7 +76,15 @@ Cubeを生成してもUndoを行うことは出来ません。これはUndoの�
 
 今回は@<code>{Undo.RegisterCreatedObjectUndo}関数を使用します。この関数はオブジェクトが生成された時に使用するUndoで、この関数でUndo登録されたオブジェクトは、Undo実行時に破棄されます。
 
-下記コードのように実装して、実際に実行してみましょう。
+//image[RegisterCreatedObjectUndo][RegisterCreatedObjectUndo関数とUndoを実行した時の動き]{
+
+//}
+
+@<img>{RegisterCreatedObjectUndo}では、RegisterCreatedObjectUndo関数を実行すると「Cubeを作成する」という処理を差分としてスタックに追加します@<fn>{f1}。この差分がUndoで使用される際には「Cubeを作成する前に戻す」つまり、Cubeを削除するという処理を行うことになります。
+
+//footnote[f1][実際にはオブジェクトとUndo名がまとめられてスタックに保存されます。]
+
+下記コードのように実装して、実行してみましょう。
 
 //quote{
 またUndo履歴をリセットするために@<code>{File/New Scene}で新規シーンにしましょう。
@@ -95,38 +107,228 @@ public class Example
 
 下の画像のようにUndoが登録されていれば成功です。実際にUndoしてみましょう。
 
-この時、Undoを更に元に戻す（取り消す）、Redoも実行することが出来ます。
-
 //indepimage[ss04]
 
+Undoを実行した後はUndoしたものを元に戻すRedo（取り消す）も実行することが出来ます。
+
+//indepimage[ss06]
+
+=== プロパティの変更に対するUndo
+
+下記コードはオブジェクトの回転をランダムに設定するコードです。@<code>{Example/Random Rotate}を実行することによって選択しているオブジェクトをランダムに回転させることが出来ます。
+
+//emlist{
+using UnityEngine;
+using UnityEditor;
+
+public class Example
+{
+    [MenuItem("Example/Random Rotate")]
+    static void RandomRotate ()
+    {
+        var transform = Selection.activeTransform;
+
+        if (transform) {
+            transform.rotation = Random.rotation;
+        }
+    }
+}
+//}
+
+//image[ss10][変更前と変更後]{
+
+//}
+
+これに@<code>{Undo.RecordObject}関数を使用することによってUndoを実装します。
+
+//emlist{
+using UnityEngine;
+using UnityEditor;
+
+public class Example
+{
+    [MenuItem("Example/Random Rotate")]
+    static void RandomRotate ()
+    {
+        var transform = Selection.activeTransform;
+
+        if (transform) {
+            Undo.RecordObject (transform, "Rotate " + transform.name);
+            transform.rotation = Random.rotation;
+        }
+    }
+}
+//}
+
+ランダムな回転が設定される前に@<code>{Undo.RecordObject}関数を実行します。これにより「変更前」のTransformのプロパティをUndoスタックに保存することが出来るようになります。
+
+//image[ss11][Undoが登録されているとメニューに表示され正しく回転を]{
+
+//}
+
+== どのプロパティが変更されたかを知るPropertyDiffUndoRecorder
+
+Undoのスタックに保存されるのは「値が変更されたプロパティの、@<b>{変更前の値} 」です。
+
+なので「どのプロパティが変更されたか」を知る必要があります。その役割を担うのがPropertyDiffUndoRecorderです。
+
+//image[ss07][PropertyDiffUndoRecorderはプロファイラで確認することが出来る]{
+
+//}
+
+PropertyDiffUndoRecorderは、RecordObjectで登録されたオブジェクトを、Unityエディタのライフサイクルの最後あたりでUndoのFlushを呼びだすことで、Undo.RecordObjectが呼び出された時のオブジェクトの各プロパティと、Flushが呼び出された時のオブジェクトの各プロパティを使用して差分を求めます。
+
+以下の順に実行され、図にしたものが@<img>{PropertyDiffUndoRecorder}です。
+
+ 1. オブジェクトの登録
+ 2. 値の変更
+ 3. Flush実行
+ 4. 差分の出力
+
+//image[PropertyDiffUndoRecorder][PropertyDiffUndoRecorderのサイクル]{
+
+//}
+
+//image[ss08][差分のイメージ（画像は@<href>{https://gist.github.com,gist}のdiffビュー）]{
+
+//}
+
+@<img>{PropertyDiffUndoRecorder}で示したサイクルを確認してみましょう。以下のコードで確認することが出来ます。
+
+//emlist{
+using UnityEngine;
+using UnityEditor;
+
+public class Example
+{
+    [MenuItem("Example/Random Rotate")]
+    static void RandomRotate ()
+    {
+        var transform = Selection.activeTransform;
+
+        if (transform) {
+            Undo.willFlushUndoRecord += () => Debug.Log ("flush");
+
+            Undo.postprocessModifications += (modifications) => {
+                Debug.Log ("modifications");
+                return modifications;
+            };
+
+            Undo.RecordObject (transform, "Rotate " + transform.name);
+            Debug.Log ("recorded");
+
+            transform.rotation = Random.rotation;
+            Debug.Log("changed");
+        }
+    }
+}
+//}
+
+実行すると@<img>{ss09}の順番でログが出力されます。
+
+//image[ss09][@<code>{Example/Random Rotate}を実行した後に出力されたログ]{
+
+//}
+
+== Redoの仕組み
+
+RedoはUndoで処理したものを元に戻す機能です。RedoによりUndoの実行をなかったことにします。
+
+//image[exec_undo_redo][Cubeを作成した後のUndo実行、Redo実行の流れ]{
+
+//}
+
+
+Redoもスタックで管理されています。
+
+
+//image[undo_and_redo][UndoとRedoのスタック]{
+
+//}
+
+Undoが実行されると、取り出されたものはRedoのスタックに積まれます。
+
+//image[exec_undo][Undoを2回実行し、3と2がRedoスタックに積まれた状態]{
+
+//}
+
+Redoを実行すると、Redoスタックに格納されたものは再度Undoスタックに格納されます。
+
+//image[exec_redo][Redoを実行し、2がRedoスタックから取り出されUndoスタックに積まれた状態]{
+
+//}
+
+このように、RedoはUndoで処理されたものを利用しますので特別な実装は必要ありません。
 
 == Undoの対象
 
 
 Undoの対象となるものは@<b>{UnityEngine.Object}を継承した、@<strong>{シリアライズ可能なオブジェクト}です。
-グループという概念があるのですが難しいので一番最後に掲載しています。
 
+=== よくUndoの実装で対象となるもの
 
-=== よくUndo実装で対象となるもの
-
-
-Undo実装で対象となるものは以下の3つです。
+よくUndoの実装で対象となるものは以下の3つです。
 これらのオブジェクトを生成したり、オブジェクトのプロパティの値を変更する場合はUndoの実装を行うべきと考えましょう。
 
  * GameObject
  * Component (MonoBehaviourも含む)
  * ScriptableObject
 
+=== System.Serializable属性を付けたクラスをUndo対象にするには
 
-System.Serializable属性を付けたクラスをUndo対象にする場合は、ComponentやScriptableObjectのプロパティとして保持させることでUndo対象とさせることができます。
+System.Serializable属性を付けたクラスをUndo対象にする場合は、ComponentやScriptableObjectのプロパティとしてもつことでUndo対象とさせることができます。
 
+//emlist{
+[System.Serializable]
+public class PlayerInfo
+{
+    public string name;
+    public int hp;
+}
+//}
+
+例としてPlayerコンポーネントに変数として持たせます。
+
+//emlist{
+using UnityEngine;
+
+public class Player : MonoBehaviour
+{
+    [SerializeField]
+    PlayerInfo info;
+}
+//}
+
+そしてPlayerコンポーネントをUndo対象として登録します。
+
+//emlist{
+using UnityEngine;
+using UnityEditor;
+
+public class Example
+{
+    [MenuItem("Example/Change PlayerInfo")]
+    static void ChangePlayerInfo ()
+    {
+        var player = Selection.activeGameObject.GetComponent<Player> ();
+
+        if (player) {
+            Undo.RecordObject (player, "Change PlayerInfo");
+            player.info = new PlayerInfo{
+                name = "New PlayerName",
+                hp = Random.Range(0,10)
+            };
+        }
+    }
+}
+//}
 
 == Undoの種類
 
 
 Undoの種類は大きく分けて2種類になります。
 
- * オブジェクトのプロパティ（値）に対するUndo
+ * オブジェクトのプロパティ（値）変更に対するUndo
  * オブジェクトへのアクションに対するUndo
 
 === プロパティ（値）に対するUndo
@@ -242,7 +444,7 @@ public class NewBehaviourScript
 ==== Undo.SetTransformParent
 
 
-ゲームオブジェクトの親子関係を作成するときのUndoを実装します。
+ゲームオブジェクトの親子関係を作成/変更するときに使用するUndoの実装です。
 
 
 #@# lang: cs
@@ -265,13 +467,17 @@ public class NewBehaviourScript
 }
 //}
 
-== キャンセル処理
+== キャンセル処理（Revert）
 
+Undo登録して値を変更している中で「Esc」ボタンなどで、その操作自体をキャンセルしたいときがあります。
+キャンセル時はUndo登録した時の値に戻りますが、キャンセルなのでRedo（Esc押す直前の状態）が実行できてしまうのは不自然です。
+なのでRedoを行わないUndoの実装をしなければなりません。
 
-Undo登録して値を変更してたけど「Esc」ボタンなどで、その操作自体をキャンセルするときがあります。
-キャンセル時、Undo登録した時の値に戻りますが、キャンセルなのでRedo（Esc押す直前の状態）ができてしまうのは不自然です。
+このキャンセル処理のことをRevertと言います。
 
-なのでRedoは行わないUndo実行をしなければいけません。
+//image[revert][]{
+
+//}
 
 
 ==== Undo.RevertAllInCurrentGroup
@@ -287,6 +493,7 @@ using UnityEditor;
 
 public class NewBehaviourScript
 {
+    // 必ず宝くじが当選するメソッド
     [MenuItem("Undo/RevertAllInCurrentGroup")]
     static void RevertAllInCurrentGroup ()
     {

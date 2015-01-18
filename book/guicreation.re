@@ -1,6 +1,8 @@
 
 = GUIを自作する
 
+//indepimage[frontispiece]
+//pagebreak
 
 例えば@<b>{EditorGUILayout.ObjectField}でSpriteのフィールドを表示した時、Texture系であればプレビューがあるGUIに変化しますがSpriteはプレビューが実装されていません。
 

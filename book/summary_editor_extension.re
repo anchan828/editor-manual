@@ -1,5 +1,8 @@
 = 概要
 
+//indepimage[frontispiece]
+//pagebreak
+
 == Unityエディタの完成度はいつも8割程度
 
 　私がUnityエディタについて説明するとき、いつも「Unityのエディタはいつも8割程度の完成度でリリースされています」と言っています。

@@ -3,15 +3,15 @@ PREDEF:
  - about_this_book.re
 CHAPS:
  - summary_editor_extension.re
+ - assetpostprocessor.re
+ - guicreation.re
+ - overwriter.re
  - part1-editorgui.re
  - part1-editorwindow.re
  - part1-menuitem.re
  - part2-beginner.re
  - part2-standardextension.re
  - part3-usefulextensions.re
- - overwriter.re
- - assetpostprocessor.re
  - scripttemplates.re
- - undo.re
- - guicreation.re
  - serializedobject.re
+ - undo.re

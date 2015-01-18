@@ -1,5 +1,8 @@
 = ScriptTemplates
 
+//indepimage[frontispiece]
+//pagebreak
+
 == この章で得られる知識
 
  * 自作スクリプトテンプレートファイルの作成

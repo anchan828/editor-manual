@@ -1,5 +1,8 @@
 = Overwriter
 
+//indepimage[frontispiece]
+//pagebreak
+
 == この章で得られる知識
 
  * Unityの管理外でファイルの変更が非推奨なワケ

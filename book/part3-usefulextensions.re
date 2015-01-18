@@ -1,8 +1,13 @@
 = AssetImporter
 
+//indepimage[frontispiece]
+
+
 //lead{
 アセットのインポート設定をエディタ拡張で制御することはとても簡単にできます。これからはテクスチャのスプライト設定やオーディオのストリーミング指定への変更を「インポート時に自動で」行うようにしましょう。
 //}
+
+//pagebreak
 
 == AssetPostprocessor
 

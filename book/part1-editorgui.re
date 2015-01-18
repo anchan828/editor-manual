@@ -1,8 +1,13 @@
 = EditorGUI (EdirotGUILayout)
 
+//indepimage[frontispiece]
+
+
 //lead{
 この機能を知らなくてはエディタ拡張では何も出来ないと言っても過言ではありません。この章ではEditorGUIやEditorGUILayoutで出来ることを説明していきます。サンプルコードは簡略化の関係でEditorGUILayoutを使用することが多くなります。
 //}
+
+//pagebreak
 
 == EditorGUIとは
 

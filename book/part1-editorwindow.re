@@ -1,8 +1,12 @@
 = EditorWindow
 
+//indepimage[frontispiece]
+
+
 //lead{
 エディタ拡張に初めて触れるとき、まずウィンドウを表示することから始めるかもしれません。この章では簡単にEditorWindowを表示する方法から目的に合ったEditorWindowの選択、その特性について解説していきます。
 //}
+//pagebreak
 
 == EditorWindowとは
 

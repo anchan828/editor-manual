@@ -1,6 +1,9 @@
 
 = SerializedObjectについて
 
+//indepimage[frontispiece]
+//pagebreak
+
 Unityのオブジェクトは全てSerializedObjectに変換され保持されています。
 
 

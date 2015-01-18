@@ -1,1 +1,4 @@
 = AssetPostprocessor
+
+//indepimage[frontispiece]
+//pagebreak

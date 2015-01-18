@@ -197,20 +197,21 @@
   \clearpage
   <% end %>
 \thispagestyle{empty}
-\begin{center}%
-  \mbox{} \vskip5zw
+
+\begin{flushright}%
+  \mbox{} \vskip10zw
    \reviewtitlefont%
-    {\Huge <%= values["booktitle"] %> \par}%
-    \vskip 15em%
-    {\huge
+   \rule[8pt]{10cm}{6pt} \\
+    {\fontsize{35pt}{0pt}\selectfont <%= values["booktitle"] %> \par}%
+    {\large
       \lineskip .75em
       \begin{tabular}[t]{c}%
         <%= authors %>
       \end{tabular}\par}%
     \vfill
-    {\large <%= values["date"] %> 版\hspace{2zw}<%= values["prt"] %>　発行\par}%
+   % {\large <%= values["date"] %> 版\hspace{2zw}<%= values["prt"] %>　発行\par}%
 \vskip4zw\mbox{}
-  \end{center}%
+  \end{flushright}%
 \end{titlepage}
 <% end %>
 <% end %>

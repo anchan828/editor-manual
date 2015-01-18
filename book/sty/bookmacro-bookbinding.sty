@@ -95,14 +95,15 @@
 \ifnum \c@secnumdepth >\m@ne
 \setlength\@tempdima{\linewidth}%
 \if@mainmatter
-\setbox\z@\hbox{\@chapapp\thechapter\@chappos\hskip1zw}%
+\setbox\z@\hbox{\hspace{\fill}\@chapapp\fontsize{45pt}{0pt}\selectfont\thechapter\huge\@chappos\hskip1zw}%
 %\addtolength\@tempdima{-\wd\z@}% これで縦箱の長さが行幅と同じになります。
 \unhbox\z@\par%%%%\parとすることで章番号とタイトルが分離。
 \fi
 %\vskip\baselineskip %縦方向に空白
 %%\hrule height1pt %太さ1ptの横罫線を引く
 %%\vskip.1\baselineskip
-\vtop\textgt{\LARGE\hsize\@tempdima#1}%章のタイトル出力
+\vskip\baselineskip
+\vtop\textgt{\hspace{\fill}\LARGE\hsize\@tempdima#1}%章のタイトル出力
 
 \vskip.5\baselineskip %縦方向に空白
 %%\hrule height1pt %太さ1ptの横罫線を引く

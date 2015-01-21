@@ -134,8 +134,9 @@ build_release()
 build_html()
 {
 	refreshDirectory
+	
 	re_build_catalog
-
+	build_toc
 	cp -f layouts/_layout.html.erb layouts/layout.html.erb
 
 	review-compile -a --stylesheet=stylesheet.cs --target=html
@@ -152,6 +153,11 @@ build_html()
 	cp -rf images "${HTML_DIR}/images"
 }
 
+build_toc()
+{
+	ruby -ryaml -rjson -e 'puts JSON.pretty_generate YAML.load ARGF.read' catalog.yml > $HTML_DIR/toc.json
+}
+
 # md2re
 
 case $1 in
@@ -162,4 +168,7 @@ case $1 in
 	"release") build_release;;
 	*) build;;
 esac
+
+build_toc
+
 # remove_md2re_files

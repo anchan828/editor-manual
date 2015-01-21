@@ -21,6 +21,13 @@
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
   
   <title id="title"><%= title %></title>
+  <script type="text/javascript">
+    $(function(){
+      $("h1 > a,h2 > a,h3 > a,h4 > a").each(function(){
+        $(this).html("<a href='#" + $(this).attr("id") + "'><span class='glyphicon glyphicon-link' aria-hidden='true'></span> </a>")
+      })
+    })
+  </script>
 </head>
 <body>
 <nav class="navbar navbar-default">

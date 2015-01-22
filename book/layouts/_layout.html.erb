@@ -3,9 +3,33 @@
   json = open('../__html/toc.json') do |io| JSON.load(io) end 
   json["list"] = []
   json["list"].concat(json["PREDEF"]) if json.has_key? "PREDEF"
-  json["list"].concat(json["CHAPS"])
   json["list"].concat(json["POSTDEF"]) if json.has_key? "POSTDEF"
+  json["list"].concat(json["CHAPS"])
   json["title_list"] = json["list"].clone
+
+
+  if json.has_key? "PREDEF"
+    json["PREDEF"].each{|re| 
+      target_title = File.read(re).match(/^= (.*)$/)[1] 
+      list_index = json["title_list"].index(re) 
+      json["title_list"][list_index] = target_title
+    }
+  end
+
+  json["CHAPS"].each.with_index(1){|re,i|
+    p re
+    target_title = File.read(re).match(/^= (.*)$/)[1]  
+    list_index = json["title_list"].index(re) 
+    json["title_list"][list_index] = target_title.gsub(/\"/,"&quot;")
+  }
+
+  if json.has_key? "POSTDEF"
+    json["POSTDEF"].each{|re| 
+      target_title = File.read(re).match(/^= (.*)$/)[1]
+      list_index = json["title_list"].index(re) 
+      json["title_list"][list_index] = target_title
+    }
+  end
 %>
 
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:ops="http://www.idpf.org/2007/ops" xml:lang="ja">
@@ -50,22 +74,18 @@
       <% 
           if json.has_key? "PREDEF"
             json["PREDEF"].each{|re| 
-                html_path = re.gsub(/\.re/,".html") 
-                target_title = File.read(re).match(/^= (.*)$/)[1] 
-                list_index = json["title_list"].index(re) 
-                json["title_list"][list_index] = target_title
+            html_path = re.gsub(/\.re/,".html") 
+            target_title = File.read(re).match(/^= (.*)$/)[1] 
       %>
         <li class="<%= p 'active' if title == target_title %>"><a href="<%= html_path %>"><%= target_title %></a></li>
-      <% }end %>
+      <% } end %>
       </ul>
       <ul class="nav navbar-nav navbar-right">
       <% 
           if json.has_key? "POSTDEF"
-          json["POSTDEF"].each{|re| 
-          html_path = re.gsub(/\.re/,".html") 
-          target_title = File.read(re).match(/^= (.*)$/)[1]
-          list_index = json["title_list"].index(re) 
-          json["title_list"][list_index] = target_title
+            json["POSTDEF"].each{|re| 
+            html_path = re.gsub(/\.re/,".html") 
+            target_title = File.read(re).match(/^= (.*)$/)[1]
       %>
         <li class="<%= p 'active' if title == target_title %>"><a href="<%= html_path %>"><%= target_title %></a></li>
       <% } end%>
@@ -76,11 +96,9 @@
               json["CHAPS"].each.with_index(1){|re,i|
               html_path = re.gsub(/\.re/,".html")
               target_title = File.read(re).match(/^= (.*)$/)[1]  
-              list_index = json["title_list"].index(re) 
-              # json["title_list"][list_index] = "第" + i.to_s + "章 " + target_title
           %>
             <li class="<%= p 'active' if title == target_title %>"><a href="<%= html_path %>">第<%= i %>章 <%= target_title %></a></li>
-          <% }%>
+          <% } %>
           </ul>
         </li>
       </ul>
@@ -92,30 +110,16 @@
     <div class="col-md-3 hidden-xs hidden-sm sidenav affix-top pre-scrollable" style="max-height: 100%" role="complementary" data-spy="affix" data-offset-top="80">
         <ul class="nav">
             <li>
-                <!-- <a href="#UnityEngine">PREDEF</a> -->
-                <ul class="nav">
-                
-                </ul>
-            </li>
-            <li>
                 <ul class="nav">
                 <%
                     json["CHAPS"].each.with_index(1){|re,i|
                     html_path = re.gsub(/\.re/,".html")
                     target_title = File.read(re).match(/^= (.*)$/)[1]  
-                    list_index = json["title_list"].index(re) 
-                    # json["title_list"][list_index] = "第" + i.to_s + "章 " + target_title
-                    json["title_list"][list_index] =target_title
                 %>
                   <li class=""><a href="<%= html_path %>">第<%= i %>章 <%= target_title %></a><ul class="nav" id="<%= p 'current_page_toc' if title == target_title %>"></ul></li>
                 <% }%>
                 </ul>
             </li>
-            </li>
-            <li>
-                <ul class="nav">
-               
-                </ul>
             </li>
         </ul>
         <a class="back-to-top" href="#">

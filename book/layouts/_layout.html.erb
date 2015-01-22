@@ -1,10 +1,11 @@
-<% require 'json' %>
-<% json = open('../__html/toc.json') do |io| JSON.load(io) end 
-   json["list"] = []
-   json["list"].concat(json["PREDEF"]) if json.has_key? "PREDEF"
-   json["list"].concat(json["CHAPS"])
-   json["list"].concat(json["POSTDEF"]) if json.has_key? "POSTDEF"
-   json["title_list"] = json["list"].clone
+<%
+  require 'json'
+  json = open('../__html/toc.json') do |io| JSON.load(io) end 
+  json["list"] = []
+  json["list"].concat(json["PREDEF"]) if json.has_key? "PREDEF"
+  json["list"].concat(json["CHAPS"])
+  json["list"].concat(json["POSTDEF"]) if json.has_key? "POSTDEF"
+  json["title_list"] = json["list"].clone
 %>
 
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:ops="http://www.idpf.org/2007/ops" xml:lang="ja">
@@ -26,70 +27,107 @@
       $("h1 > a,h2 > a,h3 > a,h4 > a").each(function(){
         $(this).html("<a href='#" + $(this).attr("id") + "'><span class='glyphicon glyphicon-link' aria-hidden='true'></span> </a>")
       })
+
+      $("h2").each(function(){
+        $("#current_page_toc").append("<li><a href='#"+ $(this).find("a").attr("id") +"'>\t"+ $(this).text() +"</a></li>")
+        $('body').scrollspy({ target: '.sidenav' })
+      })
+      
     })
   </script>
 </head>
-<body>
+<body data-target="sidenav">
 <nav class="navbar navbar-default">
   <div class="container-fluid">
     <!-- Brand and toggle get grouped for better mobile display -->
     <div class="navbar-header">
-      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
-        <span class="sr-only">Toggle navigation</span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-      </button>
       <a class="navbar-brand" href="<%= json["list"][0].gsub(/\.re/,".html")%>">エディタ拡張入門</a>
     </div>
 
     <!-- Collect the nav links, forms, and other content for toggling -->
     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
       <ul class="nav navbar-nav" id="predef">
-		<% if json.has_key? "PREDEF"
-      	 json["PREDEF"].each{|re| 
-		 html_path = re.gsub(/\.re/,".html") 
-		 target_title = File.read(re).match(/^= (.*)$/)[1] 
-		 list_index = json["title_list"].index(re) 
-		 json["title_list"][list_index] = target_title
-		%>
-		<li class="<%= p 'active' if title == target_title %>"><a href="<%= html_path %>"><%= target_title %></a></li>
-		<% }%>
-		<% end%>
+      <% 
+          if json.has_key? "PREDEF"
+            json["PREDEF"].each{|re| 
+                html_path = re.gsub(/\.re/,".html") 
+                target_title = File.read(re).match(/^= (.*)$/)[1] 
+                list_index = json["title_list"].index(re) 
+                json["title_list"][list_index] = target_title
+      %>
+        <li class="<%= p 'active' if title == target_title %>"><a href="<%= html_path %>"><%= target_title %></a></li>
+      <% }end %>
       </ul>
       <ul class="nav navbar-nav navbar-right">
-      	<% if json.has_key? "POSTDEF"
-      	  json["POSTDEF"].each{|re| 
-		  html_path = re.gsub(/\.re/,".html") 
-		  target_title = File.read(re).match(/^= (.*)$/)[1]
-		  list_index = json["title_list"].index(re) 
-		  json["title_list"][list_index] = target_title
-		%>
-		<li class="<%= p 'active' if title == target_title %>"><a href="<%= html_path %>"><%= target_title %></a></li>
-		<% }
-		  end%>
+      <% 
+          if json.has_key? "POSTDEF"
+          json["POSTDEF"].each{|re| 
+          html_path = re.gsub(/\.re/,".html") 
+          target_title = File.read(re).match(/^= (.*)$/)[1]
+          list_index = json["title_list"].index(re) 
+          json["title_list"][list_index] = target_title
+      %>
+        <li class="<%= p 'active' if title == target_title %>"><a href="<%= html_path %>"><%= target_title %></a></li>
+      <% } end%>
         <li class="dropdown">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">目次 <span class="caret"></span></a>
           <ul class="dropdown-menu" role="menu">
-          <% json["CHAPS"].each.with_index(1){|re,i|
-			 html_path = re.gsub(/\.re/,".html")
-			 target_title = File.read(re).match(/^= (.*)$/)[1]  
-  			 list_index = json["title_list"].index(re) 
-		     # json["title_list"][list_index] = "第" + i.to_s + "章 " + target_title
-		     json["title_list"][list_index] =target_title
-		  %>
-				<li class="<%= p 'active' if title == target_title %>"><a href="<%= html_path %>">第<%= i %>章 <%= target_title %></a></li>
-			<% }%>
+          <% 
+              json["CHAPS"].each.with_index(1){|re,i|
+              html_path = re.gsub(/\.re/,".html")
+              target_title = File.read(re).match(/^= (.*)$/)[1]  
+              list_index = json["title_list"].index(re) 
+              # json["title_list"][list_index] = "第" + i.to_s + "章 " + target_title
+          %>
+            <li class="<%= p 'active' if title == target_title %>"><a href="<%= html_path %>">第<%= i %>章 <%= target_title %></a></li>
+          <% }%>
           </ul>
         </li>
       </ul>
     </div><!-- /.navbar-collapse -->
   </div><!-- /.container-fluid -->
 </nav>
-<nav>
+<div class="">
+  <div class="">
+    <div class="col-md-3 hidden-xs hidden-sm sidenav affix-top pre-scrollable" style="max-height: 100%" role="complementary" data-spy="affix" data-offset-top="80">
+        <ul class="nav">
+            <li>
+                <!-- <a href="#UnityEngine">PREDEF</a> -->
+                <ul class="nav">
+                
+                </ul>
+            </li>
+            <li>
+                <ul class="nav">
+                <%
+                    json["CHAPS"].each.with_index(1){|re,i|
+                    html_path = re.gsub(/\.re/,".html")
+                    target_title = File.read(re).match(/^= (.*)$/)[1]  
+                    list_index = json["title_list"].index(re) 
+                    # json["title_list"][list_index] = "第" + i.to_s + "章 " + target_title
+                    json["title_list"][list_index] =target_title
+                %>
+                  <li class=""><a href="<%= html_path %>">第<%= i %>章 <%= target_title %></a><ul class="nav" id="<%= p 'current_page_toc' if title == target_title %>"></ul></li>
+                <% }%>
+                </ul>
+            </li>
+            </li>
+            <li>
+                <ul class="nav">
+               
+                </ul>
+            </li>
+        </ul>
+        <a class="back-to-top" href="#">
+            Back to top
+        </a>
+    </div>
+</div>
+  <div class="col-md-9 pull-right">
+    <nav>
   <ul class="pager">
   　<% index = json["title_list"].index(title) %>
-  	<% if 0 <= index - 1 %>
+    <% if 0 <= index - 1 %>
     <li class="previous"><a href="<%= json["list"][index - 1].gsub(/\.re/,".html") %>"><span aria-hidden="true">&larr;</span> <%= json["title_list"][index - 1] %></a></li>
     <% end %>
     <% if index + 1 < json["title_list"].length %>
@@ -101,13 +139,15 @@
  <nav>
   <ul class="pager">
   　<% index = json["title_list"].index(title) %>
-  	<% if 0 <= index - 1 %>
+    <% if 0 <= index - 1 %>
     <li class="previous"><a href="<%= json["list"][index - 1].gsub(/\.re/,".html") %>"><span aria-hidden="true">&larr;</span> <%= json["title_list"][index - 1] %></a></li>
     <% end %>
     <% if index + 1 < json["title_list"].length %>
     <li class="next"><a href="<%= json["list"][index + 1].gsub(/\.re/,".html") %>"><%= json["title_list"][index + 1] %> <span aria-hidden="true">&rarr;</span></a></li>
     <% end %>
   </ul>
+  </div>
+</div>
 </nav>
 </body>
 </html>

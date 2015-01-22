@@ -674,8 +674,6 @@ div.image {
 }
 
 .emlist {
-  font-size: 70%;
-  border-radius: 3px;
 }
 
 .inline-code{
@@ -684,4 +682,15 @@ div.image {
   font-size: 85%;
   background-color: rgba(0,0,0,0.04);
   border-radius: 3px;
+}
+.affix{
+  margin-top: -80px;
+}
+#current_page_toc li{
+  margin-left: 2em;
+}
+#current_page_toc li.active{
+}
+#current_page_toc li a{
+  font-size: 80%;
 }

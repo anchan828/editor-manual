@@ -1,33 +1,32 @@
 <%
-  require 'json'
-  json = open('../__html/toc.json') do |io| JSON.load(io) end 
-  json["list"] = []
-  json["list"].concat(json["PREDEF"]) if json.has_key? "PREDEF"
-  json["list"].concat(json["POSTDEF"]) if json.has_key? "POSTDEF"
-  json["list"].concat(json["CHAPS"])
-  json["title_list"] = json["list"].clone
+  require 'yaml'
+  yaml = open('catalog.yml') do |io| YAML.load(io) end
+  
+  yaml["list"] = []
+  yaml["list"].concat(yaml["PREDEF"]) if yaml.has_key? "PREDEF"
+  yaml["list"].concat(yaml["POSTDEF"]) if yaml.has_key? "POSTDEF"
+  yaml["list"].concat(yaml["CHAPS"])
+  yaml["title_list"] = yaml["list"].clone
 
-
-  if json.has_key? "PREDEF"
-    json["PREDEF"].each{|re| 
+  if yaml.has_key? "PREDEF"
+    yaml["PREDEF"].each{|re| 
       target_title = File.read(re).match(/^= (.*)$/)[1] 
-      list_index = json["title_list"].index(re) 
-      json["title_list"][list_index] = target_title
+      list_index = yaml["title_list"].index(re) 
+      yaml["title_list"][list_index] = target_title
     }
   end
 
-  json["CHAPS"].each.with_index(1){|re,i|
-    p re
+  yaml["CHAPS"].each.with_index(1){|re,i|
     target_title = File.read(re).match(/^= (.*)$/)[1]  
-    list_index = json["title_list"].index(re) 
-    json["title_list"][list_index] = target_title.gsub(/\"/,"&quot;")
+    list_index = yaml["title_list"].index(re) 
+    yaml["title_list"][list_index] = target_title.gsub(/\"/,"&quot;")
   }
 
-  if json.has_key? "POSTDEF"
-    json["POSTDEF"].each{|re| 
+  if yaml.has_key? "POSTDEF"
+    yaml["POSTDEF"].each{|re| 
       target_title = File.read(re).match(/^= (.*)$/)[1]
-      list_index = json["title_list"].index(re) 
-      json["title_list"][list_index] = target_title
+      list_index = yaml["title_list"].index(re) 
+      yaml["title_list"][list_index] = target_title
     }
   end
 %>
@@ -41,7 +40,7 @@
   <!-- Latest compiled and minified CSS -->
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
   
-  <script src="//code.jquery.com/jquery-2.1.3.min.js"></script>
+  <script src="http://code.jquery.com/jquery-2.1.3.min.js"></script>
   <!-- Latest compiled and minified JavaScript -->
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
   
@@ -60,8 +59,8 @@
     })
   </script>
 </head>
-<body data-target="sidenav">
-<nav class="navbar navbar-default">
+<body>
+<nav class="navbar navbar-default" data-target="sidenav">
   <div class="container-fluid">
     <!-- Brand and toggle get grouped for better mobile display -->
     <div class="navbar-header">
@@ -72,39 +71,39 @@
         <span class="icon-bar"></span>
       </button>
 
-      <a class="navbar-brand" href="<%= json["list"][0].gsub(/\.re/,".html")%>">エディタ拡張入門</a>
+      <a class="navbar-brand" href="<%= yaml["list"][0].gsub(/\.re/,".html")%>">エディタ拡張入門</a>
     </div>
 
     <!-- Collect the nav links, forms, and other content for toggling -->
     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
       <ul class="nav navbar-nav" id="predef">
       <% 
-          if json.has_key? "PREDEF"
-            json["PREDEF"].each{|re| 
+          if yaml.has_key? "PREDEF"
+            yaml["PREDEF"].each{|re| 
             html_path = re.gsub(/\.re/,".html") 
             target_title = File.read(re).match(/^= (.*)$/)[1] 
       %>
-        <li class="<%= p 'active' if title == target_title %>"><a href="<%= html_path %>"><%= target_title %></a></li>
+        <li class="<%= 'active' if title == target_title %>"><a href="<%= html_path %>"><%= target_title %></a></li>
       <% } end %>
       </ul>
       <ul class="nav navbar-nav navbar-right">
       <% 
-          if json.has_key? "POSTDEF"
-            json["POSTDEF"].each{|re| 
+          if yaml.has_key? "POSTDEF"
+            yaml["POSTDEF"].each{|re| 
             html_path = re.gsub(/\.re/,".html") 
             target_title = File.read(re).match(/^= (.*)$/)[1]
       %>
-        <li class="<%= p 'active' if title == target_title %>"><a href="<%= html_path %>"><%= target_title %></a></li>
+        <li class="<%= 'active' if title == target_title %>"><a href="<%= html_path %>"><%= target_title %></a></li>
       <% } end%>
         <li class="dropdown">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">目次 <span class="caret"></span></a>
           <ul class="dropdown-menu" role="menu">
           <% 
-              json["CHAPS"].each.with_index(1){|re,i|
+              yaml["CHAPS"].each.with_index(1){|re,i|
               html_path = re.gsub(/\.re/,".html")
               target_title = File.read(re).match(/^= (.*)$/)[1]  
           %>
-            <li class="<%= p 'active' if title == target_title %>"><a href="<%= html_path %>">第<%= i %>章 <%= target_title %></a></li>
+            <li class="<%= 'active' if title == target_title %>"><a href="<%= html_path %>">第<%= i %>章 <%= target_title %></a></li>
           <% } %>
           </ul>
         </li>
@@ -119,11 +118,11 @@
             <li>
                 <ul class="nav">
                 <%
-                    json["CHAPS"].each.with_index(1){|re,i|
+                    yaml["CHAPS"].each.with_index(1){|re,i|
                     html_path = re.gsub(/\.re/,".html")
                     target_title = File.read(re).match(/^= (.*)$/)[1]  
                 %>
-                  <li class=""><a href="<%= html_path %>">第<%= i %>章 <%= target_title %></a><ul class="nav" id="<%= p 'current_page_toc' if title == target_title %>"></ul></li>
+                  <li class=""><a href="<%= html_path %>" id="<%= 'current_page' if title == target_title %>">第<%= i %>章<br/><div><%= target_title %></div></a><ul class="nav" id="<%= 'current_page_toc' if title == target_title %>"></ul></li>
                 <% }%>
                 </ul>
             </li>
@@ -134,27 +133,27 @@
         </a>
     </div>
 </div>
-  <div class="col-md-9 pull-right">
+  <div class="col-md-9 pull-right" id="context">
     <nav>
   <ul class="pager">
-  　<% index = json["title_list"].index(title) %>
-    <% if 0 <= index - 1 %>
-    <li class="previous"><a href="<%= json["list"][index - 1].gsub(/\.re/,".html") %>"><span aria-hidden="true">&larr;</span> <%= json["title_list"][index - 1] %></a></li>
+  　<% index = yaml["title_list"].index(title) || 0 %>
+    <% if 0 <= (index - 1) %>
+    <li class="previous"><a href="<%= yaml["list"][index - 1].gsub(/\.re/,".html") %>"><span aria-hidden="true">&larr;</span> <%= yaml["title_list"][index - 1] %></a></li>
     <% end %>
-    <% if index + 1 < json["title_list"].length %>
-    <li class="next"><a href="<%= json["list"][index + 1].gsub(/\.re/,".html") %>"><%= json["title_list"][index + 1] %> <span aria-hidden="true">&rarr;</span></a></li>
+    <% if index + 1 < yaml["title_list"].length %>
+    <li class="next"><a href="<%= yaml["list"][index + 1].gsub(/\.re/,".html") %>"><%= yaml["title_list"][index + 1] %> <span aria-hidden="true">&rarr;</span></a></li>
     <% end %>
   </ul>
 </nav>
   <%= body %>
  <nav>
   <ul class="pager">
-  　<% index = json["title_list"].index(title) %>
+  　<% index = yaml["title_list"].index(title) || 0 %>
     <% if 0 <= index - 1 %>
-    <li class="previous"><a href="<%= json["list"][index - 1].gsub(/\.re/,".html") %>"><span aria-hidden="true">&larr;</span> <%= json["title_list"][index - 1] %></a></li>
+    <li class="previous"><a href="<%= yaml["list"][index - 1].gsub(/\.re/,".html") %>"><span aria-hidden="true">&larr;</span> <%= yaml["title_list"][index - 1] %></a></li>
     <% end %>
-    <% if index + 1 < json["title_list"].length %>
-    <li class="next"><a href="<%= json["list"][index + 1].gsub(/\.re/,".html") %>"><%= json["title_list"][index + 1] %> <span aria-hidden="true">&rarr;</span></a></li>
+    <% if index + 1 < yaml["title_list"].length %>
+    <li class="next"><a href="<%= yaml["list"][index + 1].gsub(/\.re/,".html") %>"><%= yaml["title_list"][index + 1] %> <span aria-hidden="true">&rarr;</span></a></li>
     <% end %>
   </ul>
   </div>

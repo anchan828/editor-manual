@@ -9,7 +9,6 @@ body {
   font-size: 16px;
   line-height: 1.6;
   word-wrap: break-word;
-  padding: 2em;
 }
 
 body a {
@@ -151,7 +150,6 @@ body dd {
 
 body code,
 body pre {
-  font-family: Consolas, "Liberation Mono", Menlo, Courier, monospace;
   font-size: 12px;
 }
 
@@ -685,12 +683,33 @@ div.image {
 }
 .affix{
   margin-top: -80px;
+  padding-top: 10px;
 }
+
+.sidenav li a{
+  padding: 4px 20px !important;
+font-size: 15px;
+font-weight: 500;
+color: #767676;
+}
+
+.sidenav li a div{
+
+margin-top: 5px;
+font-size: 13px !important;
+}
+
+#current_page{
+  border-left: 4px solid darkcyan;
+}
+
 #current_page_toc li{
   margin-left: 2em;
 }
 #current_page_toc li.active{
 }
+
+
 #current_page_toc li a{
   font-size: 80%;
 }

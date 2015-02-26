@@ -110,8 +110,6 @@ build_jenkins()
 {
 
 	re_build_catalog
-	build_html
-	cp -rf $HTML_DIR "${ARCHIVE_DIR}/${bookname}"
 	epub_maker
 	pdf_maker ${bookname}macro 'a5paper,14pt,oneside' ${bookname}.pdf
 	pdf_maker ${bookname}macro-bookbinding 'a5paper,14pt' ${bookname}-bookbinding.pdf

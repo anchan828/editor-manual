@@ -110,9 +110,12 @@ build_jenkins()
 {
 
 	re_build_catalog
+	build_html
+	cp -rf $HTML_DIR "${ARCHIVE_DIR}/${bookname}"
 	epub_maker
 	pdf_maker ${bookname}macro 'a5paper,14pt,oneside' ${bookname}.pdf
 	pdf_maker ${bookname}macro-bookbinding 'a5paper,14pt' ${bookname}-bookbinding.pdf
+
 	undo_catalog
 	rm -f ${bookname}-cover.html
 }
@@ -136,7 +139,6 @@ build_html()
 	refreshDirectory
 	
 	re_build_catalog
-	build_toc
 	cp -f layouts/_layout.html.erb layouts/layout.html.erb
 
 	review-compile -a --stylesheet=stylesheet.cs --target=html

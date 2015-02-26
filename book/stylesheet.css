@@ -103,6 +103,7 @@ body h6 {
   margin-top: 15px;
   margin-bottom: 15px;
   line-height: 1.1;
+  padding-left: 10px;
 }
 
 body h1 {
@@ -712,4 +713,23 @@ font-size: 13px !important;
 
 #current_page_toc li a{
   font-size: 80%;
+}
+.glyphicon-link{
+  font-size: 0.5em;
+  left: -10px;
+  top: 10px !important;
+  position: absolute !important;
+  display: none !important;
+}
+h1:hover>a>a>.glyphicon-link{
+  display: inline-block !important;
+}
+h2:hover>a>a>.glyphicon-link{
+  display: inline-block !important;
+}
+h3:hover>a>a>.glyphicon-link{
+  display: inline-block !important;
+}
+h4:hover>a>a>.glyphicon-link{
+  display: inline-block !important;
 }

@@ -133,30 +133,23 @@
         </a>
     </div>
 </div>
-  <div class="col-md-9 pull-right" id="context">
-    <nav>
-  <ul class="pager">
-  　<% index = yaml["title_list"].index(title) || 0 %>
-    <% if 0 <= (index - 1) %>
-    <li class="previous"><a href="<%= yaml["list"][index - 1].gsub(/\.re/,".html") %>"><span aria-hidden="true">&larr;</span> <%= yaml["title_list"][index - 1] %></a></li>
-    <% end %>
-    <% if index + 1 < yaml["title_list"].length %>
-    <li class="next"><a href="<%= yaml["list"][index + 1].gsub(/\.re/,".html") %>"><%= yaml["title_list"][index + 1] %> <span aria-hidden="true">&rarr;</span></a></li>
-    <% end %>
-  </ul>
-</nav>
-  <%= body %>
- <nav>
-  <ul class="pager">
-  　<% index = yaml["title_list"].index(title) || 0 %>
-    <% if 0 <= index - 1 %>
-    <li class="previous"><a href="<%= yaml["list"][index - 1].gsub(/\.re/,".html") %>"><span aria-hidden="true">&larr;</span> <%= yaml["title_list"][index - 1] %></a></li>
-    <% end %>
-    <% if index + 1 < yaml["title_list"].length %>
-    <li class="next"><a href="<%= yaml["list"][index + 1].gsub(/\.re/,".html") %>"><%= yaml["title_list"][index + 1] %> <span aria-hidden="true">&rarr;</span></a></li>
-    <% end %>
-  </ul>
-  </div>
+ <div>
+   <div class="col-md-7 col-md-offset-4" id="context">
+      <nav>
+    <ul class="page">
+    　<% index = yaml["title_list"].index(title) || 0 %>
+      <% if 0 <= (index - 1) %>
+      <a class="previous" href="<%= yaml["list"][index - 1].gsub(/\.re/,".html") %>" title="<%= yaml["title_list"][index - 1] %>"><i class="glyphicon glyphicon-chevron-left"></i></a>
+      <% end %>
+      <% if index + 1 < yaml["title_list"].length %>
+      <a class="next" href="<%= yaml["list"][index + 1].gsub(/\.re/,".html") %>" title="<%= yaml["title_list"][index + 1] %>"><i class="glyphicon glyphicon-chevron-right"></i></a>
+      <% end %>
+    </ul>
+  </nav>
+    <%= body %>
+   <nav>
+    </div>
+ </div>
 </div>
 </nav>
 </body>

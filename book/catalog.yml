@@ -15,3 +15,4 @@ CHAPS:
  - scripttemplates.re
  - serializedobject.re
  - undo.re
+ - spriteanimation.re

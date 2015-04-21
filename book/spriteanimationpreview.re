@@ -82,3 +82,87 @@ public class SpritePreview : ObjectPreview
 //image[ss03][カスタムプレビューが追加された状態。プレビュータイトルをクリックすことによって他のプレビューへと変更できる]{
 
 //}
+
+=== カスタムプレビューは複数持つことができる
+
+カスタムエディタとは違い、1つのオブジェクトに対して複数のプレビューを持つことが出来ます。
+
+イメージとしては、インスペクターに表示されているエディターオブジェクトには必ず「@<b>{デフォルトプレビュー}」というものが存在します。それらに付属するものとしてカスタムエディタは実装されます。その状態が「fireball」と「Sprites」が表示されている@<img>{ss03}です。
+
+イメージはこのような感じ。
+
+//image[ss04][デフォルトプレビューとカスタムプレビュー。複数のプレビューを持つことができる。]{
+
+//}
+
+=== プレビューの表示
+
+プレビューを行うには  @<code>{OnPreviewGUI} を使用します。試しに下記のコードを追加してプレビューとして使用可能な範囲を確かめてみます。
+
+//emlist{
+public override void OnPreviewGUI(Rect r, GUIStyle background)
+{
+    GUI.Box(r, "表示領域");
+}
+//}
+
+//image[ss05][赤線で囲まれた部分が使用可能な範囲]{
+
+//}
+
+さて、簡単にではありますが、カスタムプレビューの基礎となる機能を触ることが出来ました。次はAnimationClipに登録されているスプライトを表示していきます。
+
+== AnimationClipが参照しているスプライトを取得する
+
+まずはスプライトを取得します。
+
+=== スプライトはObjectReferenceKeyframeで管理されている
+
+スプライトなどのオブジェクトのアニメーションは @<b>{ObjectReferenceCurve} によって管理されています。そして、オブジェクト1つ1つは @<b>{ObjectReferenceKeyframe} によって管理されます。
+
+===[column] ObjectReferenceKeyframe と Keyframe の違い
+AnimationClipには ObjectReferenceKeyframe と Keyframe の2種類のキーフレームがあります。
+普段良く目にするのは Keyframe の @<b>{Float型の値を保持するキーフレーム}です。それに対し、
+ObjectReferenceKeyframe は @<b>{オブジェクトの参照を保持するキーフレーム}となります。
+
+//image[ss06][Positionを操作するのはKeyframe、Spriteを操作するのはObjectReferenceKeyframe]{
+
+//}
+
+保持する値がFloatか参照かの違いはありますが、他は変わりありません。
+
+===[/column]
+
+ObjectReferenceKeyframe で参照されているスプライト、もう少し詳しく言うと、SpriteRendererのSpriteプロパティのスプライトをアニメーションするために参照されているスプライトを取得するためにはAnimationClip中にある幾つものアニメーションカーブから特定の アニメーションカーブ、つまり ObjectReferenceKeyframe を得なければいけません。そのための機能が @<b>{EditorCurveBinding} です。
+
+=== EditorCurveBinding
+
+EditorCurveBinding は特定のアニメーションカーブを取得するためのキーとなるものです。例えば、本章のようにSpriteRendererのSpriteをアニメーションさせたい場合は、以下になります。
+
+//emlist{
+EditorCurveBinding.PPtrCurve("", typeof(SpriteRenderer), "m_Sprite");
+//}
+
+これは、ルートのゲームオブジェクトにアタッチされているSpriteRendererコンポーネントの m_Sprite(Sprite)プロパティ、のことを指しています。
+
+===  AnimationUtility.GetObjectReferenceCurve
+
+AnimationClip と EditorCurveBinding を使用して Sprite の参照が格納されている ObjectReferenceKeyframe を取得するために AnimationUtility.GetObjectReferenceCurve を使用します。
+
+//emlist{
+private Sprite[] GetSprites(AnimationClip animationClip)
+{
+    var editorCurveBinding = EditorCurveBinding.PPtrCurve("", typeof(SpriteRenderer), "m_Sprite");
+
+    var objectReferenceKeyframes = AnimationUtility.GetObjectReferenceCurve(animationClip, editorCurveBinding);
+
+    var sprites = objectReferenceKeyframes
+        .Select(objectReferenceKeyframe => objectReferenceKeyframe.value)
+        .OfType<Sprite>()
+        .ToArray();
+
+    return sprites;
+}
+//}
+
+== スプライトの表示

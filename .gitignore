@@ -18,3 +18,4 @@
 node_modules
 archives
 __html
+*.sublime-workspace

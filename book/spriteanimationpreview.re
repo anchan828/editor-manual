@@ -152,17 +152,132 @@ AnimationClip と EditorCurveBinding を使用して Sprite の参照が格納�
 //emlist{
 private Sprite[] GetSprites(AnimationClip animationClip)
 {
-    var editorCurveBinding = EditorCurveBinding.PPtrCurve("", typeof(SpriteRenderer), "m_Sprite");
-
-    var objectReferenceKeyframes = AnimationUtility.GetObjectReferenceCurve(animationClip, editorCurveBinding);
-
-    var sprites = objectReferenceKeyframes
-        .Select(objectReferenceKeyframe => objectReferenceKeyframe.value)
-        .OfType<Sprite>()
-        .ToArray();
-
+    var sprites = new Sprite[0];
+    
+    if (animationClip != null)
+    {
+        var editorCurveBinding = EditorCurveBinding.PPtrCurve("", typeof(SpriteRenderer), "m_Sprite");
+        
+        var objectReferenceKeyframes = AnimationUtility.GetObjectReferenceCurve(animationClip, editorCurveBinding);
+        
+        sprites = objectReferenceKeyframes
+           .Select(objectReferenceKeyframe => objectReferenceKeyframe.value)
+           .OfType<Sprite>()
+           .ToArray();
+    }
+    
     return sprites;
 }
 //}
 
-== スプライトの表示
+== スプライトの表示（その1）
+
+//image[ss07][各スプライトとスプライト名が表示されている]{
+
+//}
+
+スプライトを表示していきます。
+限られた範囲の中で複数のスプライトを表示するには、1つのGUI要素に使用できる大きさ（Rect）を求めなければいけません。ですがそれは面倒なので @<b>{GUI.SelectionGrid} を使用しましょう。
+
+//emlist{
+public override void OnPreviewGUI(Rect r, GUIStyle background)
+{
+    var sprites = GetSprites(target as AnimationClip);
+    
+    var guiContents = sprites
+       .Select(s => new GUIContent(s.name, AssetPreview.GetAssetPreview(s)))
+       .ToArray();
+    
+    GUI.SelectionGrid(r, -1, guiContents, 2, EditorStyles.whiteBoldLabel);
+}
+//}
+
+GUI.SelectionGrid はかなり優れもので、@<b>{決められたRect値の範囲内で均等になるようにGUIContentを配置することが出来ます。}
+
+== スプライトの表示（その2）
+
+//image[ss08][Unity標準の表示機能でスプライトを表示]{
+
+//}
+
+@<img>{ss08}のような表示の仕方は見たことがあるかもしれません。この表示はスプライトを複数選択した時にプレビューとして表示されるものとほぼ同じものです。（@<img>{ss09}）
+
+//image[ss09][スプライトを複数選択した状態]{
+
+//}
+
+今回はAnimationClipを選択した時に、@<b>{複数のスプライトを選択した}と判断させる実装を施します。
+
+=== Initializeメソッド
+
+CustomPreviewクラスには初期化を行うInitializeメソッドが存在します。オーバーライドが可能な作りになっているので少し手を加えます。
+
+//emlist{
+public override void Initialize(Object[] targets)
+{
+    base.Initialize(targets);
+    
+    var sprites = new Object[0];
+    
+    foreach (AnimationClip animationClip in targets)
+    {
+        ArrayUtility.AddRange(ref sprites, GetSprites(animationClip));
+    }
+    
+    m_Targets = sprites;
+}
+//}
+
+通常の初期化を行った後、ターゲットとなるオブジェクトを差し替えます。@<code>{m_Targets}がプレビューで扱うUnityEngine.Objectの配列です。
+
+あとは@<code>{OnPreviewGUI}を実装するだけです。@<code>{OnPreviewGUI}は@<code>{m_Targets}の要素の数だけ呼び出されます。またOnPreviewGUIで取得できる r (Rect) はプレビュー範囲全体ではなく既に計算された1要素分だけの範囲となります。
+
+//image[ss10][m_Targetsに要素が1つの時と、6つの時の引数rで得られる範囲]{
+
+//}
+
+次にスプライトを描画しますが、GUIクラスにスプライトを描画する機能は存在しません。
+そこで、オブジェクトに対してプレビュー用のテクスチャを生成＆取得できる@<b>{AssetPreview.GetAssetPreview}を使用します。
+
+//emlist{
+public override void OnPreviewGUI(Rect r, GUIStyle background)
+{
+    var previewTexture = AssetPreview.GetAssetPreview(target);
+    EditorGUI.DrawTextureTransparent(r, previewTexture);
+}
+//}
+
+ですが、ここで @<code>{AssetPreview.GetAssetPreview} の特徴を掴んでおきましょう。GetAssetPreviewで作成するプレビュー用のテクスチャはキャッシュされています。もし、オブジェクトに対するテクスチャがキャッシュされていない場合（つまり初回）はテクスチャの生成を行うためにGetAssetPreviewは@<b>{null}を返します。nullを返した時のその状態が@<img>{ss11}です。
+
+//image[ss11][テクスチャがnullなためスプライト名だけが表示されている]{
+
+//}
+
+すぐにインスペクターの再描画処理が走ればテクスチャは描画されますが、インスペクターウィンドウはインスペクターを操作しない限りは自動で再描画を行わないので、初回だけテクスチャが表示されないことに困る場面が出てくるかもしれません。
+
+この問題を回避するには簡単で、プレビュー前にプレビュー用のテクスチャをキャッシュさせればいいので適当なところで @<code>{AssetPreview.GetAssetPreview} を実行します。
+
+
+//emlist{
+public override void Initialize(Object[] targets)
+{
+    base.Initialize(targets);
+
+    var sprites = new Object[0];
+
+    foreach (AnimationClip animationClip in targets)
+    {
+        ArrayUtility.AddRange(ref sprites, GetSprites(animationClip));
+    }
+
+    // ここでスプライトのプレビュー用テクスチャを生成＆キャッシュさせる
+    foreach (var sprite in sprites)
+    {
+        AssetPreview.GetAssetPreview(sprite);
+    }
+
+    m_Targets = sprites;
+}
+//}
+
+これで、テクスチャがnullでプレビューが表示されないという問題は解決しました。

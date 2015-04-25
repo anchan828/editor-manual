@@ -23,7 +23,7 @@ refreshDirectory()
 pdf_maker()
 {
 	# change_language "//emlist[][c#]" "//emlist[][cs]"
-	change_language "//emlist[][cs]" "//emlist[][cs]"
+	change_language "//emlist[][cs]" "//emlist[][[Sharp\]C]"
 	cp -f config.yml.template config.yml
 
 	echo "texstyle: $1" >> config.yml
@@ -41,7 +41,7 @@ pdf_maker()
 		mv ${bookname}.pdf "${ARCHIVE_DIR}/"$3
 	fi
 
-	change_language "//emlist[][cs]" "//emlist[][cs]"
+	change_language "//emlist[][[Sharp\]C]" "//emlist[][cs]"
 }
 
 epub_maker()

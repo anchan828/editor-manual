@@ -34,7 +34,9 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:ops="http://www.idpf.org/2007/ops" xml:lang="ja">
 <head>
   <meta http-equiv="Content-Type" content="text/html;charset=UTF-8" />
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.5/styles/github.min.css">
   <link rel="stylesheet" type="text/css" href="stylesheet.css" />
+  
   <meta name="generator" content="Re:VIEW" />
   <meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
   <!-- Latest compiled and minified CSS -->
@@ -45,6 +47,30 @@
   <!-- Latest compiled and minified JavaScript -->
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
   
+  <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.5/highlight.min.js"></script>
+
+  <script type="text/javascript">
+
+  $(function(){
+
+    $(".emlist").each(function(){
+      $(this).html("<code class='cs'>" + $(this).text() + "</code>")
+    })
+
+    $('pre code').each(function(i, block) {
+      hljs.highlightBlock(block);
+    })
+  })
+
+  </script>
+
+  <style type="text/css">
+  .image {
+    margin: 0.5em;
+  }
+  </style>
+
+
   <title id="title"><%= title %></title>
   <script type="text/javascript">
     $(function(){

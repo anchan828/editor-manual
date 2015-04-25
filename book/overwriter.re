@@ -53,7 +53,7 @@ Unityでもこのような操作を行いたいところですが、Unityには�
 　各アセットにはGUIDが割り振られ、これをkeyとしてデータベースで管理されています。このGUIDは@<b>{.meta}ファイルに記述されています。
 
 
-//emlist[][[Sharp\]C]{
+//emlist{
 fileFormatVersion: 2
 guid: 4498d464658a84c7c8998b6b66709951
 TextureImporter:
@@ -101,7 +101,7 @@ TextureImporter:
 　まず、上書きするアセットがインポートされるかの監視をしなければいけません。Unityエディタに何のアセットがインポートされようとしているか、インポートされたかを知るには@<b>{AssetPostprocessor}クラスを使います。詳しいAssetPostprocessorの使い方については、@<chapref>{assetpostprocessor}を御覧ください。
 
 
-//emlist[][[Sharp\]C]{
+//emlist[][cs]{
 using UnityEditor;
 
 public class Overwriter : AssetPostprocessor
@@ -135,7 +135,7 @@ public class Overwriter : AssetPostprocessor
 Unity上でアセットのインポートが行われた時に、再インポートが行われるため、実装したOnPostprocessAllAssetsが呼び出されてしまいます。
 そこでマウスでドラッグしてインポートした時のみ処理を行うようにします。
 
-//emlist[][[Sharp\]C]{
+//emlist[][cs]{
 static void OnPostprocessAllAssets ( 
     string[] importedAssets,                                      
     string[] deletedAssets, 
@@ -169,7 +169,7 @@ static void OnPostprocessAllAssets (
 //}
 
 
-//emlist[][[Sharp\]C]{
+//emlist[][cs]{
 var result = EditorUtility.DisplayDialogComplex (
     asset.originalAssetPath, 
     overwriteMessage, 
@@ -191,7 +191,7 @@ AssetDatabaseクラスにはCopyAsset関数がありますが、上書きする�
 
 @<b>{重要:} 最後に、@<b>{System.IO.File}によって外部からのデータ変更されたものをUnityが把握するために@<b>{AssetDatabase.ImportAsset}を実行します。
 
-//emlist[][[Sharp\]C]{
+//emlist[][cs]{
 public void Overwrite ()
 {
     FileUtil.ReplaceFile (assetPath, originalAssetPath);
@@ -225,7 +225,7 @@ public void Delete ()
 
 ===[/column]
 
-//emlist[][[Sharp\]C]{
+//emlist[][cs]{
 using System.IO;
 using System.Text.RegularExpressions;
 using UnityEditor;
@@ -276,7 +276,7 @@ public class OverwriteAsset
 }
 //}
 
-//emlist[][[Sharp\]C]{
+//emlist[][cs]{
 using UnityEditor;
 using UnityEngine;
 

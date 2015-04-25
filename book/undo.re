@@ -55,7 +55,7 @@ Undoの操作を実感してみたところで、次はUndoを実装してみま
 
 下記コードはCubeを生成するためのコードです。@<code>{Example/Create Cube}を実行することによってCubeを生成することが出来ます。
 
-//emlist[][[Sharp\]C]{
+//emlist[][cs]{
 using UnityEngine;
 using UnityEditor;
 
@@ -93,7 +93,7 @@ Cubeを生成してもUndoを行うことは出来ません。これはUndoの�
 またUndo履歴をリセットするために@<code>{File/New Scene}で新規シーンにしましょう。
 //}
 
-//emlist[][[Sharp\]C]{
+//emlist[][cs]{
 using UnityEngine;
 using UnityEditor;
 
@@ -120,7 +120,7 @@ Undoを実行した後はUndoしたものを元に戻すRedo（取り消す）�
 
 下記コードはオブジェクトの回転をランダムに設定するコードです。@<code>{Example/Random Rotate}を実行することによって選択しているオブジェクトをランダムに回転させることが出来ます。
 
-//emlist[][[Sharp\]C]{
+//emlist[][cs]{
 using UnityEngine;
 using UnityEditor;
 
@@ -144,7 +144,7 @@ public class Example
 
 これに@<code>{Undo.RecordObject}関数を使用することによってUndoを実装します。
 
-//emlist[][[Sharp\]C]{
+//emlist[][cs]{
 using UnityEngine;
 using UnityEditor;
 
@@ -198,7 +198,7 @@ PropertyDiffUndoRecorderは、RecordObjectで登録されたオブジェクト�
 
 @<img>{PropertyDiffUndoRecorder}で示したサイクルを確認してみましょう。以下のコードで確認することが出来ます。
 
-//emlist[][[Sharp\]C]{
+//emlist[][cs]{
 using UnityEngine;
 using UnityEditor;
 
@@ -281,7 +281,7 @@ Undoの対象となるものは@<b>{UnityEngine.Object}を継承した、@<stron
 
 System.Serializable属性を付けたクラスをUndo対象にする場合は、ComponentやScriptableObjectのプロパティとしてもつことでUndo対象とさせることができます。
 
-//emlist[][[Sharp\]C]{
+//emlist[][cs]{
 [System.Serializable]
 public class PlayerInfo
 {
@@ -292,7 +292,7 @@ public class PlayerInfo
 
 例としてPlayerコンポーネントに変数として持たせます。
 
-//emlist[][[Sharp\]C]{
+//emlist[][cs]{
 using UnityEngine;
 
 public class Player : MonoBehaviour
@@ -304,7 +304,7 @@ public class Player : MonoBehaviour
 
 そしてPlayerコンポーネントをUndo対象として登録します。
 
-//emlist[][[Sharp\]C]{
+//emlist[][cs]{
 using UnityEngine;
 using UnityEditor;
 
@@ -343,7 +343,7 @@ Undoの実装は大抵Undo.RecordObjectで済みます。まずはこのAPIを�
 
 
 #@# lang: cs
-//emlist[][[Sharp\]C]{
+//emlist[][cs]{
 using UnityEngine;
 using UnityEditor;
 
@@ -371,7 +371,7 @@ public class NewBehaviourScript
 
 
 #@# lang: cs
-//emlist[][[Sharp\]C]{
+//emlist[][cs]{
 using UnityEngine;
 using UnityEditor;
 
@@ -398,7 +398,7 @@ public class NewBehaviourScript
 
 
 #@# lang: cs
-//emlist[][[Sharp\]C]{
+//emlist[][cs]{
 using UnityEngine;
 using UnityEditor;
 
@@ -428,7 +428,7 @@ RegisterCreatedObjectUndoとは逆に、破棄したものをUndoで元に戻す
 
 
 #@# lang: cs
-//emlist[][[Sharp\]C]{
+//emlist[][cs]{
 using UnityEngine;
 using UnityEditor;
 
@@ -451,7 +451,7 @@ public class NewBehaviourScript
 
 
 #@# lang: cs
-//emlist[][[Sharp\]C]{
+//emlist[][cs]{
 using UnityEngine;
 using UnityEditor;
 
@@ -490,7 +490,7 @@ Undo登録して値を変更している中で「Esc」ボタンなどで、そ�
 
 
 #@# lang: cs
-//emlist[][[Sharp\]C]{
+//emlist[][cs]{
 using UnityEngine;
 using UnityEditor;
 
@@ -534,7 +534,7 @@ public class NewBehaviourScript
 
 
 #@# lang: cs
-//emlist[][[Sharp\]C]{
+//emlist[][cs]{
 using UnityEngine;
 using UnityEditor;
 
@@ -612,7 +612,7 @@ Undoにはグループという概念が存在します。
 
 
 #@# lang: cs
-//emlist[][[Sharp\]C]{
+//emlist[][cs]{
 GameObject enemy = new GameObject ("Enemy");
 Undo.RegisterCreatedObjectUndo (enemy, "Enemyを作成");
 
@@ -665,7 +665,7 @@ Undo.RegisterCreatedObjectUndo (effect, "Effectを作成");
 
 
 #@# lang: cs
-//emlist[][[Sharp\]C]{
+//emlist[][cs]{
 GameObject enemy = new GameObject ("Enemy");
 Undo.RegisterCreatedObjectUndo (enemy, "Enemyを作成");
 

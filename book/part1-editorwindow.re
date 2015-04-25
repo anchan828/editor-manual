@@ -33,7 +33,7 @@ EditorWindowを表示するまでの基本的な流れは3つのステップで�
 
 1. EditorWindowを作成するには@<b>{EditorWindowを継承したクラス}を作成します。
 
-//emlist[][[Sharp\]C]{
+//emlist[][cs]{
 using UnityEditor;
 
 public class Example : EditorWindow
@@ -44,7 +44,7 @@ public class Example : EditorWindow
 2. 次にEditorWindowを表示するためのトリガーとしてメニューを追加します。MenuItemについては@<chapref>{part1-menuitem}を御覧ください。
 
 
-//emlist[][[Sharp\]C]{
+//emlist[][cs]{
 using UnityEditor;
 
 public class Example : EditorWindow
@@ -58,7 +58,7 @@ public class Example : EditorWindow
 
 3. 最後にEditorWindowの表示です。EditorWindowは@<b>{ScriptableObject}を継承しているので@<code>{EditorWindow.CreateInstance}でEditorWindowのオブジェクトを生成します。そして@<code>{Show}を呼び出すことによりEditorWindowが表示されます。
 
-//emlist[][[Sharp\]C]{
+//emlist[][cs]{
 using UnityEditor;
 
 public class Example : EditorWindow
@@ -84,7 +84,7 @@ EditorWindowを作成する場合、「@<b>{複数の存在を許可するEditor
 
 単数のみになると「既にEditorWindowが存在している場合は生成しない」というチェックを実装しなければいけません。そのチェックを加えたものが以下のコードになります。
 
-//emlist[][[Sharp\]C]{
+//emlist[][cs]{
 using UnityEditor;
 
 public class Example : EditorWindow
@@ -104,7 +104,7 @@ public class Example : EditorWindow
 
 これでも良いのですが、「既にEditorWindowが存在すればそのインスタンスを取得する。なければ生成する。ついでにShowを実行する。」というAPIが存在します。それが@<code>{EditorWindow.GetWindow}です。
 
-//emlist[][[Sharp\]C]{
+//emlist[][cs]{
 using UnityEditor;
 
 public class Example : EditorWindow
@@ -125,7 +125,7 @@ GetWindowを実行すると内部でインスタンスがキャッシュされ�
 
 //}
 
-//emlist[][[Sharp\]C]{
+//emlist[][cs]{
 using UnityEditor;
 
 public class Example : EditorWindow
@@ -159,7 +159,7 @@ public class Example : EditorWindow
 
 @<code>{GetWindow}は使用できないので代わりに@<code>{CreateInstance}を使用します。
 
-//emlist[][[Sharp\]C]{
+//emlist[][cs]{
 using UnityEditor;
 
 public class Example : EditorWindow
@@ -187,7 +187,7 @@ public class Example : EditorWindow
 
 //}
 
-//emlist[][[Sharp\]C]{
+//emlist[][cs]{
 using UnityEditor;
 using UnityEngine;
 
@@ -230,7 +230,7 @@ public class Example : EditorWindow
 
 使い方はとても簡単です。まず@<b>{PopupWindowContentを継承したクラス}を作成します。そして@<code>{PopupWindow.Show}でPopupを表示します。
 
-//emlist[][[Sharp\]C]{
+//emlist[][cs]{
 using UnityEditor;
 using UnityEngine;
 
@@ -298,7 +298,7 @@ Popupと同じウィンドウタイトルと閉じるボタンが無いウィン
 
 //}
 
-//emlist[][[Sharp\]C]{
+//emlist[][cs]{
 using UnityEditor;
 using UnityEngine;
 
@@ -333,7 +333,7 @@ ScriptableWizardは今まで紹介してきたウィンドウとは少し異な�
 
 1.  ScriptableWizardを継承したクラスを作成します。
 
-//emlist[][[Sharp\]C]{
+//emlist[][cs]{
 using UnityEditor;
 
 public class Example : ScriptableWizard
@@ -344,7 +344,7 @@ public class Example : ScriptableWizard
 
 2. 次にScriptableWizardを表示するためのトリガーとしてメニューを追加します。MenuItemについては@<chapref>{part1-menuitem}を御覧ください。
 
-//emlist[][[Sharp\]C]{
+//emlist[][cs]{
 using UnityEditor;
 
 public class Example : ScriptableWizard
@@ -358,7 +358,7 @@ public class Example : ScriptableWizard
 
 3. ScriptableWizardを表示します。表示は@<code>{ScriptableWizard.DisplayWizard}で行います。
 
-//emlist[][[Sharp\]C]{
+//emlist[][cs]{
 using UnityEditor;
 
 public class Example : ScriptableWizard
@@ -383,7 +383,7 @@ public class Example : ScriptableWizard
 
 //}
 
-//emlist[][[Sharp\]C]{
+//emlist[][cs]{
 using UnityEditor;
 
 public class Example : ScriptableWizard
@@ -403,7 +403,7 @@ public class Example : ScriptableWizard
 
 ScriptableWizardの右下にある@<b>{Create}ボタンを押した時に呼び出されるメソッドです。
 
-//emlist[][[Sharp\]C]{
+//emlist[][cs]{
 using UnityEditor;
 using UnityEngine;
 
@@ -429,7 +429,7 @@ public class Example : ScriptableWizard
 @<b>{Create}ボタンの他にもう1つボタンを追加することが出来ます。作成に関して2つのパターンを作りたい場合に使用してください。
 ボタンを追加するには@<code>{ScriptableWizard.DisplayWizard}の第3引数でボタン名を指定する必要があります。
 
-//emlist[][[Sharp\]C]{
+//emlist[][cs]{
 using UnityEditor;
 using UnityEngine;
 
@@ -466,7 +466,7 @@ public class Example : ScriptableWizard
 すべてのフィールドの値を対象に、値の変更があった場合に呼び出されるメソッドです。
 
 
-//emlist[][[Sharp\]C]{
+//emlist[][cs]{
 using UnityEditor;
 using UnityEngine;
 
@@ -506,7 +506,7 @@ Unity PreferencesにはUnityエディタ全体に影響のある設定を行う�
 //}
 
 
-//emlist[][[Sharp\]C]{
+//emlist[][cs]{
 using UnityEditor;
 
 public class Example
@@ -532,7 +532,7 @@ public class Example
 
 IHasCustomMenuはインターフェースとして実装されています。
 
-//emlist[][[Sharp\]C]{
+//emlist[][cs]{
 using UnityEditor;
 using UnityEngine;
 
@@ -566,7 +566,7 @@ public class Example : EditorWindow, IHasCustomMenu
 
 @<code>{EditorWindow.minSize}と@<code>{EditorWindow.maxSize}によってEditorWindowの大きさの制限を行うことが出来ます。最小値と最大値が同じであればEditorWindowの大きさを変更する必要がないと判断され右下に表示されていた三角マークが非表示となります。
 
-//emlist[][[Sharp\]C]{
+//emlist[][cs]{
 using UnityEditor;
 using UnityEngine;
 
@@ -587,7 +587,7 @@ public class Example : EditorWindow
 
 @<code>{FindObjectsOfTypeAll}は@<b>{現在ロードされている全てのオブジェクトから特定のオブジェクトを検索し、取得}します。これはランタイムで使用するオブジェクトだけではなく、エディタで使用するオブジェクトも検索対象となります。
 
-//emlist[][[Sharp\]C]{
+//emlist[][cs]{
 using UnityEditor;
 using UnityEngine;
 

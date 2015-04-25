@@ -10,7 +10,7 @@
 
 //}
 
-//emlist[][[Sharp\]C]{
+//emlist[][cs]{
 void OnGUI ()
 {
     GUILayoutOption[] options = new [] {
@@ -56,7 +56,7 @@ GUIStyleはGUIのスタイルを設定するもので皆さんは大抵最初の
 
 これは、GUIを描画するときに既存のスタイルを使用せず引数として渡されたGUIStyleを使用します。
 
-//emlist[][[Sharp\]C]{
+//emlist[][cs]{
 // GUIStyleはスタイル名で指定することも可能
 GUILayout.Label ("ラベル", "box");
 //}
@@ -83,7 +83,7 @@ GUIに関するイベントではボタンをマウスでクリックすると�
 
 Eventを使用するとき、例えば「ボタンを押した」というイベントをコードにすると以下のようになります。
 
-//emlist[][[Sharp\]C]{
+//emlist[][cs]{
 if (Event.current.type == EventType.MouseDown) {
 
     ...ボタンを押した時の処理...
@@ -105,7 +105,7 @@ Event.Useを呼び出した後はEvent.typeは@<b>{used}となります。こう
 
 === コントロールIDの生成/取得
 
-//emlist[][[Sharp\]C]{
+//emlist[][cs]{
 int id = GUIUtility.GetControlID(FocusType.Passive, rect);
 //}
 
@@ -113,7 +113,7 @@ int id = GUIUtility.GetControlID(FocusType.Passive, rect);
 
 === コントロールIDと描画部分の紐付け
 
-//emlist[][[Sharp\]C]{
+//emlist[][cs]{
 EditorStyles.objectFieldThumb.Draw(rect, content, id);
 //}
 
@@ -135,7 +135,7 @@ GUIStyle.DrawにコントロールIDを渡すことによって、スタイル�
 
 そして、オブジェクトピッカーで選択中のオブジェクト・選択されたオブジェクトを取得するにはEventのコマンド名(Event.commandname)が@<b>{ObjectSelectorUpdated}と@<code>{EditorGUIUtility.GetObjectPickerObject}を組み合わせて使用することになります。
 
-//emlist[][[Sharp\]C]{
+//emlist[][cs]{
 // コマンド名がObjectSelectorUpdatedでオブジェクトピッカーが
 // 現在コントロール中のGUIによるものであった場合
 if (evt.commandName == "ObjectSelectorUpdated" 
@@ -163,7 +163,7 @@ ObjectFieldのようにドラッグ＆ドロップしてオブジェクトの参
 DragAndDropではオブジェクトをドラッグする処理と、ドロップする処理の2つにわかれます。ObjectFieldのようなGUIを作成するときは、プロジェクトプラウザからドラッグする処理は既にUnity側で実装されているのでドロップする処理のみを実装すれば良いです。
 
 
-//emlist[][[Sharp\]C]{
+//emlist[][cs]{
 // マウス位置がGUIの範囲内であれば
 if (rect.Contains(evt.mousePosition))
 {
@@ -240,7 +240,7 @@ GUILayoutの仕組みは@<code>{GUILayoutUtility.GetRect}でRect情報を取得�
 
 ですが一番手っ取り早い方法があります。
 
-//emlist[][[Sharp\]C]{
+//emlist[][cs]{
 public static Sprite SpriteField(Sprite sprite, params GUILayoutOption[] options)
 {
     EditorGUILayout.LabelField("", "", options);

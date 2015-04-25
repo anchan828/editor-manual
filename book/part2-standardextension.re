@@ -21,7 +21,7 @@ Unityが既にエディタ拡張の機能を使い、ユーザーの手で自由
 
 //}
 
-//emlist{
+//emlist[][[Sharp\]C]{
 using UnityEngine;
 using System.Collections;
 
@@ -51,7 +51,7 @@ public class NewBehaviourScript : MonoBehaviour
 
 //}
 
-//emlist{
+//emlist[][[Sharp\]C]{
 using UnityEngine;
 using System.Collections;
 
@@ -79,7 +79,7 @@ public class NewBehaviourScript : MonoBehaviour
 
 //}
 
-//emlist{
+//emlist[][[Sharp\]C]{
 using UnityEngine;
 using System;
 
@@ -110,7 +110,7 @@ public class NewBehaviourScript : MonoBehaviour
 
 //}
 
-//emlist{
+//emlist[][[Sharp\]C]{
 using UnityEngine;
 
 public class NewBehaviourScript : MonoBehaviour
@@ -131,7 +131,7 @@ public class NewBehaviourScript : MonoBehaviour
 
 //}
 
-//emlist{
+//emlist[][[Sharp\]C]{
 using UnityEngine;
 
 public class NewBehaviourScript : MonoBehaviour
@@ -149,7 +149,7 @@ public class NewBehaviourScript : MonoBehaviour
 
 //}
 
-//emlist{
+//emlist[][[Sharp\]C]{
 using UnityEngine;
 
 public class NewBehaviourScript : MonoBehaviour
@@ -179,7 +179,7 @@ RequireComponentが付いたスクリプトをアタッチすると自動的にR
 
 //}
 
-//emlist{
+//emlist[][[Sharp\]C]{
 using UnityEngine;
 
 [RequireComponent(typeof(Animator))]
@@ -207,7 +207,7 @@ public class NewBehaviourScript : MonoBehaviour
 
 継承クラスでもDisallowMultipleComponentは効果を発揮します。
 
-//emlist{
+//emlist[][[Sharp\]C]{
 using UnityEngine;
 using System.Collections;
 
@@ -231,7 +231,7 @@ public class Base : MonoBehaviour
 インスペクターに表示されるような、シリアライズされているデータは変数名をパスとして保存されています。ここで変数名の変更を行うとシリアライズされていたデータが引き継げずに初期化されてしまいます。これはパスから値を参照できなくなったためです。変数名が変更されたという検知をするのは不可能でこれはどうしようもない問題です。この問題を回避するためにRenamedSerializedDataを使用します。
 
 
-//emlist{
+//emlist[][[Sharp\]C]{
 using UnityEngine;
 
 public class NewBehaviourScript : MonoBehaviour
@@ -247,7 +247,7 @@ public class NewBehaviourScript : MonoBehaviour
 
 hogeからfugaへと変数名を変更します。
 
-//emlist{
+//emlist[][[Sharp\]C]{
 sing UnityEngine;
 
 public class NewBehaviourScript : MonoBehaviour
@@ -263,7 +263,7 @@ public class NewBehaviourScript : MonoBehaviour
 
 そこでRenamedSerializedDataを使用することで引き継がれるようになります。
 
-//emlist{
+//emlist[][[Sharp\]C]{
 using UnityEngine;
 
 public class NewBehaviourScript : MonoBehaviour
@@ -293,7 +293,7 @@ public class NewBehaviourScript : MonoBehaviour
 
 この時に@<b>{AddComponentMenu}を使用すると別メニューとして作成することが出来ます。AddComponentMenuを使用したスクリプトは他の場所にメニューが作成されるので@<b>{Component/Scripts}メニューの中から削除されます。
 
-//emlist{
+//emlist[][[Sharp\]C]{
 using UnityEngine;
 
 [AddComponentMenu("MyUI/Tween Color")]

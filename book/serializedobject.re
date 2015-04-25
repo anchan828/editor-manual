@@ -39,7 +39,7 @@ MonoBehaviourを継承したクラス、つまりスクリプトのコンポー�
 また、「インスペクターに値を表示するにはpublicにしなければいけないので厄介だ」ということを目にする方も多いのではないでしょうか。
 
 #@# lang: cs
-//emlist{
+//emlist[][[Sharp\]C]{
 public int hp; //インスペクター上でHPの設定を行う
 //}
 
@@ -58,7 +58,7 @@ public int hp; //インスペクター上でHPの設定を行う
 
 
 #@# lang: cs
-//emlist{
+//emlist[][[Sharp\]C]{
 [SerializedField]
 private int hp; //インスペクター上でHPの設定を行う
 //}
@@ -123,7 +123,7 @@ EditorとEditorWindowはともにScriptableObjectを継承しているため、�
 
 
 #@# lang: cs
-//emlist{
+//emlist[][[Sharp\]C]{
 serializedObject.FindProperty ("position").vector3Value;
 //}
 
@@ -132,7 +132,7 @@ serializedObject.FindProperty ("position").vector3Value;
 
 
 #@# lang: cs
-//emlist{
+//emlist[][[Sharp\]C]{
 serializedObject.FindProperty ("hoge.fuga").stringValue;
 //}
 
@@ -141,7 +141,7 @@ serializedObject.FindProperty ("hoge.fuga").stringValue;
 
 
 #@# lang: cs
-//emlist{
+//emlist[][[Sharp\]C]{
 serializedObject.FindProperty ("names").GetArrayElementAtIndex(1);
 //}
 
@@ -166,7 +166,7 @@ SerializedObjectは内部でキャッシュされており、（ユーザー側�
 
 
 #@# lang: cs
-//emlist{
+//emlist[][[Sharp\]C]{
 serializedObject.Update ();
 Debug.Log ("現在のHP: " + serializedObject.FindProperty ("hp").intValue);
 //}
@@ -180,7 +180,7 @@ Debug.Log ("現在のHP: " + serializedObject.FindProperty ("hp").intValue);
 
 
 #@# lang: cs
-//emlist{
+//emlist[][[Sharp\]C]{
 // 最新の情報を取得する。Updateを呼び出さないとhpの値はいつまでたっても同じまま
 serializedObject.Update ();
 

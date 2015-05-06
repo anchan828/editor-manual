@@ -6,6 +6,20 @@
 \usepackage{wrapfig}
 \definecolor{shadecolor}{gray}{0.9}
 \definecolor{shadecolorb}{gray}{0.1}
+\definecolor{reviewgreen}{rgb}{0,0.4,0}
+\definecolor{reviewblue}{rgb}{0.2,0.2,0.4}
+\definecolor{reviewred}{rgb}{0.7,0,0}
+\definecolor{reviewdarkred}{rgb}{0.3,0,0}
+\definecolor{base0}{RGB}{131,148,150}
+\definecolor{base01}{RGB}{88,110,117}
+\definecolor{base2}{RGB}{238,232,213}
+\definecolor{sgreen}{RGB}{167,29,93}
+\definecolor{sblue}{RGB}{38,138,210}
+\definecolor{scyan}{RGB}{223,80,0}
+\definecolor{spurple}{RGB}{121,93,163}
+\definecolor{smagenta}{RGB}{211,54,130}
+\definecolor{darkgray}{rgb}{.4,.4,.4}
+
 \usepackage[utf8]{inputenc}
 \usepackage{ascmac}
 \usepackage{float}
@@ -41,6 +55,75 @@
 \usepackage[dvipdfm,bookmarks=true,bookmarksnumbered=true,colorlinks=true,%
             pdftitle={<%= values["booktitle"] %>},%
             pdfauthor={<%= values["aut"] %>}]{hyperref}
+
+<% if config["highlight"] && config["highlight"]["latex"] == "listings" %>
+<%   if config["language"] == "ja" %>
+\usepackage{listings,jlisting}
+<%   else %>
+\usepackage{listings}
+<%   end %>
+\newcommand\digitstyle{\color{smagenta}}
+\newcommand\symbolstyle{\color{base01}}
+\makeatletter
+\newcommand{\ProcessDigit}[1]
+{%
+  \ifnum\lst@mode=\lst@Pmode\relax%
+   {\digitstyle #1}%
+  \else
+    #1%
+  \fi
+}
+\makeatother
+\renewcommand{\lstlistingname}{<%I18n.t("list")%>}
+\lstset{%
+  frame=lr,
+  linewidth=160mm,
+  breaklines=true,
+  tabsize=2,
+  numbers=left,
+  numbersep=5pt,
+  firstnumber=auto,
+  numberstyle=\tiny\ttfamily\color{base0},
+  rulecolor=\color{base2},
+  basicstyle=\footnotesize\ttfamily,
+  commentstyle=\color{base01},
+  morecomment=[s][\color{base01}]{/*+}{*/},
+  morecomment=[s][\color{base01}]{/*-}{*/},
+  sensitive=true,
+  keywordstyle=\bfseries\color{sgreen},
+  morekeywords={abstract, event, new, struct, as, explicit, null, switch, base, extern, object, this, bool, false, operator, throw, break, finally, out, true, byte, fixed, override, try, case, float, params, typeof, catch, for, private, uint, char, foreach, protected, ulong, checked, goto, public, unchecked, class, if, readonly, unsafe, const, implicit, ref, ushort, continue, in, return, using, decimal, int, sbyte, virtual, default, interface, sealed, volatile, delegate, internal, short, void, do, is, sizeof, while, double, lock, stackalloc, else, long, static, enum, namespace, string, var},
+  showstringspaces=false,
+  stringstyle=\color{scyan},
+  identifierstyle=\color{darkgray},
+  extendedchars=true,
+  literate=
+    {\}}{{\symbolstyle{\}}}}1
+    {\{}{{\symbolstyle{\{}}}1
+    {(}{{\symbolstyle{(}}}1
+    {)}{{\symbolstyle{)}}}1
+    {=}{{\symbolstyle{$=$}}}1
+    {;}{{\symbolstyle{$;$}}}1
+    {>}{{\symbolstyle{$>$}}}1
+    {<}{{\symbolstyle{$<$}}}1
+    {\%}{{\symbolstyle{$\%$}}}1,
+}
+\lstnewenvironment{reviewemlistlst}[1][]{%
+  \lstset{#1}}{}
+
+\lstnewenvironment{reviewemlistnumlst}[1][]{%
+  \lstset{numbers=left, #1}}{}
+
+\lstnewenvironment{reviewlistlst}[1][]{%
+  \lstset{#1}}{}
+
+\lstnewenvironment{reviewlistnumlst}[1][]{%
+  \lstset{numbers=left, #1}}{}
+
+\lstnewenvironment{reviewcmdlst}[1][]{%
+  \lstset{backgroundcolor=\color{white}, frameround=tttt, frame=trbl, #1}}{}
+<% end %>
+
+
 
 \newenvironment{reviewimage}{%
   \begin{figure}[H]
@@ -169,6 +252,8 @@
   \appendix}
 
 \makeatletter
+%% maxwidth is the original width if it is less than linewidth
+%% otherwise use linewidth (to make sure the graphics do not exceed the margin)
 \def\maxwidth{%
   \ifdim\Gin@nat@width>\linewidth
     \linewidth

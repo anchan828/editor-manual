@@ -22,6 +22,8 @@ refreshDirectory()
 
 pdf_maker()
 {
+	# change_language "//emlist[][c#]" "//emlist[][cs]"
+	change_language "//emlist[][cs]" "//emlist[][[Sharp\]C]"
 	cp -f config.yml.template config.yml
 
 	echo "texstyle: $1" >> config.yml
@@ -38,12 +40,16 @@ pdf_maker()
 
 		mv ${bookname}.pdf "${ARCHIVE_DIR}/"$3
 	fi
+
+	change_language "//emlist[][[Sharp\]C]" "//emlist[][cs]"
 }
 
 epub_maker()
 {
-	review-epubmaker config.yml.template
+	change_language "//emlist[][cs]" "//emlist[][c#]"
 
+	review-epubmaker config.yml.template
+	
 	if [ -e ${bookname}.epub ];then
 
 		if [ ! -d "${ARCHIVE_DIR}" ];then
@@ -52,6 +58,12 @@ epub_maker()
 
 		mv ${bookname}.epub "${ARCHIVE_DIR}"
 	fi
+	change_language "//emlist[][c#]" "//emlist[][cs]" 
+}
+
+change_language()
+{
+	ruby -e 'Dir.glob("*.re").each{ |re| File.write(re,File.open(re).read.gsub(ARGV[0],ARGV[1]))}' $1 $2
 }
 
 re_build_catalog()

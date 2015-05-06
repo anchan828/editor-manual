@@ -59,7 +59,7 @@ body {
     font-family: 'Hiragino Kaku Gothic Pro',Meiryo,'MS PGothic',sans-serif !important;
     -ms-text-size-adjust: 100%;
     -webkit-text-size-adjust: 100%;
-    font: 13px Helvetica, arial, freesans, clean, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol";
+    font: 1em Helvetica, arial, freesans, clean, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol";
     line-height: 1.4;
     color: #333333;
     font-family: "Helvetica Neue", Helvetica, Arial, freesans, sans-serif;
@@ -163,29 +163,7 @@ body h6 {
     padding-left: 10px;
 }
 
-body h1 {
-    font-size: 30px;
-}
 
-body h2 {
-    font-size: 21px;
-}
-
-body h3 {
-    font-size: 16px;
-}
-
-body h4 {
-    font-size: 14px;
-}
-
-body h5 {
-    font-size: 12px;
-}
-
-body h6 {
-    font-size: 11px;
-}
 
 body blockquote {
     margin: 0;
@@ -254,25 +232,25 @@ body h6 {
 
 body h1 {
     padding-bottom: 0.3em;
-    font-size: 2.25em;
+    font-size: 1.75em;
     line-height: 1.2;
     border-bottom: 1px solid #eee;
 }
 
 body h2 {
     padding-bottom: 0.3em;
-    font-size: 1.75em;
+    font-size: 1.5em;
     line-height: 1.225;
     border-bottom: 1px solid #eee;
 }
 
 body h3 {
-    font-size: 1.5em;
+    font-size: 1.25em;
     line-height: 1.43;
 }
 
 body h4 {
-    font-size: 1.25em;
+    font-size: 1em;
 }
 
 body h5 {
@@ -730,6 +708,7 @@ div.image {
 }
 
 .emlist {
+    font-family: "Courier 10 Pitch", Courier, monospace; 
 }
 
 .inline-code {

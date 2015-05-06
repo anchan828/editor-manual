@@ -46,7 +46,7 @@ MenuItemを使用して独自のメニューを追加するタイミングは@<b
 まずは簡単にメニューを追加してみましょう。
 MenuItemはAttributeとして提供されており、@<b>{static}メソッドに付加することで機能します。
 
-//emlist{
+//emlist[][cs]{
 using UnityEditor;
 
 public class NewBehaviourScript
@@ -65,7 +65,7 @@ public class NewBehaviourScript
 
 もちろん既存のメニューに子メニューを追加することも出来ます。
 
-//emlist{
+//emlist[][cs]{
 using UnityEditor;
 
 public class NewBehaviourScript
@@ -83,7 +83,7 @@ public class NewBehaviourScript
 
 子メニューから更に子メニューを作成することも可能です。
 
-//emlist{
+//emlist[][cs]{
 using UnityEditor;
 
 public class NewBehaviourScript
@@ -118,7 +118,7 @@ MenuItemの第2引数に@<code>{isValidateFunction}が存在し、これは@<b>{
 
 また、Validateメソッドは単独では動作しません。必ずisValidateFunctionがfalseのメソッドを用意する必要があります。isValidateFunctionのデフォルトがfalseなので引数を省略しても問題ありません。
 
-//emlist{
+//emlist[][cs]{
 using UnityEditor;
 
 public class NewBehaviourScript
@@ -151,7 +151,7 @@ public class NewBehaviourScript
 
 //}
 
-//emlist{
+//emlist[][cs]{
 using UnityEditor;
 
 public class NewBehaviourScript
@@ -177,7 +177,7 @@ priorityの数値を小さく設定するほど上部に表示されるように
 
 //}
 
-//emlist{
+//emlist[][cs]{
 using UnityEditor;
 
 public class NewBehaviourScript
@@ -210,7 +210,7 @@ public class NewBehaviourScript
 
 //}
 
-//emlist{
+//emlist[][cs]{
 using UnityEditor;
 
 public class NewBehaviourScript
@@ -230,7 +230,7 @@ public class NewBehaviourScript
 MenuItemで追加したメニューはホットキーで実行することが可能です。
 第1引数のメニューパスの最後に「半角スペース + 修飾子キー + 任意の文字」の文字列をつけることにより実装できます。
 
-//emlist{
+//emlist[][cs]{
 using UnityEditor;
 using UnityEngine;
 
@@ -278,7 +278,7 @@ KP=					=
 表示するには決まりがあり、メニューパスの冒頭に「@<b>{CONTEXT/}」を追加します。
 そして「@<b>{CONTEXT/コンポーネント名/メニュー名}」とすることでコンテキストメニューに表示されるようになります。
 
-//emlist{
+//emlist[][cs]{
 using UnityEditor;
 
 public class NewBehaviourScript
@@ -309,7 +309,7 @@ public class NewBehaviourScript
 
 コンテキストメニューのみ@<code>{MenuCommand}を引数としてコンポーネント情報を取得することが出来ます。
 
-//emlist{
+//emlist[][cs]{
 using UnityEditor;
 using UnityEngine;
 
@@ -337,7 +337,7 @@ public class NewBehaviourScript
 
 //}
 
-//emlist{
+//emlist[][cs]{
 using UnityEditor;
 using UnityEngine;
 using System.IO;

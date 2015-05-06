@@ -17,7 +17,7 @@ EditorフォルダはエディタAPIを使用するための特別なフォル�
 試しに以下のコードをAssetsフォルダ直下に作成しビルドをしてみましょう。
 
 
-//emlist{
+//emlist[][cs]{
 using UnityEngine;
 using UnityEditor;
 
@@ -65,7 +65,7 @@ Editorフォルダの場所は特に制限はありません。どこにでも@<
 ランタイムで動作するスクリプトと一緒にエディタAPIを記述することはよくあります。
 その場合は@<b>{#define}を利用します。UnityEditor上のみで@<b>{UNITY_EDITOR}シンボルが定義されています。これにより、ビルド時のスクリプトコンパイルではUNITY＿EDITORが定義されていないので@<b>{#if UNITY_EDITOR}で囲ったコードは除去されます。
 
-//emlist{
+//emlist[][cs]{
 using UnityEngine;
 
 #if UNITY_EDITOR
@@ -87,7 +87,7 @@ public class NewBehaviourScript : MonoBehaviour
 
 //}
 
-//emlist{
+//emlist[][cs]{
 var tex = EditorGUIUtility.Load ("logo.png") as Texture;
 //}
 

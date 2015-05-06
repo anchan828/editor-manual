@@ -20,7 +20,7 @@
 
 //}
 
-//emlist{
+//emlist[][cs]{
 using UnityEngine;
 using UnityEditor;
 
@@ -46,7 +46,7 @@ public class NewBehaviourScript : EditorWindow
 
 BeginChangeCheckとEndChangeCheckでの間でGUIが使用されている時、GUIに何らかの変更が生じた場合にEndChangeCheckがtrueを返します。
 
-//emlist{
+//emlist[][cs]{
 using UnityEngine;
 using UnityEditor;
 
@@ -85,7 +85,7 @@ public class NewBehaviourScript : EditorWindow
 ChangeCheckの中身はGUI.changedで実装されています。
 GUI.changedのみで実装すると階層のことを考え以下のような実装になります。
 
-//emlist{
+//emlist[][cs]{
 bool toggleValue;
 
 Stack<bool> stack = new Stack<bool> ();
@@ -124,7 +124,7 @@ void OnGUI ()
 
 //}
 
-//emlist{
+//emlist[][cs]{
 using UnityEngine;
 using UnityEditor;
 
@@ -163,7 +163,7 @@ public class NewBehaviourScript : EditorWindow
 DisabledGroupの中身はGUI.enabledで実装されています。
 GUI.enabledのみで実装すると以下のような実装になります。
 
-//emlist{
+//emlist[][cs]{
 void OnGUI ()
 {
     Display ();
@@ -196,7 +196,7 @@ GUIのグループをフェードイン・フェードアウトさせる場合�
 
 フェード中はGUIを操作することが出来ません。フェードのスピードはある程度早めにしてユーザーを待たせることのないようにしましょう。
 
-//emlist{
+//emlist[][cs]{
 using UnityEngine;
 using UnityEditor;
 using UnityEditor.AnimatedValues;

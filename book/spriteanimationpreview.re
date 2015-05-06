@@ -230,7 +230,7 @@ public override void Initialize(Object[] targets)
 
 通常の初期化を行った後、ターゲットとなるオブジェクトを差し替えます。@<code>{m_Targets}がプレビューで扱うUnityEngine.Objectの配列です。
 
-あとは@<code>{OnPreviewGUI}を実装するだけです。@<code>{OnPreviewGUI}は@<code>{m_Targets}の要素の数だけ呼び出されます。またOnPreviewGUIで取得できる r (Rect) はプレビュー範囲全体ではなく既に計算された1要素分だけの範囲となります。
+あとは@<code>{OnPreviewGUI}を実装するだけです。@<code>{OnPreviewGUI}は@<code>{m_Targets}の要素の数だけ呼び出されます。OnPreviewGUIが呼び出された時の@<code>{m_Targets}の要素はそれぞれtargetに格納され、取得できる r (Rect) はプレビュー範囲全体ではなく既に計算された1要素分だけの範囲となります。
 
 //image[ss10][m_Targetsに要素が1つの時と、6つの時の引数rで得られる範囲]{
 

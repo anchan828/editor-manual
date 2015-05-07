@@ -172,6 +172,7 @@ preproc()
 
 create_temp()
 {
+	refreshDirectory $TEMP_DIR
 	cp -rf book/* $TEMP_DIR
 	cd $TEMP_DIR
 	md2re

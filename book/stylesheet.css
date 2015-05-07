@@ -389,7 +389,7 @@ body .highlight {
 
 body .highlight pre,
 body pre {
-    padding: 16px;
+    padding: 16px !important;
     overflow: auto;
     font-size: 85%;
     line-height: 1.45;

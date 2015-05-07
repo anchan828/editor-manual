@@ -17,5 +17,5 @@
 *.unityproj
 node_modules
 archives
-__html
+__web
 *.sublime-workspace

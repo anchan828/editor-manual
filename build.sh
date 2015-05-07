@@ -22,8 +22,7 @@ refreshDirectory()
 
 pdf_maker()
 {
-	# change_language "//emlist[][c#]" "//emlist[][cs]"
-	change_language "//emlist[][cs]" "//emlist[][[Sharp\]C]"
+	change_language  "cs" "[Sharp\\]C"
 	cp -f config.yml.template config.yml
 
 	echo "texstyle: $1" >> config.yml
@@ -41,12 +40,12 @@ pdf_maker()
 		mv ${bookname}.pdf "${ARCHIVE_DIR}/"$3
 	fi
 
-	change_language "//emlist[][[Sharp\]C]" "//emlist[][cs]"
+	change_language "[Sharp\\]C" "cs"
 }
 
 epub_maker()
 {
-	change_language "//emlist[][cs]" "//emlist[][c#]"
+	change_language "cs" "c#"
 
 	review-epubmaker config.yml.template
 	
@@ -58,12 +57,12 @@ epub_maker()
 
 		mv ${bookname}.epub "${ARCHIVE_DIR}"
 	fi
-	change_language "//emlist[][c#]" "//emlist[][cs]" 
+	change_language "c#" "cs" 
 }
 
 change_language()
 {
-	ruby -e 'Dir.glob("*.re").each{ |re| File.write(re,File.open(re).read.gsub(ARGV[0],ARGV[1]))}' $1 $2
+	ruby -e 'Dir.glob("*.re").each { |re| File.write(re, File.open(re).read.gsub( /\/\/emlist\[([^\]]*)?\](\[#{Regexp.quote(ARGV[0])}\])/) { |w| w.gsub($2, "[#{ARGV[1]}]")}) }' $1 $2
 }
 
 re_build_catalog()

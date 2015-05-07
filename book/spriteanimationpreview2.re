@@ -114,5 +114,6 @@ public class SpriteAnimationClipEditor : OverrideEditor
 @<chap>{spriteanimationpreview1}の@<hd>{spriteanimationpreview1|get_sprite}と同じ実装でスプライトを取得します。
 
 //emlist[][cs]{
-@<include>{src/test01.cs}
+#@maprange(unityprojects/SpriteAnimationClip/Assets/Editor/SpritePreview.cs, getSprites)
+#@end
 //}

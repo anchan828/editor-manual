@@ -54,21 +54,52 @@ epub_maker()
 
 web_maker()
 {
-	refreshDirectory $HTML_DIR
-	
 	re_build_catalog
 	cp -f layouts/_layout.html.erb layouts/layout.html.erb
 
 	review-compile -a --stylesheet=stylesheet.cs --target=html
 	cp -f stylesheet.css $HTML_DIR
 
-	for file in $(find . -name "*.html");do
-
-		mv ${file} $HTML_DIR
-
-	done
+ 	mv -f *.html $HTML_DIR
 
 	cp -rf images "${HTML_DIR}/images"
+}
+
+web_watch_maker()
+{
+	changed_file=$1
+	if [ ! -d "${TEMP_DIR}" ];then
+				mkdir "${TEMP_DIR}"
+				cp -rf book/* $TEMP_DIR
+	fi
+
+	string_filename=${changed_file##*/}
+	string_filename=${string_filename##*\\}
+	string_filename_without_extension=${string_filename%.*}
+	string_extension=${changed_file##*.}
+	
+	if [ "${string_extension}" == "md" -o  "${string_extension}" == "re" ];then
+		re_file=${string_filename_without_extension}.re
+		orig_file=${re_file}.orig
+		cp -f $changed_file "${TEMP_DIR}/${orig_file}"
+		cd $TEMP_DIR
+		if [ "${string_extension}" == "md" ];then
+			md2review $string_filename > $orig_file
+		fi
+		review-preproc -inencoding=UTF-8 $orig_file > $re_file
+	elif [[ "${changed_file}" == unityprojects* ]];then
+		cp  --parents -f "${changed_file}" $TEMP_DIR
+		replace_region_to_range "${TEMP_DIR}/${changed_file}"
+		cd $TEMP_DIR
+	else
+	   	echo "other files"
+		cp -f "../${changed_file}" ${changed_file/book/temp}
+		cd $TEMP_DIR
+	fi
+	preproc
+	review-compile -a --stylesheet=stylesheet.cs --target=html
+	mv -f *.html $HTML_DIR
+	exit
 }
 
 change_language()
@@ -78,8 +109,8 @@ change_language()
 
 re_build_catalog()
 {
-	CATALOG='catalog.yml'
-	cp $CATALOG.template $CATALOG
+	CATALOG=catalog.yml
+	cp -f ${CATALOG}.template $CATALOG
 
 	echo "CHAPS:" >> catalog.yml
 
@@ -131,11 +162,21 @@ build_release()
 	pdf_maker ${bookname}macro-bookbinding 'a5paper,14pt' ${bookname}-bookbinding.pdf
 }
 
+preproc()
+{
+	for file in $(find . -name "*.re");do
+		cp -rf $file ${file}.orig
+		review-preproc -inencoding=UTF-8 ${file}.orig > $file
+	done
+}
+
 create_temp()
 {
-	refreshDirectory $TEMP_DIR
 	cp -rf book/* $TEMP_DIR
 	cd $TEMP_DIR
+	md2re
+	copy_unityproject_sources
+	preproc
 }
 
 remove_temp()
@@ -150,8 +191,30 @@ refresh_temp()
 	create_temp
 }
 
+copy_unityproject_sources()
+{
+	cd ../
+	find unityprojects -name "*.cs" | while read file;do
+		cp  --parents -f "${file}" $TEMP_DIR
+		replace_region_to_range "${TEMP_DIR}/${file}"
+	done
+	cd $TEMP_DIR
+	
+}
+
+replace_region_to_range()
+{
+	path=$1
+	sed -ie 's/#region\s\(.*\)/\/\/#@@range_begin(\1)/gm' "${path}"
+	sed -ie  's/#endregion\s\(.*\)/\/\/#@@range_end(\1)/gm'  "${path}"
+}
+
+case $1 in
+	"web_watch") web_watch_maker $2;;
+esac
+
+refreshDirectory $TEMP_DIR
 create_temp
-md2re
 
 case $1 in
 	"web") web_maker;;
@@ -161,4 +224,3 @@ case $1 in
 	"release") build_release;;
 	*) build;;
 esac
-remove_temp

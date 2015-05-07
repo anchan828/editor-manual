@@ -142,8 +142,10 @@ build_jenkins()
 	re_build_catalog
 	epub_maker
 	refresh_temp
+	re_build_catalog
 	pdf_maker ${bookname}macro 'a5paper,14pt,oneside' ${bookname}.pdf
 	refresh_temp
+	re_build_catalog
 	pdf_maker ${bookname}macro-bookbinding 'a5paper,14pt' ${bookname}-bookbinding.pdf
 }
 
@@ -157,8 +159,10 @@ build_release()
 	cp -f catalog-release.yml catalog.yml
 	epub_maker
 	refresh_temp
+	cp -f catalog-release.yml catalog.yml
 	pdf_maker ${bookname}macro 'a5paper,14pt,oneside' ${bookname}.pdf
 	refresh_temp
+	cp -f catalog-release.yml catalog.yml
 	pdf_maker ${bookname}macro-bookbinding 'a5paper,14pt' ${bookname}-bookbinding.pdf
 }
 

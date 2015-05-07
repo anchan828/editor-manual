@@ -245,7 +245,7 @@ public override void OnPreviewGUI(Rect r, GUIStyle background)
 }
 //}
 
-===[column] 初回だけプレビュー画像が表示されない
+====[column] 初回だけプレビュー画像が表示されない
 
 
 
@@ -285,4 +285,4 @@ public override void Initialize(Object[] targets)
 
 これで、テクスチャがnullでプレビューが表示されないという問題は解決しました。
 
-===[/column]
+====[/column]

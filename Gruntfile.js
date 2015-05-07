@@ -6,14 +6,14 @@ module.exports = function (grunt) {
         connect: {
             server: {
                 options: {
-                    base: '__html',
+                    base: '__web',
                     livereload: 8002,
                     port: 8000
                 }
             }
         },
         watch: {
-            files: ['**/*.re', '**/*.md', '**/*.png', '**/*.jpg', '**/*.erb', '!__html/*', '!__html/**/*', '!book/layouts/layout.html.erb'],
+            files: ['book/**/*.re', 'book/**/*.md', 'book/**/*.png', 'book/**/*.jpg', 'book/**/*.erb', '!__html/*', '!__html/**/*', '!book/layouts/layout.html.erb'],
             options: {
                 livereload: 8002
             }
@@ -23,7 +23,7 @@ module.exports = function (grunt) {
     grunt.event.on('watch', function (action, filepath, target) {
         if (filepath.match(/(.*)(?:\.([^.]+$))/)[2] == "re" && action != "changed")
             return
-        shell.exec("sh build.sh html")
+        shell.exec("sh build.sh web")
     });
 
     grunt.loadNpmTasks('grunt-contrib-connect');

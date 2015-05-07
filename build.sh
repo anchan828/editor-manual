@@ -2,9 +2,10 @@
 
 bookname=book
 
-HTML_DIR='../__html'
+HTML_DIR='../__web'
 ARCHIVE_DIR='../archives'
 TEMP_DIR='temp'
+
 
 refreshDirectory()
 {
@@ -51,6 +52,25 @@ epub_maker()
 	fi
 }
 
+web_maker()
+{
+	refreshDirectory $HTML_DIR
+	
+	re_build_catalog
+	cp -f layouts/_layout.html.erb layouts/layout.html.erb
+
+	review-compile -a --stylesheet=stylesheet.cs --target=html
+	cp -f stylesheet.css $HTML_DIR
+
+	for file in $(find . -name "*.html");do
+
+		mv ${file} $HTML_DIR
+
+	done
+
+	cp -rf images "${HTML_DIR}/images"
+}
+
 change_language()
 {
 	ruby -e 'Dir.glob("*.re").each { |re| File.write(re, File.open(re).read.gsub( /\/\/emlist\[([^\]]*)?\](\[#{Regexp.quote(ARGV[0])}\])/) { |w| w.gsub($2, "[#{ARGV[1]}]")}) }' $1 $2
@@ -58,7 +78,8 @@ change_language()
 
 re_build_catalog()
 {
-	backup_catalog
+	CATALOG='catalog.yml'
+	cp $CATALOG.template $CATALOG
 
 	echo "CHAPS:" >> catalog.yml
 
@@ -78,22 +99,6 @@ re_build_catalog()
 	done
 }
 
-backup_catalog()
-{
-	CATALOG='catalog.yml'
-
-	if [ -e $CATALOG ];then
-		cp -f $CATALOG $CATALOG.bak
-	fi
-
-	cp $CATALOG.template $CATALOG
-}
-
-undo_catalog()
-{
-	mv "${CATALOG}.bak" $CATALOG
-}
-
 md2re()
 {
 	for file in $(find . -name "*.md");do
@@ -103,13 +108,12 @@ md2re()
 
 build_jenkins()
 {
-
 	re_build_catalog
 	epub_maker
+	refresh_temp
 	pdf_maker ${bookname}macro 'a5paper,14pt,oneside' ${bookname}.pdf
+	refresh_temp
 	pdf_maker ${bookname}macro-bookbinding 'a5paper,14pt' ${bookname}-bookbinding.pdf
-
-	undo_catalog
 }
 
 build()
@@ -121,47 +125,40 @@ build_release()
 {
 	cp -f catalog-release.yml catalog.yml
 	epub_maker
+	refresh_temp
 	pdf_maker ${bookname}macro 'a5paper,14pt,oneside' ${bookname}.pdf
+	refresh_temp
 	pdf_maker ${bookname}macro-bookbinding 'a5paper,14pt' ${bookname}-bookbinding.pdf
 }
 
-build_html()
+create_temp()
 {
-	refreshDirectory $HTML_DIR
-	
-	re_build_catalog
-	cp -f layouts/_layout.html.erb layouts/layout.html.erb
-
-	review-compile -a --stylesheet=stylesheet.cs --target=html
-	cp -f stylesheet.css $HTML_DIR
-
-	for file in $(find . -name "*.html");do
-
-		mv ${file} $HTML_DIR
-
-	done
-
-	cp -rf images "${HTML_DIR}/images"
+	refreshDirectory $TEMP_DIR
+	cp -rf book/* $TEMP_DIR
+	cd $TEMP_DIR
 }
 
+remove_temp()
+{
+	cd ../
+	rm -rf $TEMP_DIR
+}
 
-refreshDirectory $TEMP_DIR
+refresh_temp()
+{
+	remove_temp
+	create_temp
+}
 
-cp -rf book/* $TEMP_DIR
-
-cd $TEMP_DIR
-
+create_temp
 md2re
 
 case $1 in
-	"html") build_html;;
+	"web") web_maker;;
 	"pdf") build;;
 	"epub") epub_maker;;
 	"jenkins") build_jenkins;;
 	"release") build_release;;
 	*) build;;
 esac
-
-cd ../
-
-rm -rf $TEMP_DIR
+remove_temp

@@ -116,5 +116,3 @@ public class SpriteAnimationClipEditor : OverrideEditor
 //emlist[][cs]{
 @<include>{src/test01.cs}
 //}
-
-

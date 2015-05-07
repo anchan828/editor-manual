@@ -23,16 +23,10 @@ public class SpritePreview : ObjectPreview
         return previewTitle;
     }
 
-
-    #region Hoge
-    //efeuihui
-    #endregion Hoge
-
-    //#@@range_begin(getSprites)
     private Sprite[] GetSprites(AnimationClip animationClip)
     {
         var sprites = new Sprite[0];
-        //ほあああおお
+        
         if (animationClip != null)
         {
             var editorCurveBinding = EditorCurveBinding.PPtrCurve("", typeof(SpriteRenderer), "m_Sprite");
@@ -47,7 +41,7 @@ public class SpritePreview : ObjectPreview
 
         return sprites;
     }
-    //#@@range_end(getSprites)
+
     public override void Initialize(Object[] targets)
     {
         base.Initialize(targets);

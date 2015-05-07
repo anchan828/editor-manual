@@ -1,4 +1,4 @@
-= SpriteAnimationPreview
+= SpriteAnimationPreview(スプライト一覧の表示)
 
 //indepimage[frontispiece]
 //pagebreak
@@ -13,8 +13,6 @@
 //table[t1][]{
 ファイル	説明
 ------------------------
-AnimationClipEditor.cs	カスタムエディタ
-OverrideEditor.cs	Editorクラスのラッパー
 SpriteAnimationClipPreview.cs	SpriteAnimationClipのカスタムプレビュー
 //}
 
@@ -112,7 +110,7 @@ public override void OnPreviewGUI(Rect r, GUIStyle background)
 
 さて、簡単にではありますが、カスタムプレビューの基礎となる機能を触ることが出来ました。次はAnimationClipに登録されているスプライトを表示していきます。
 
-== AnimationClipが参照しているスプライトを取得する
+=={get_sprite} AnimationClipが参照しているスプライトを取得する
 
 まずはスプライトを取得します。
 
@@ -247,7 +245,13 @@ public override void OnPreviewGUI(Rect r, GUIStyle background)
 }
 //}
 
-ですが、ここで @<code>{AssetPreview.GetAssetPreview} の特徴を掴んでおきましょう。GetAssetPreviewで作成するプレビュー用のテクスチャはキャッシュされています。もし、オブジェクトに対するテクスチャがキャッシュされていない場合（つまり初回）はテクスチャの生成を行うためにGetAssetPreviewは@<b>{null}を返します。nullを返した時のその状態が@<img>{ss11}です。
+===[column] 初回だけプレビュー画像が表示されない
+
+
+
+
+
+ここで @<code>{AssetPreview.GetAssetPreview} の特徴を掴んでおきましょう。GetAssetPreviewで作成するプレビュー用のテクスチャはキャッシュされています。もし、オブジェクトに対するテクスチャがキャッシュされていない場合（つまり初回）はテクスチャの生成を行うためにGetAssetPreviewは@<b>{null}を返します。nullを返した時のその状態が@<img>{ss11}です。
 
 //image[ss11][テクスチャがnullなためスプライト名だけが表示されている]{
 
@@ -256,7 +260,6 @@ public override void OnPreviewGUI(Rect r, GUIStyle background)
 すぐにインスペクターの再描画処理が走ればテクスチャは描画されますが、インスペクターウィンドウはインスペクターを操作しない限りは自動で再描画を行わないので、初回だけテクスチャが表示されないことに困る場面が出てくるかもしれません。
 
 この問題を回避するには簡単で、プレビュー前にプレビュー用のテクスチャをキャッシュさせればいいので適当なところで @<code>{AssetPreview.GetAssetPreview} を実行します。
-
 
 //emlist[][cs]{
 public override void Initialize(Object[] targets)
@@ -281,3 +284,5 @@ public override void Initialize(Object[] targets)
 //}
 
 これで、テクスチャがnullでプレビューが表示されないという問題は解決しました。
+
+===[/column]

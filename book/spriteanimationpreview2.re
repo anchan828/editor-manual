@@ -64,44 +64,16 @@ public class SpriteAnimationClipEditor : Editor
 今回はプレビュー画面のみを変更したいのでOnInspectorGUIの部分が変更されてしまうのは不本意です。なので、メソッドをオーバーライドしない限りはベースとなるEditorオブジェクト（カスタムエディタで使用するもの）を流用するための@<b>{OverrideEditor}クラスを作成してみましょう。
 
 //emlist[コードは@<href>{https://gist.github.com/anchan828/8bd4fb7f7460eea1630a,ここ}から入手][cs]{
-public abstract class OverrideEditor : Editor
-{
-    readonly MethodInfo methodInfo = typeof(Editor).GetMethod("OnHeaderGUI", BindingFlags.NonPublic | BindingFlags.Instance);
-
-    private Editor m_BaseEditor;
-    protected Editor baseEditor
-    {
-        get { return m_BaseEditor ?? (m_BaseEditor = GetBaseEditor()); }
-        set { m_BaseEditor = value; }
-    }
-
-    protected abstract Editor GetBaseEditor();
-
-    public override void OnInspectorGUI()
-    {
-        baseEditor.OnInspectorGUI();
-    }
-	
-	// ... 以下 DrawPreview、GetInfoString、OnPreviewSettings というようにカスタムエディタで使用できるメソッド群が列挙されている
-}
+#@warn(ココもうちょっと説明した方がいい気がする)
+#@maprange(unityprojects/SpriteAnimationClip/Assets/Editor/OverrideEditor.cs,OverrideEditor)
+#@end
 //}
 
 先ほど作成したSpriteAnimationClipEditorの派生クラスをEditorからOverrideEditorに変更します。
 
 //emlist[][cs]{
-using UnityEngine;
-using UnityEditor;
-
-[CustomEditor(typeof(AnimationClip))]
-public class SpriteAnimationClipEditor : OverrideEditor
-{
-    protected override Editor GetBaseEditor()
-    {
-        Editor editor = null;
-        var baseType = Types.GetType("UnityEditor.AnimationClipEditor", "UnityEditor.dll");
-        CreateCachedEditor(targets, baseType, ref editor);
-        return editor;
-    }
+#@maprange(unityprojects/SpriteAnimationClip/Assets/Editor/SpriteAnimationClipEditor.cs,first)
+#@end
 }
 //}
 
@@ -114,6 +86,27 @@ public class SpriteAnimationClipEditor : OverrideEditor
 @<chap>{spriteanimationpreview1}の@<hd>{spriteanimationpreview1|get_sprite}と同じ実装でスプライトを取得します。
 
 //emlist[][cs]{
-#@maprange(unityprojects/SpriteAnimationClip/Assets/Editor/SpriteAnimationClipEditor.cs, getSprites)
+#@maprange(unityprojects/SpriteAnimationClip/Assets/Editor/SpriteAnimationClipEditor.cs,getSprites)
 #@end
+//}
+
+この取得したスプライトをアニメーション再生ボタンを押すことで、プレビュー画面でスプライトアニメーションを行うようにします。
+
+まずは1つのスプライトをプレビュー画面に表示してみましょう。
+
+//emlist[][cs]{
+#@maprange(unityprojects/SpriteAnimationClip/Assets/Editor/SpriteAnimationClipEditor.cs,draw_sample_preview)
+#@end
+//}
+
+//image[ss04][スプライトが表示されるようになった][]{
+
+//}
+
+=== スプライトアニメーションの再生ボタンを作成する
+
+3Dの時と同じくプレビュー描画内のところに再生ボタンを作成すると見栄えは良くなりそうですが、今回は@<b>{OnPreviewSettings}内に再生ボタンを作成します。
+
+//image[ss05][][]{
+
 //}

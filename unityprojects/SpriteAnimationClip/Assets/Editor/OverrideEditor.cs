@@ -1,9 +1,9 @@
 ﻿using UnityEngine;
-using System.Collections;
 using System.Reflection;
-using JetBrains.Annotations;
 using UnityEditor;
 
+
+#region OverrideEditor
 public abstract class OverrideEditor : Editor
 {
     readonly MethodInfo methodInfo = typeof(Editor).GetMethod("OnHeaderGUI", BindingFlags.NonPublic | BindingFlags.Instance);
@@ -23,11 +23,9 @@ public abstract class OverrideEditor : Editor
         baseEditor.OnInspectorGUI();
     }
 
-    public override void DrawPreview(Rect previewArea)
-    {
-        baseEditor.DrawPreview(previewArea);
-    }
-
+    // ... 以下 GetInfoString、OnPreviewSettings というようにカスタムエディタで使用できるメソッド群が列挙する
+    // ただし、DrawPreview、OnPreviewGUI、OnInteractivePreviewGUIをすべてオーバーライドしてしまうと挙動が変更されてしまうので注意すること
+#endregion OverrideEditor
     public override string GetInfoString()
     {
         return baseEditor.GetInfoString();
@@ -47,7 +45,7 @@ public abstract class OverrideEditor : Editor
     {
         return baseEditor.RenderStaticPreview(assetPath, subAssets, width, height);
     }
-   
+
     protected override void OnHeaderGUI()
     {
         methodInfo.Invoke(baseEditor, new object[0]);
@@ -63,18 +61,8 @@ public abstract class OverrideEditor : Editor
         return baseEditor.UseDefaultMargins();
     }
 
-    public override void OnPreviewGUI(Rect r, GUIStyle background)
-    {
-        baseEditor.OnPreviewGUI(r, background);
-    }
-
     public override GUIContent GetPreviewTitle()
     {
         return baseEditor.GetPreviewTitle();
-    }
-
-    public override void OnInteractivePreviewGUI(Rect r, GUIStyle background)
-    {
-        baseEditor.OnInteractivePreviewGUI(r, background);
     }
 }

@@ -64,6 +64,6 @@ public class SpritePreview : ObjectPreview
     public override void OnPreviewGUI(Rect r, GUIStyle background)
     {
         var previewTexture = AssetPreview.GetAssetPreview(target);
-        EditorGUI.DrawTextureTransparent(r, null);
+        EditorGUI.DrawTextureTransparent(r, previewTexture);
     }
 }

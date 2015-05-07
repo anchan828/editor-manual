@@ -13,7 +13,7 @@ module.exports = function (grunt) {
             }
         },
         watch: {
-            files: ['unityprojects/**/**.cs','book/**/*.re', 'book/**/*.md', 'book/**/*.png', 'book/**/*.jpg', 'book/**/*.erb', '!__html/*', '!__html/**/*', '!book/layouts/layout.html.erb'],
+            files: ['book/**/*.re', 'book/**/*.md', 'book/**/*.png', 'book/**/*.jpg', 'book/**/*.erb', '!__web/*', '!__web/**/*', '!book/layouts/layout.html.erb'],
             options: {
                 livereload: 8002
             }

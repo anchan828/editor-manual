@@ -1,23 +1,18 @@
 #!/bin/sh
 
-cd book
-
 bookname=book
-
-if [ -d ${bookname}-pdf ];then
-		rm -rf ${bookname}-pdf
-fi
 
 HTML_DIR='../__html'
 ARCHIVE_DIR='../archives'
+TEMP_DIR='temp'
 
 refreshDirectory()
 {
-	if [ -d $HTML_DIR ];then
-		rm -rf $HTML_DIR
+	if [ -d $1 ];then
+		rm -rf $1
 	fi
 
-	mkdir $HTML_DIR
+	mkdir $1
 }
 
 pdf_maker()
@@ -29,7 +24,6 @@ pdf_maker()
 	echo "texdocumentclass: [\"jsbook\", \"$2\"]" >> config.yml
 
 	review-pdfmaker --ignore-errors config.yml
-	rm -f config.yml
 
 	if [ -e ${bookname}.pdf ];then
 
@@ -39,8 +33,6 @@ pdf_maker()
 
 		mv ${bookname}.pdf "${ARCHIVE_DIR}/"$3
 	fi
-
-	change_language "[Sharp\\]C" "cs"
 }
 
 epub_maker()
@@ -57,7 +49,6 @@ epub_maker()
 
 		mv ${bookname}.epub "${ARCHIVE_DIR}"
 	fi
-	change_language "c#" "cs" 
 }
 
 change_language()
@@ -110,13 +101,6 @@ md2re()
 	done
 }
 
-remove_md2re_files()
-{
-	for file in $(find . -name "*.md");do
-		rm ${file%.*}.re
-	done
-}
-
 build_jenkins()
 {
 
@@ -126,7 +110,6 @@ build_jenkins()
 	pdf_maker ${bookname}macro-bookbinding 'a5paper,14pt' ${bookname}-bookbinding.pdf
 
 	undo_catalog
-	rm -f ${bookname}-cover.html
 }
 
 build()
@@ -140,19 +123,16 @@ build_release()
 	epub_maker
 	pdf_maker ${bookname}macro 'a5paper,14pt,oneside' ${bookname}.pdf
 	pdf_maker ${bookname}macro-bookbinding 'a5paper,14pt' ${bookname}-bookbinding.pdf
-	rm -f ${bookname}-cover.html
 }
 
 build_html()
 {
-	refreshDirectory
+	refreshDirectory $HTML_DIR
 	
 	re_build_catalog
 	cp -f layouts/_layout.html.erb layouts/layout.html.erb
 
 	review-compile -a --stylesheet=stylesheet.cs --target=html
-	undo_catalog
-	rm -f layouts/layout.html.erb
 	cp -f stylesheet.css $HTML_DIR
 
 	for file in $(find . -name "*.html");do
@@ -164,7 +144,14 @@ build_html()
 	cp -rf images "${HTML_DIR}/images"
 }
 
-# md2re
+
+refreshDirectory $TEMP_DIR
+
+cp -rf book/* $TEMP_DIR
+
+cd $TEMP_DIR
+
+md2re
 
 case $1 in
 	"html") build_html;;
@@ -174,4 +161,7 @@ case $1 in
 	"release") build_release;;
 	*) build;;
 esac
-# remove_md2re_files
+
+cd ../
+
+rm -rf $TEMP_DIR

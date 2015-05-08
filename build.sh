@@ -3,6 +3,7 @@
 bookname=book
 
 BOOK=book
+ROOT=$(cd $(dirname $0) && pwd)
 TEMP_DIR='temp'
 ARCHIVE_DIR='archives'
 
@@ -16,19 +17,18 @@ pdf_maker()
 	echo "texdocumentclass: [\"jsbook\", \"$2\"]" >> config.yml
 	review-pdfmaker --ignore-errors config.yml
 	archive ${bookname}.pdf "../${ARCHIVE_DIR}/"$3
-	cd ../
+	change_language  "[Sharp\\]C" "cs"
+	cd $ROOT
 }
 
 epub_maker()
 {
 	cd $TEMP_DIR
 	change_language "cs" "c#"
-
 	review-epubmaker config.yml.template
-	
 	archive ${bookname}.epub "../${ARCHIVE_DIR}"
-	
-	cd ../
+	change_language "c#" "cs"
+	cd $ROOT
 }
 
 archive()
@@ -48,7 +48,7 @@ web_maker()
 	cp -f layouts/_layout.html.erb layouts/layout.html.erb
 	review-compile -a --stylesheet=stylesheet.css --target=html
 	rm -f  layouts/layout.html.erb
-	cd ../
+	cd $ROOT
 }
 
 web_watch_maker()
@@ -160,7 +160,7 @@ link() {
             fi
         else
             # You know what? I think ln's parameters are backwards.
-            ln -s "$2" "$1"
+            ln -s "$2" "${1//\//}"
         fi
     fi
 }
@@ -203,7 +203,7 @@ symlink()
 		fi
 	done
 	
-	cd ../
+	cd $ROOT
 }
 
 copy_files()
@@ -215,7 +215,7 @@ copy_files()
 	for file in $array;do
 		cp -f $file "../${workspace}"
 	done
-	cd ../
+	cd $ROOT
 }
 
 preproc_re_files()
@@ -228,7 +228,7 @@ preproc_re_files()
 	done
 	
 	remove_md2re_files
-	cd ../
+	cd $ROOT
 }
 
 preproc_re_file()

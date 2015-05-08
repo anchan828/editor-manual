@@ -38,13 +38,13 @@ AnimationClipのインスペクターは3Dアニメーションが基準とな�
 既存のAnimationClipのカスタムエディタ、AnimationClipEditorをオーバーライドする形で新たにカスタムエディタを作成します。
 今回作成するカスタムエディタの名前は@<b>{SpriteAnimationClipEditor}とします。
 
-まずは以下のようなクラスを作成します。
+まずは以下のようなクラスを作成します。複数選択した場合でも動作するように@<code>{CanEditMultipleObjects}属性をつけましょう。
 
 //emlist[][cs]{
 using UnityEngine;
 using UnityEditor;
 
-[CustomEditor(typeof(AnimationClip))]
+[CustomEditor(typeof(AnimationClip), CanEditMultipleObjects)]
 public class SpriteAnimationClipEditor : Editor
 {
 
@@ -67,6 +67,7 @@ public class SpriteAnimationClipEditor : Editor
 #@warn(ココもうちょっと説明した方がいい気がする)
 #@maprange(unityprojects/SpriteAnimationClip/Assets/Editor/OverrideEditor.cs,OverrideEditor)
 #@end
+}
 //}
 
 先ほど作成したSpriteAnimationClipEditorの派生クラスをEditorからOverrideEditorに変更します。
@@ -133,17 +134,54 @@ OnPreviewSettingsではGUILayoutを使用することが出来ます。早速再
 #@end
 //}
 
-実際にTimeControlを使用すると以下のようになります。
+==== 再生する
+
+TimeControlを使用して再生を行うためのトリガーは以下のように実装します。
 
 //emlist[][cs]{
-#@maprange(unityprojects/SpriteAnimationClip/Assets/Editor/SpriteAnimationClipEditor.cs,ImplementeTimeControl)
+#@maprange(unityprojects/SpriteAnimationClip/Assets/Editor/SpriteAnimationClipEditor.cs,DrawPlayButton)
 #@end
-    }
 //}
 
-そして、現在どのスプライトを再生すべきかは
+
+==== 再生するスプライトを取得し表示する
+
+現在どのスプライトを再生すべきかはAnimationClipの @<kw>{frameRate,フレームレート} とAnimationClipSettingsにあるstopTimeを使って導きます。
 
 //emlist[][cs]{
 #@maprange(unityprojects/SpriteAnimationClip/Assets/Editor/SpriteAnimationClipEditor.cs,currentSpriteNum)
 #@end
 //}
+
+Spriteの保持の仕方などは省いていますが、実際に使用すると以下のようになります。
+
+//emlist[][cs]{
+#@maprange(unityprojects/SpriteAnimationClip/Assets/Editor/SpriteAnimationClipEditor.cs,OnInteractivePreviewGUI)
+#@end
+//}
+
+==== 時間スピードを調整するスライダーを作成する
+
+再生ボタンと同じ所に時間をn倍速させるスライダーを作成します。
+
+//emlist[][cs]{
+#@maprange(unityprojects/SpriteAnimationClip/Assets/Editor/SpriteAnimationClipEditor.cs,DrawSpeedSlider)
+#@end
+//}
+
+//image[ss09][再生ボタンの隣にスライダーが追加された][]{
+
+//}
+
+
+=== 完成
+
+プレビュー画面でスプライトアニメーションの再生を確認することができるようになりました。
+
+//image[ss10][再生ボタンを押すとスプライトアニメーションが再生される][]{
+
+//}
+
+@<code>{CanEditMultipleObjects}を実装すれば複数のスプライトアニメーションを同時に再生可能です。
+
+//indepimage[ss11][]

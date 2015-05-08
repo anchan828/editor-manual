@@ -26,6 +26,10 @@ public class SpriteAnimationClipEditor : OverrideEditor
 
         foreach (AnimationClip clip in targets)
         {
+            var sprites = GetSprites(clip);
+
+            if (sprites.Length == 0) continue;
+
             dic.Add(clip, new SpriteAnimationSettings
             {
                 sprites = GetSprites(clip),
@@ -50,15 +54,15 @@ public class SpriteAnimationClipEditor : OverrideEditor
         return true;
     }
 
+    //#@@range_begin(OnInteractivePreviewGUI)
     public override void OnInteractivePreviewGUI(Rect r, GUIStyle background)
     {
-        var settings = dic[target];
+        SpriteAnimationSettings settings;
 
-
-        if (settings.sprites.Length != 0)
+        if (dic.TryGetValue(target, out settings))
         {
             //#@@range_begin(currentSpriteNum)
-            var currentSpriteNum = Mathf.Clamp(Mathf.FloorToInt(timeControl.GetCurrentTime(settings.stopTime) * settings.frameRate), 0, settings.sprites.Length - 1);
+            var currentSpriteNum = Mathf.FloorToInt(timeControl.GetCurrentTime(settings.stopTime) * settings.frameRate);
             //#@@range_end(currentSpriteNum)
             var sprite = settings.sprites[currentSpriteNum];
             var texture = AssetPreview.GetAssetPreview(sprite);
@@ -68,9 +72,8 @@ public class SpriteAnimationClipEditor : OverrideEditor
         }
         else
             baseEditor.OnInteractivePreviewGUI(r, background);
-
     }
-
+    //#@@range_end(OnInteractivePreviewGUI)
     //#@@range_end(draw_preview)
     //#@@range_begin(getSprites)
     private Sprite[] GetSprites(AnimationClip animationClip)
@@ -97,8 +100,33 @@ public class SpriteAnimationClipEditor : OverrideEditor
     }
     //#@@range_end(getSprites)
 
-    //#@@range_begin(ImplementeTimeControl)
+   
     public override void OnPreviewSettings()
+    {
+        SpriteAnimationSettings settings;
+
+        if (dic.TryGetValue(target, out settings))
+        {
+           DrawPlayButton();
+           
+
+            DrawSpeedSlider();
+
+
+            if (timeControl.isPlaying)
+            {
+                foreach (var activeEditor in ActiveEditorTracker.sharedTracker.activeEditors)
+                {
+                    activeEditor.Repaint();
+                }
+            }
+        }
+        else
+            baseEditor.OnPreviewSettings();
+    }
+
+    //#@@range_begin(DrawPlayButton)
+    private void DrawPlayButton()
     {
         var playButtonContent = EditorGUIUtility.IconContent("PlayButton");
         var pauseButtonContent = EditorGUIUtility.IconContent("PauseButton");
@@ -108,29 +136,27 @@ public class SpriteAnimationClipEditor : OverrideEditor
         EditorGUI.BeginChangeCheck();
 
         var isPlaying = GUILayout.Toggle(timeControl.isPlaying, buttonContent, previewButtonSettingsStyle);
-        
+
         if (EditorGUI.EndChangeCheck())
         {
-            if (isPlaying) timeControl.Play(); else timeControl.Pause();
+            if (isPlaying) timeControl.Play();
+            else timeControl.Pause();
         }
-        //#@@range_end(ImplementeTimeControl)
+    }
+    //#@@range_end(DrawPlayButton)
+    //#@@range_begin(DrawSpeedSlider)
+    private void DrawSpeedSlider()
+    {
+        var preSlider = new GUIStyle("preSlider");
+        var preSliderThumb = new GUIStyle("preSliderThumb");
+        var preLabel = new GUIStyle("preLabel");
+        var speedScale = EditorGUIUtility.IconContent("SpeedScale");
 
-        GUIStyle preSlider = "preSlider";
-        GUIStyle preSliderThumb = "preSliderThumb";
-        GUIStyle preLabel = "preLabel";
-
-
-
-        GUIContent speedScale = EditorGUIUtility.IconContent("SpeedScale");
         GUILayout.Box(speedScale, preLabel);
         timeControl.speed = GUILayout.HorizontalSlider(timeControl.speed, 0, 10, preSlider, preSliderThumb);
         GUILayout.Label(timeControl.speed.ToString("0.00"), preLabel, GUILayout.Width(40));
-        foreach (var activeEditor in ActiveEditorTracker.sharedTracker.activeEditors)
-        {
-            activeEditor.Repaint();
-        }
     }
-
+    //#@@range_end(DrawSpeedSlider)
     struct SpriteAnimationSettings
     {
         public Sprite[] sprites { get; set; }
@@ -168,7 +194,7 @@ public class TimeControl
     {
         return Mathf.Repeat(currentTime, stopTime);
     }
-    
+
     public void Play()
     {
         isPlaying = true;

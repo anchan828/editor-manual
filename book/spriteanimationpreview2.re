@@ -107,6 +107,17 @@ public class SpriteAnimationClipEditor : Editor
 
 3Dの時と同じくプレビュー描画内のところに再生ボタンを作成すると見栄えは良くなりそうですが、今回は@<b>{OnPreviewSettings}内に再生ボタンを作成します。
 
-//image[ss05][][]{
+//image[ss05][右上の部分がOnPreviewSettingsで実装できる部分][]{
+
+//}
+
+OnPreviewSettingsではGUILayoutを使用することが出来ます。早速再生ボタンを表示してみましょう。
+
+//emlist[][cs]{
+#@maprange(unityprojects/SpriteAnimationClip/Assets/Editor/SpriteAnimationClipEditor.cs,sample_OnPreviewSettings)
+#@end
+//}
+
+//image[ss06][右端に再生ボタンが出来た][]{
 
 //}

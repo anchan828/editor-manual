@@ -6,14 +6,14 @@ module.exports = function (grunt) {
         connect: {
             server: {
                 options: {
-                    base: '__web',
+                    base: 'temp',
                     livereload: 8002,
                     port: 8000
                 }
             }
         },
         watch: {
-            files: ['book/**/*.re', 'book/**/*.md', 'book/**/*.png', 'book/**/*.jpg', 'book/**/*.erb', '!__web/*', '!__web/**/*', '!book/layouts/layout.html.erb'],
+            files: ['book/*.re', 'book/*.md'],
             options: {
                 livereload: 8002
             }

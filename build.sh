@@ -249,3 +249,5 @@ case $1 in
 	"release") build_release;;
 	*) pdf_maker ${bookname}macro 'a5paper,14pt,oneside' ${bookname}.pdf;;
 esac
+
+cd $BASE_PATH

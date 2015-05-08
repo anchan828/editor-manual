@@ -4,7 +4,6 @@ bookname=book
 
 BOOK=book
 BASE_PATH=$(cd $(dirname $0) && pwd)
-echo $BASE_PATH
 BOOK_DIR="${BASE_PATH}/${BOOK}"
 TEMP_DIR="${BASE_PATH}/temp"
 ARCHIVE_DIR="${BASE_PATH}/archives"
@@ -82,7 +81,8 @@ re_build_catalog()
 	CATALOG=catalog.yml
 	cp -f ${CATALOG}.template $CATALOG
 
-	echo "\nCHAPS:" >> $CATALOG
+	echo "" >> $CATALOG
+	echo "CHAPS:" >> $CATALOG
 
 	for file in $(find . -name "*.re");do
 		conti=1

@@ -111,7 +111,7 @@ public class SpriteAnimationClipEditor : Editor
 
 //}
 
-OnPreviewSettingsではGUILayoutを使用することが出来ます。早速再生ボタンを表示してみましょう。
+OnPreviewSettingsではGUILayoutを使用することが出来ます。早速再生ボタンを表示してみましょう。再生ボタンは 再生 @<icon>{ss07} と一時停止 @<icon>{ss08} というように「オン/オフ」の状態が存在するので @<code>{GUILayout.Button}ではなく @<code>{GUILayout.Toggle}を使用します。
 
 //emlist[][cs]{
 #@maprange(unityprojects/SpriteAnimationClip/Assets/Editor/SpriteAnimationClipEditor.cs,sample_OnPreviewSettings)
@@ -120,4 +120,30 @@ OnPreviewSettingsではGUILayoutを使用することが出来ます。早速再
 
 //image[ss06][右端に再生ボタンが出来た][]{
 
+//}
+
+次は時間を管理する「TimeControl」クラスを作成します。
+
+=== 時間を管理する「TimeControl」クラスを作成する
+
+今回の用途にあった時間を管理するクラスを作成します。時間の更新処理は@<code>{EditorApplication.update}を使って行います。
+
+//emlist[][cs]{
+#@maprange(unityprojects/SpriteAnimationClip/Assets/Editor/SpriteAnimationClipEditor.cs,TimeControl)
+#@end
+//}
+
+実際にTimeControlを使用すると以下のようになります。
+
+//emlist[][cs]{
+#@maprange(unityprojects/SpriteAnimationClip/Assets/Editor/SpriteAnimationClipEditor.cs,ImplementeTimeControl)
+#@end
+    }
+//}
+
+そして、現在どのスプライトを再生すべきかは
+
+//emlist[][cs]{
+#@maprange(unityprojects/SpriteAnimationClip/Assets/Editor/SpriteAnimationClipEditor.cs,currentSpriteNum)
+#@end
 //}

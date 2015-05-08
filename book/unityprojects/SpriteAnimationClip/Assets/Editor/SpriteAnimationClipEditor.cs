@@ -2,6 +2,7 @@
 using System.Linq;
 using UnityEngine;
 using UnityEditor;
+using Object = UnityEngine.Object;
 
 
 //#@@range_begin(first)
@@ -56,7 +57,9 @@ public class SpriteAnimationClipEditor : OverrideEditor
 
         if (settings.sprites.Length != 0)
         {
+            //#@@range_begin(currentSpriteNum)
             var currentSpriteNum = Mathf.Clamp(Mathf.FloorToInt(timeControl.GetCurrentTime(settings.stopTime) * settings.frameRate), 0, settings.sprites.Length - 1);
+            //#@@range_end(currentSpriteNum)
             var sprite = settings.sprites[currentSpriteNum];
             var texture = AssetPreview.GetAssetPreview(sprite);
 
@@ -94,22 +97,31 @@ public class SpriteAnimationClipEditor : OverrideEditor
     }
     //#@@range_end(getSprites)
 
+    //#@@range_begin(ImplementeTimeControl)
     public override void OnPreviewSettings()
     {
         var playButtonContent = EditorGUIUtility.IconContent("PlayButton");
+        var pauseButtonContent = EditorGUIUtility.IconContent("PauseButton");
         var previewButtonSettingsStyle = new GUIStyle("preButton");
+        var buttonContent = timeControl.isPlaying ? pauseButtonContent : playButtonContent;
 
         EditorGUI.BeginChangeCheck();
-        var isPlaying = GUILayout.Toggle(timeControl.isPlaying, playButtonContent, previewButtonSettingsStyle);
+
+        var isPlaying = GUILayout.Toggle(timeControl.isPlaying, buttonContent, previewButtonSettingsStyle);
+        
         if (EditorGUI.EndChangeCheck())
         {
-            if (isPlaying) timeControl.Play(); else timeControl.Stop();
+            if (isPlaying) timeControl.Play(); else timeControl.Pause();
         }
+        //#@@range_end(ImplementeTimeControl)
+
         GUIStyle preSlider = "preSlider";
         GUIStyle preSliderThumb = "preSliderThumb";
         GUIStyle preLabel = "preLabel";
-        GUIContent speedScale = EditorGUIUtility.IconContent("SpeedScale");
 
+
+
+        GUIContent speedScale = EditorGUIUtility.IconContent("SpeedScale");
         GUILayout.Box(speedScale, preLabel);
         timeControl.speed = GUILayout.HorizontalSlider(timeControl.speed, 0, 10, preSlider, preSliderThumb);
         GUILayout.Label(timeControl.speed.ToString("0.00"), preLabel, GUILayout.Width(40));
@@ -127,11 +139,9 @@ public class SpriteAnimationClipEditor : OverrideEditor
     }
 }
 
-
+//#@@range_begin(TimeControl)
 public class TimeControl
 {
-
-
     public bool isPlaying { get; private set; }
     private float currentTime { get; set; }
     private double lastFrameEditorTime { get; set; }
@@ -148,9 +158,9 @@ public class TimeControl
         if (isPlaying)
         {
             var timeSinceStartup = EditorApplication.timeSinceStartup;
-            var deltaTime = (float)(timeSinceStartup - lastFrameEditorTime);
+            var deltaTime = timeSinceStartup - lastFrameEditorTime;
             lastFrameEditorTime = timeSinceStartup;
-            currentTime += deltaTime * speed;
+            currentTime += (float)deltaTime * speed;
         }
     }
 
@@ -158,18 +168,19 @@ public class TimeControl
     {
         return Mathf.Repeat(currentTime, stopTime);
     }
+    
     public void Play()
     {
         isPlaying = true;
         lastFrameEditorTime = EditorApplication.timeSinceStartup;
     }
 
-    public void Stop()
+    public void Pause()
     {
         isPlaying = false;
     }
 }
-
+//#@@range_end(TimeControl)
 class Sample : OverrideEditor
 {
     private Sprite[] sprites = new Sprite[0];
@@ -184,21 +195,24 @@ class Sample : OverrideEditor
     {
         //スプライトがなければ通常（3D）のプレビュー画面にする
         if (sprites.Length != 0)
-            EditorGUI.DrawTextureTransparent(r, AssetPreview.GetAssetPreview(sprites[0]));
+        {
+            var texture = AssetPreview.GetAssetPreview(sprites[0]);
+            EditorGUI.DrawTextureTransparent(r, texture, ScaleMode.ScaleToFit);
+        }
         else
             baseEditor.OnInteractivePreviewGUI(r, background);
     }
     //#@@range_end(draw_sample_preview)
 
     //#@@range_begin(sample_OnPreviewSettings)
+    private bool isPlaying = false;
     public override void OnPreviewSettings()
     {
         var playButtonContent = EditorGUIUtility.IconContent("PlayButton");
+        var pauseButtonContent = EditorGUIUtility.IconContent("PauseButton");
         var previewButtonSettingsStyle = new GUIStyle("preButton");
-
-        if (GUILayout.Button(playButtonContent, previewButtonSettingsStyle))
-        {
-        }
+        var buttonContent = isPlaying ? pauseButtonContent : playButtonContent;
+        isPlaying = GUILayout.Toggle(isPlaying, buttonContent, previewButtonSettingsStyle);
     }
     //#@@range_end(sample_OnPreviewSettings)
 

@@ -2,7 +2,8 @@
 using UnityEngine;
 using UnityEditor;
 
-#region first
+
+//#@@range_begin(first)
 [CustomEditor(typeof(AnimationClip)), CanEditMultipleObjects]
 public class SpriteAnimationClipEditor : OverrideEditor
 {
@@ -13,7 +14,7 @@ public class SpriteAnimationClipEditor : OverrideEditor
         CreateCachedEditor(targets, baseType, ref editor);
         return editor;
     }
-#endregion first
+//#@@range_end(first)
     private Sprite[] sprites = new Sprite[0];
 
     void OnEnable()
@@ -21,7 +22,7 @@ public class SpriteAnimationClipEditor : OverrideEditor
         sprites = GetSprites(target as AnimationClip);
     }
 
-    #region draw_preview
+    //#@@range_begin(draw_preview)
     public override bool HasPreviewGUI()
     {
         return true;
@@ -35,9 +36,9 @@ public class SpriteAnimationClipEditor : OverrideEditor
             baseEditor.OnInteractivePreviewGUI(r, background);
     }
 
-    #endregion draw_preview
+    //#@@range_end(draw_preview)
 
-    #region getSprites
+    //#@@range_begin(getSprites)
     private Sprite[] GetSprites(AnimationClip animationClip)
     {
         var sprites = new Sprite[0];
@@ -61,7 +62,7 @@ public class SpriteAnimationClipEditor : OverrideEditor
 
         return sprites;
     }
-    #endregion getSprites
+    //#@@range_end(getSprites)
 
     private bool isPlaying;
     public override void OnPreviewSettings()
@@ -79,7 +80,7 @@ class Sample : OverrideEditor
 {
     private Sprite[] sprites = new Sprite[0];
 
-    #region draw_sample_preview
+     //#@@range_begin(draw_sample_preview)
     public override bool HasPreviewGUI()
     {
         return true;
@@ -93,7 +94,7 @@ class Sample : OverrideEditor
         else
             baseEditor.OnInteractivePreviewGUI(r, background);
     }
-    #endregion draw_sample_preview
+     //#@@range_end(draw_sample_preview)
     protected override Editor GetBaseEditor()
     {
         throw new System.NotImplementedException();

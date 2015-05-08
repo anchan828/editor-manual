@@ -3,7 +3,7 @@ using System.Reflection;
 using UnityEditor;
 
 
-#region OverrideEditor
+//#@@range_begin(OverrideEditor)
 public abstract class OverrideEditor : Editor
 {
     readonly MethodInfo methodInfo = typeof(Editor).GetMethod("OnHeaderGUI", BindingFlags.NonPublic | BindingFlags.Instance);
@@ -25,7 +25,7 @@ public abstract class OverrideEditor : Editor
 
     // ... 以下 GetInfoString、OnPreviewSettings というようにカスタムエディタで使用できるメソッド群が列挙する
     // ただし、DrawPreview、OnPreviewGUI、OnInteractivePreviewGUIをすべてオーバーライドしてしまうと挙動が変更されてしまうので注意すること
-#endregion OverrideEditor
+//#@@range_end(OverrideEditor)
     public override string GetInfoString()
     {
         return baseEditor.GetInfoString();

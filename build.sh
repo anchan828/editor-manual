@@ -245,9 +245,8 @@ setUp $TEMP_DIR
 case $1 in
 	"web") web_maker;;
 	"web_watch") web_watch_maker;;
-	"pdf") pdf_maker;;
 	"epub") epub_maker;;
 	"jenkins") build_jenkins;;
 	"release") build_release;;
-	*) pdf_maker;;
+	*) pdf_maker ${bookname}macro 'a5paper,14pt,oneside' ${bookname}.pdf;;
 esac

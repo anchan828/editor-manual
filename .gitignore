@@ -19,3 +19,4 @@ node_modules
 archives
 __web
 *.sublime-workspace
+.settings/settings.json

@@ -147,7 +147,7 @@ link() {
             # Windows needs to be told if it's a directory or not. Infer that.
             # Also: note that we convert `/` to `\`. In this case it's necessary.
             if [[ -d "$2" ]]; then
-                cmd <<< "mklink /d \"${1//\//\\}\" \"${2//\//\\}\"" > /dev/null
+                cmd <<< "mklink /D \"${1//\//\\}\" \"${2//\//\\}\"" > /dev/null
             else
                 cmd <<< "mklink \"${1//\//\\}\" \"${2//\//\\}\"" > /dev/null
             fi
@@ -196,7 +196,7 @@ symlink()
 	
 	for dir in $dirs;do
 		if [ ! -d "${dir}" ];then
-			link "${dir}" "${BOOK_DIR}/${dir}"
+			link "${dir}" "../${BOOK}/${dir}"
 		fi
 	done
 }
@@ -234,6 +234,7 @@ preproc_re_files()
 preproc_re_file()
 {
 	review-preproc -inencoding=UTF-8 --replace $1
+	ruby -e 'File.write(ARGV[0], File.open(ARGV[0]).read.gsub(/\#\@maprange.*?\#\@end/m) { |w| split = w.split(/\n/); return w if (split.length < 3); space = ""; split[1].sub(/^\s+/) { |s| space = s } ;for i in 1...(split.length-1); split[i] = split[i].sub(space, ""); end; split.join("\n") })' $1
 }
 
 if [ ! -d "${ARCHIVE_DIR}" ];then

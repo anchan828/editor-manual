@@ -173,6 +173,11 @@ rmlink() {
 setUp()
 {
 	workspace=$1
+	
+	if [ ! -d $workspace ];then
+		mkdir $workspace
+	fi
+	
 	remove_temp_files
 	symlink $workspace
 	copy_files $workspace
@@ -183,10 +188,6 @@ setUp()
 symlink()
 {
 	workspace=$1
-	
-	if [ ! -d "${workspace}" ];then
-		mkdir "${workspace}"
-	fi
 	cd $BOOK_DIR
 	dirs=`ls -F | grep /`
 

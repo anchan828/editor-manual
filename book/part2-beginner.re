@@ -30,9 +30,9 @@ public class NewBehaviourScript : MonoBehaviour
 
 //}
 
-これはスクリプトファイルのコンパイルによって自動生成される@<b>{Assembly-CSharp.dll}で@<b>{UnityEditor.dllの参照}を行っていないためです。
+これはビルド時に生成される@<b>{Assembly-CSharp.dll}では@<b>{UnityEditor.dllの参照}を行わないためです。
 
-ですが、開発中に生成されるAssembly-CSharp.dllにはUnityEditor.dllの参照が行われているためスクリプトのコンパイルエラーは発生しません。@<b>{UnityEditor.dllの参照が行われないのはビルド時に生成されるAssembly-CSharp.dllのみ}ということを覚えておきましょう。この仕様を知らないと「突然ビルドが通らなくなった」原因になってしまいます。
+ですが、開発時のUnityエディターで生成されるAssembly-CSharp.dllにはUnityEditor.dllの参照が行われているためスクリプトのコンパイルエラーは発生しません。@<b>{UnityEditor.dllの参照が行われないのはビルド時に生成されるAssembly-CSharp.dllのみ}ということを覚えておきましょう。この仕様を知らないと「突然ビルドが通らなくなった」原因になってしまいます。
 
 //image[ss02][Monodevelopで見るとUnityEditor.dllの参照を行っている。]{
 

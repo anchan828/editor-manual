@@ -263,3 +263,108 @@ public class NewBehaviourScript : EditorWindow
 == EditorGUILayout.Separator
 
 == ○○Scope
+
+EditorGUILayout.BeginHorizontal/EndHorizontal というように Begin/End で始まるGUIグループのヘルパー機能になります。
+標準で@<code>{HorizontalScope}、@<code>{VerticalScope}、@<code>{ScrollViewScope} などのスコープが用意されています。
+スコープ自体は@<b>{IDisposable}オブジェクトで実装されており、usingを使用することが出来ます。
+
+//emlist[][cs]{
+#@maprange(unityprojects/part1/editorgui/Assets/Editor/ExampleScope.cs,HorizontalScope)
+#@end
+//}
+
+//image[ss04][][]{
+//}
+
+=== Scopeの自作 - BackgroundColorScope
+
+HorizontalScopeのように、スコープはGUI.Scopeクラスを継承して作成されています。
+
+//emlist[][cs]{
+#@maprange(unityprojects/part1/editorgui/Assets/Editor/ExampleScope.cs,HorizontalScopeCode)
+#@end
+//}
+
+CloseScopeメソッドはDispose時に呼び出されるメソッドです。コンストラクター内でBegin、CloseScopeメソッド内でEndを呼び出しています。
+
+同じようにして GUI.Scope を継承したクラスでスコープを作成することが可能です。今回は試しに@<img>{ss05}のようなスコープ内のみGUIの背景を変更するBackgroundColorScopeを作成してみましょう。
+
+//image[ss05][1つのボタンごとに色が変更されている][]{
+
+//}
+
+//emlist[][cs]{
+#@maprange(unityprojects/part1/editorgui/Assets/Editor/ExampleScope.cs,BackgroundColorScope)
+#@end
+//}
+
+
+このように@<code>{GUI.backgroundColor}にColor情報を渡す前に変数として保持し、CloseScopeで元の色に戻します。
+
+
+//emlist[][cs]{
+#@maprange(unityprojects/part1/editorgui/Assets/Editor/ExampleScope.cs,BackgroundColorScope_Example)
+#@end
+//}
+
+== 見た目はボタン、中身はトグル
+
+
+エディターには見た目（GUIStyle）はボタンだけど、動作はトグルのようなオン/オフとなる部分、またはボタンの群があり切り替わっていくものがいくつかあります。
+
+//image[ss07][ツール、再生ボタン、PlayerSettingsのプラットフォーム別設定][]{
+
+//}
+
+これらのボタン？トグル？たちが一体どうやって実装されているか、数パターン紹介していきます。
+
+=== スタイルがボタンなトグル（シングル）
+
+//indepimage[ss08][]
+
+//emlist[][cs]{
+#@maprange(unityprojects/part1/editorgui/Assets/Editor/ButtonToggle.cs,ButtonToggle_Pattern1)
+#@end
+//}
+
+=== スタイルがボタンなトグル（マルチプル）
+
+複数の選択肢の中から1つを選ばせる時に@<img>{ss06}のようなトグル群を作成します。
+
+//indepimage[ss06][]
+
+
+//emlist[][cs]{
+#@maprange(unityprojects/part1/editorgui/Assets/Editor/ButtonToggle.cs,ButtonToggle_Pattern2)
+#@end
+//}
+
+おそらく、複数のトグルを配置しようとすると上記のようなコードになるかもしれません。ですがこれは悪手です。これだとbool変数がトグルの数だけ増えることになりますし、その管理も面倒です。
+これらは@<code>{GUILayout.Toolbar}を使って解決することが出来ます。
+
+//emlist[][cs]{
+#@maprange(unityprojects/part1/editorgui/Assets/Editor/ButtonToggle.cs,ButtonToggle_Pattern3)
+#@end
+//}
+
+何が選択されているかをint変数で管理し、表示するトグル（の文字列）はstring配列で管理します。
+
+また、GUIStyleを変更することで様々な表現が可能になります。
+
+@<code>{EditorStyles.toolbarButton} を使用することでツールバーや、PlayerSettingsのプラットフォーム別設定にあるようなトグル群を表現できます。
+
+//indepimage[ss09][]
+
+//emlist[][cs]{
+#@maprange(unityprojects/part1/editorgui/Assets/Editor/ButtonToggle.cs,ButtonToggle_Pattern4)
+#@end
+//}
+
+1列に表示した@<code>{GUILayout.SelectionGrid}で、スタイルを@<b>{PreferencesKeysElement}（Unity内部で実装されているGUIStyle）にするとPreferenceｓウインドウで表現されている選択メニューとなります。
+
+//indepimage[ss10][]
+
+//emlist[][cs]{
+#@maprange(unityprojects/part1/editorgui/Assets/Editor/ButtonToggle.cs,ButtonToggle_Pattern5)
+#@end
+//}

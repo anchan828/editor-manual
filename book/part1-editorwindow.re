@@ -603,4 +603,54 @@ public class Example : EditorWindow
 //}
 
 
-== なにか作ってみよう
+== EditorWindowもScriptableObjectであることを知る
+
+//image[ss17][アセンブリブラウザで見るとScriptableObjectが継承されていることが分かる]{
+
+//}
+
+通常のScriptableObjectの動作に則って、アセットとしてウインドウを保存することも出来ますし、シリアライズプロパティを作成してインスペクターに表示することも可能です。
+
+//image[ss18][]{
+
+//}
+
+//emlist[][cs]{
+using UnityEditor;
+using UnityEngine;
+public class Example : EditorWindow
+{
+    [MenuItem ("Assets/Save EditorWindow")]
+    static void SaveEditorWindow ()
+    {
+        AssetDatabase.CreateAsset (CreateInstance<Example> (), "Assets/Example.asset");
+        AssetDatabase.Refresh ();
+    }
+
+    [SerializeField]
+    string text;
+
+    [SerializeField]
+    bool boolean;
+}
+//}
+
+ウインドウ位置やサイズなども保存されています。それらのデータは直接YAML形式のファイルをテキストエディタで見れば確認できます。
+
+//emlist{
+  m_MinSize: {x: 100, y: 100}
+  m_MaxSize: {x: 4000, y: 4000}
+  m_TitleContent:
+    m_Text: Example
+    m_Image: {fileID: 0}
+    m_Tooltip: 
+  m_DepthBufferBits: 0
+  m_AntiAlias: 0
+  m_Pos:
+    serializedVersion: 2
+    x: 0
+    y: 0
+    width: 320
+    height: 240
+//}
+

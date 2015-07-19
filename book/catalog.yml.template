@@ -1,3 +1,4 @@
 PREDEF:
- - introduction.re
  - about_this_book.re
+ - introduction.re
+ - summary_editor_extension.re

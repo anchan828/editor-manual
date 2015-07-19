@@ -6,6 +6,7 @@ module.exports = function (grunt) {
         connect: {
             server: {
                 options: {
+                    hostname: '*',
                     base: 'temp',
                     livereload: 8002,
                     port: 8000
@@ -38,6 +39,15 @@ module.exports = function (grunt) {
          shell.exec("sh build.sh web")
          grunt.task.run('connect', 'watch');
     });
+
+    grunt.registerTask('add',function(name){
+
+        shell.exec("touch book/" + name +".re");
+        shell.exec("mkdir -p book/images/" + name);
+        shell.exec("cp book/images/_temp/frontispiece.jpg book/images/" + name +"/frontispiece.jpg");
+        shell.exec("cp book/images/_temp/pixelmator.pxm book/images/" + name +"/pixelmator.pxm");
+    })
+
     grunt.registerTask('start', '', function () {
         if (process.platform == "darwin")
             shell.exec('open editor-manual.sublime-project');

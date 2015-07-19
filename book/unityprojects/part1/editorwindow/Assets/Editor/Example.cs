@@ -1,10 +1,17 @@
 ﻿using UnityEditor;
-
-public class Example
+using UnityEngine;
+public class Example : EditorWindow
 {
-    [PreferenceItem("Example")]
-    static void OnPreferenceGUI ()
-    {
+	[SerializeField]
+	string text;
 
-    }
+	[SerializeField]
+	bool boolean;
+
+	[MenuItem ("Assets/Save EditorWindow")]
+	static void SaveEditorWindow ()
+	{
+		AssetDatabase.CreateAsset (CreateInstance<Example> (), "Assets/Example.asset");
+		AssetDatabase.Refresh ();
+	}
 }

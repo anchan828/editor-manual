@@ -7,7 +7,7 @@
 # ブック名(ファイル名になるもの。ASCII範囲の文字を使用)
 bookname: book
 # 書名
-booktitle: エディタ拡張入門
+booktitle: エディタ拡張
 # 著者
 aut: 安藤 圭吾
 
@@ -30,7 +30,7 @@ edt: 安藤 圭吾
 rights: |
   (C) 2015 kyusyukeigo.com
 # description: ブックの説明
-description: Unityのエディタ拡張入門
+description: 効率のいい開発をするために
 contact: anchan828@gmail.com
 #
 # coverfile: カバーページのbody要素内に挿入する内容を記述したファイル名

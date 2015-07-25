@@ -102,11 +102,23 @@ public class EditorScript
 }
 //}
 
-//image[ss09][中の小さなキューブを選択した状態]{
+//image[ss09][子要素である中の小さなキューブを選択した状態]{
 
 //}
 
 OnDrawGizmosSelected を表現する場合は @<code>{GizmoType.InSelectionHierarchy} で可能です。
+
+//emlist{
+[DrawGizmo (GizmoType.InSelectionHierarchy)]
+static void DrawExampleGizmos (Example example, GizmoType gizmoType)
+{
+    // 略
+}
+//}
+
+//image[ss10][子要素である中の小さなキューブを選択した状態]{
+//}
+
 
 
 #@# * ギズモの表示の仕方

@@ -5,7 +5,7 @@ public class EditorScript
 {
 	//GizmoType.InSelectionHierarchy
 
-	[DrawGizmo (GizmoType.NonSelected | GizmoType.Active)]
+	[DrawGizmo (GizmoType.InSelectionHierarchy)]
 	static void DrawExampleGizmos (Example example, GizmoType gizmoType)
 	{
 		var transform = example.transform;
@@ -13,7 +13,7 @@ public class EditorScript
 
 		if ((gizmoType & GizmoType.Active) == GizmoType.Active)
 			Gizmos.color = Color.red;
-
+		
 		Gizmos.DrawWireCube (transform.position, transform.lossyScale);
 	}
 }

@@ -11,7 +11,7 @@ Unityが既にエディタ拡張の機能を使い、ユーザーの手で自由
 
 == インスペクターの見た目を変える
 
-=== Range Attribute
+=== Range
 
 @<b>{int、float、long、double}など数値をスライダーで変更できるようにするための機能です。
 
@@ -43,7 +43,7 @@ public class NewBehaviourScript : MonoBehaviour
 //}
 
 
-=== Multiline / TextArea Attribute
+=== Multiline / TextArea
 
 デフォルトでは一行のTextFieldですが、複数行のTextAreaに変更することが出来ます。MultilineとTextAreaはほぼ機能は同じですが、Multilineは「幅に合わせて自動改行されない」「スクロールバーが表示されない」といった制限があります。特に理由のない限りTextAreaを使うことをオススメします。
 
@@ -66,11 +66,65 @@ public class NewBehaviourScript : MonoBehaviour
 
 //}
 
+== インスペクターで扱う機能を追加する
+
+=== ContextMenuItem
+
+インスペクターに表示されている変数にコンテキストメニューを追加します。少し手順が必要な要素を自動化したり、他の変数も一緒に値を変更しなければいけない時に使用してみるといいかもしれません。また、コンポーネント単位で値をリセットできる「Reset」機能はありますが、各変数に対してのリセット機能がないので ContextMenuItem で実装してみるのもいいかもしれません。
+
+//image[ss15][プロパティ名を右クリックするとコンテキストメニューが表示できる]{
+
+//}
+
+//emlist{
+using UnityEngine;
+
+public class NewBehaviourScript : MonoBehaviour
+{
+    [ContextMenuItem ("Random", "RandomNumber")]
+    [ContextMenuItem ("Reset", "ResetNumber")]
+    public int number;
+
+    void RandomNumber ()
+    {
+        number = Random.Range (0, 100);
+    }
+
+    void ResetNumber ()
+    {
+        number = 0;
+    }
+}
+//}
+
+=== ColorUsage
+
+色の変更にはカラーピッカーを使用します。ColorUsageは、カラーピッカーでアルファの使用を有効/無効に出来たり、HDR用のからピッカーに変更することが出来ます。
+
+//image[ss14][左からデフォルト、アルファなし、HDRカラーピッカー]{
+
+//}
+
+//emlist[][cs]{
+using UnityEngine;
+
+public class NewBehaviourScript : MonoBehaviour
+{
+    public Color color1;
+
+    [ColorUsage (false)]
+    public Color color2;
+
+    [ColorUsage (true, true, 0, 8, 0.125f, 3)]
+    public Color color3;
+}
+//}
+
 == インスペクターの見た目を整える
 
 プロパティに直接作用しませんが見た目を見やすくしたり装飾を行うことが可能です。
 
-=== Header Attribute
+=== Header
 
 プロパティをある程度にまとめてヘッダーを付けることにより、わかりやすくすることが可能です。
 
@@ -102,7 +156,7 @@ public class NewBehaviourScript : MonoBehaviour
 }
 //}
 
-=== Space Attribute
+=== Space
 
 縦に余白を設けることが出来ます。プロパティとの間に余白を設けることで見やすくしたいときに便利です。
 
@@ -123,7 +177,7 @@ public class NewBehaviourScript : MonoBehaviour
 }
 //}
 
-=== Tooltip Attribute
+=== Tooltip
 
 プロパティに対する説明をインスペクター上で確認したいときに使用します。
 
@@ -142,7 +196,7 @@ public class NewBehaviourScript : MonoBehaviour
 
 //}
 
-=== HideInInspector Attribute
+=== HideInInspector
 
 
 //image[ss06][本来public変数はインスペクターに表示されるがstr2が表示されていない]{
@@ -303,5 +357,104 @@ public class TweenColor : MonoBehaviour
 //}
 
 //image[ss13][My UI下に移動し、カテゴライズ出来た]{
+
+//}
+
+== ゲームの開発を楽にする
+
+=== ExecuteInEditMode
+
+ゲーム再生中でなくても MonoBehaviour を継承したコンポーネントの 主要な関数が呼び出されるようになります。呼び出されるタイミングはゲームオブジェクトが更新された時です。シーアセットをダブルクリックして、シーンをロードした時には Awake と Start 関数が、インスペクターなどでコンポーネントの変数などを変更したら Update 関数が呼び出されます。また、OnGUI で実装した GUI がエディターのGUI描画サイクルに則って常に表示されるようになります。
+
+
+//emlist[][cs]{
+using UnityEngine;
+
+[ExecuteInEditMode]
+public class NewBehaviourScript : MonoBehaviour
+{
+    [Range(0,10)]
+    public int number;
+
+    void Awake ()
+    {
+        Debug.Log ("Awake");
+    }
+
+    void Start ()
+    {
+        Debug.Log ("Start");
+    }
+
+    void Update ()
+    {
+        Debug.Log ("Update");
+    }
+}
+//}
+
+
+=== ContextMenu
+
+コンポーネントのコンテキストメニューからメソッドを実行します。@<code>{ContextMenuItem}と名前と機能が似ていますが、追加するコンテキストメニューの場所が違います。
+
+//image[ss16][コンポーネントの歯車をクリックまたはコンポーネントのタイトルを右クリック]{
+
+//}
+
+//emlist{
+using UnityEngine;
+
+public class NewBehaviourScript : MonoBehaviour
+{
+    [Range (0, 10)]
+    public int number;
+
+    [ContextMenu ("RandomNumber")]
+    void RandomNumber ()
+    {
+        number = Random.Range (0, 100);
+    }
+
+    [ContextMenu ("ResetNumber")]
+    void ResetNumber ()
+    {
+        number = 0;
+    }
+}
+//}
+
+=== SelectionBase
+
+シーンビューでオブジェクトを選択した時に、「選択されるゲームオブジェクトを指定する」「ゲームオブジェクトの@<b>{選択順}を決める」時に使用します。
+
+普段、シーンビューでオブジェクトを選択した時はルートのゲームオブジェクトが選択されます。
+
+//image[ss17][Cubeをマウスでクリックした直後の状態]{
+
+//}
+
+以下のスクリプトを記述し、子要素のゲームオブジェクトにアタッチします。
+
+//emlist{
+using UnityEngine;
+
+[SelectionBase]
+public class NewBehaviourScript : MonoBehaviour
+{
+}
+//}
+
+そしてルートのゲームオブジェクトをクリックすると、子要素のゲームオブジェクトが選択されるようになります。
+
+
+//image[ss18][Cubeをマウスでクリックした直後の状態]{
+
+//}
+
+そして@<b>{もう一度}ゲームオブジェクトをクリックするとルートのゲームオブジェクトが選択されます。
+このように、SelectionBase 属性の付いたゲームオブジェクトで@<b>{最下層の子要素から順に}選択することが出来ます。順に選択していき、SelectionBase 属性の付いたゲームオブジェクトが存在しない場合はルートを選択するという仕様です。
+
+//image[ss19][クリックするごとに下から順に選択されていく]{
 
 //}

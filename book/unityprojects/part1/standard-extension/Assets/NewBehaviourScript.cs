@@ -1,9 +1,6 @@
 ﻿using UnityEngine;
-using System.Collections;
 
+[SelectionBase]
 public class NewBehaviourScript : MonoBehaviour
 {
-    [HelpBox("hogehoehogeghoe.")]
-    public int
-        hoge;
 }

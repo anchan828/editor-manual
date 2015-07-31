@@ -541,7 +541,7 @@ using UnityEditor;
 public class ExampleWindow : EditorWindow
 {
 
-    // ウィンドウ作成
+    // ウインドウ作成
     [MenuItem("Window/ExampleWindow")]
     static void Open ()
     {

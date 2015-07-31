@@ -129,7 +129,7 @@ GUIStyle.DrawにコントロールIDを渡すことによって、スタイル�
 //indepimage[ss03][][scale=0.5]
 
 
-オブジェクトピッカーは特定のオブジェクトやアセットを選択するためのウィンドウです。ObjectFieldのようなオブジェクトの参照を持つGUIの場合はこのオブジェクトピッカーがあるとユーザーが操作を行うときに便利になります。
+オブジェクトピッカーは特定のオブジェクトやアセットを選択するためのウインドウです。ObjectFieldのようなオブジェクトの参照を持つGUIの場合はこのオブジェクトピッカーがあるとユーザーが操作を行うときに便利になります。
 
 オブジェクトピッカーの表示は@<code>{EditorGUIUtility.ShowObjectPicker}で行うことが可能です。
 
@@ -208,7 +208,7 @@ if (rect.Contains(evt.mousePosition))
 
 @<code>{HandleUtility.Repaint}は現在のビューを再描画するものです。
 
-現在の「ビュー」を少し言い換えると、「EditorWindowやScriptableWizardなどGUIを描画するウィンドウ」となり、それらの再描画になります。
+現在の「ビュー」を少し言い換えると、「EditorWindowやScriptableWizardなどGUIを描画するウインドウ」となり、それらの再描画になります。
 
 もっと詳しく言い換えると「GUIViewを継承しているビュー」を再描画します。
 

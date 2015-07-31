@@ -28,13 +28,13 @@ MenuItemは「Unityエディタの上側にあるメニューバーやコンテ�
 
  * ゲームオブジェクトの生成 ( @<i>{GameObject/Create Empty} )
  * シーンの作成 ( @<i>{File/New Scene} )
- * ウィンドウの表示 ( @<i>{Window/Inspector} )
+ * ウインドウの表示 ( @<i>{Window/Inspector} )
  
 などがメニューとして既に登録されています。
 
 MenuItemを使用して独自のメニューを追加するタイミングは@<b>{Editorスクリプトを実行する時}です。目的別に取り上げるなら
 
- * 独自ウィンドウの表示
+ * 独自ウインドウの表示
  * AssetBundleの作成
  * アセットの作成
  * アセットのインポート設定変更

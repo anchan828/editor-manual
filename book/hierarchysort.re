@@ -132,7 +132,7 @@ public class TagSort : BaseHierarchySort
 
 なので今回は「TagSortを選択している時だけタグ名を表示する」という手法を取りたいと思います。
 現在何でソートされているかを知るには、APIとして正式に提供されていないため少し面倒くさいことをしなければいけません。
-面倒くさいことをするためにまず、Hierarchyウィンドウの@<tt>{Type}を取得しなければいけません。
+面倒くさいことをするためにまず、Hierarchyウインドウの@<tt>{Type}を取得しなければいけません。
 その際にはUnityEngine.Types.GetTypeを使用すると便利です。Types.GetTypeはAssemblyから特定のTypeを取得するためのAPIとなっています。
 
 
@@ -141,7 +141,7 @@ Type hierarcyType = Types.GetType("UnityEditor.SceneHierarchyWindow", "UnityEdit
 //}
 
 
-次に、先ほど取得した@<tt>{hierarcyType}を使用してHierarchyウィンドウを取得します。
+次に、先ほど取得した@<tt>{hierarcyType}を使用してHierarchyウインドウを取得します。
 
 
 //emlist[][cs]{
@@ -149,11 +149,11 @@ EditorWindow hierarcyWindow = EditorWindow.GetWindow(hierarcyType, false);
 //}
 
 
-複数対応する場合は@<tt>{Resources.FindObjectsOfTypeAll(Type);}を使用して全てのHierarchyウィンドウを取得しますが複雑になってしまうので今回は単体ウィンドウのみ対応で実装を行います。Hierarchyウィンドウのオブジェクトの中に、Serializeされた@<tt>{m_CurrentSortMethod}という文字列データが存在します。これが現在選択されているソート名となります。
+複数対応する場合は@<tt>{Resources.FindObjectsOfTypeAll(Type);}を使用して全てのHierarchyウインドウを取得しますが複雑になってしまうので今回は単体ウインドウのみ対応で実装を行います。Hierarchyウインドウのオブジェクトの中に、Serializeされた@<tt>{m_CurrentSortMethod}という文字列データが存在します。これが現在選択されているソート名となります。
 
 
 
-m_CurrentSortMethodはSerializeされているデータなのでSerializedObject#FindPropertyで取得するようにしましょう。そのためにはまずHierarchyウィンドウの@<tt>{SerializedObject}を取得しなければいけません。今回はSerializedObjectを取得ではなく作成します。SerializedObjectを使用する場面は普段はCustomEditorなどで、すでに作成されたSerializedObjectを使ってアクセスしている方が多いと思います。なので、自分で作成するのは初めての方も多いのではないでしょうか。
+m_CurrentSortMethodはSerializeされているデータなのでSerializedObject#FindPropertyで取得するようにしましょう。そのためにはまずHierarchyウインドウの@<tt>{SerializedObject}を取得しなければいけません。今回はSerializedObjectを取得ではなく作成します。SerializedObjectを使用する場面は普段はCustomEditorなどで、すでに作成されたSerializedObjectを使ってアクセスしている方が多いと思います。なので、自分で作成するのは初めての方も多いのではないでしょうか。
 
 
 //emlist[][cs]{

@@ -265,7 +265,7 @@ public class AngleDrawer : PropertyDrawer
 
 === AnimatorParameter
 
-Animatorウィンドウにあるパラメータ名をタイプセーフにフィールドにアタッチすることができます。
+Animatorウインドウにあるパラメータ名をタイプセーフにフィールドにアタッチすることができます。
 取得できるパラメーターは同じゲームオブジェクトにアタッチされている Animator Controller のパラメーターになります。
 
 //indepimage[ss07]

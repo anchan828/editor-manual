@@ -40,6 +40,16 @@ Debug モードでは、GUI 要素がカスタマイズされる前の@<b>{素}�
 
 その時に、全ての要素を見せるのは必要なかったり、追加の GUI 要素を表示したいということもあるので @<b>{CustomEditor（カスタムエディター）}の機能を使い Editor オブジェクトをカスタマイズすることが出来ます。
 
+=== 普段見ているインスペクターは既にカスタムエディターが使われている
+
+普段インスペクターで触れているコンポーネントは、既にカスタムエディターによってカスタマイズされています。
+
+//image[ss05][語尾がInspectorとEditor分かれているが違いはない]{
+
+//}
+
+これからカスタムエディターを作成するときには「何が出来るか」の参考になります。
+
 
 == カスタムエディターを使う
 
@@ -68,7 +78,7 @@ public class Character : MonoBehaviour
 
 	// プレイヤーの能力と、剣の強さから攻撃力を求めるプロパティ
 	public int 攻撃力 {
-		get { 
+		get {
 			return 基本攻撃力 + Mathf.FloorToInt (基本攻撃力 * (剣の強さ + ちから - 8) / 16);
 		}
 	}
@@ -235,7 +245,7 @@ public override void OnInspectorGUI ()
 	EditorGUI.BeginChangeCheck ();
 
 	var hp = EditorGUILayout.IntSlider ("Hp", character.hp, 0, 100);
-	
+
 	if (EditorGUI.EndChangeCheck ()) {
 
 		// 変更前に Undo に登録
@@ -314,7 +324,7 @@ public class CharacterInspector : Editor
 複数選択した時にインスペクターに表示されるものは、最初に選択した（ゲームオブジェクトにアタッチされている）コンポーネントです。これは target に格納されており、また targets の1番目の要素でもあります。
 
 選択したコンポーネントの各プロパティーが全て同じ値ということもあれば、異なる場合もあります。
-同じ値でない場合は Unity は 「@<b>{-} 」を表示して、異なる値が代入されていると表現することが出来ます。	
+同じ値でない場合は Unity は 「@<b>{-} 」を表示して、異なる値が代入されていると表現することが出来ます。
 
 //image[ss10][複数選択時、左が同じ値の場合。右が異なる値の場合。]{
 
@@ -411,13 +421,13 @@ public class ExampleDrawer : PropertyDrawer
 			var maxHpProperty = property.FindPropertyRelative ("maxHp");
 
 
-			var minMaxSliderRect = new Rect (position) { 
-				height = position.height * 0.5f 
+			var minMaxSliderRect = new Rect (position) {
+				height = position.height * 0.5f
 			};
 
-			var labelRect = new Rect (minMaxSliderRect) { 
+			var labelRect = new Rect (minMaxSliderRect) {
 				x = minMaxSliderRect.x + EditorGUIUtility.labelWidth,
-				y = minMaxSliderRect.y + minMaxSliderRect.height 
+				y = minMaxSliderRect.y + minMaxSliderRect.height
 			};
 
 			float minHp = minHpProperty.intValue;
@@ -474,16 +484,207 @@ public class CharacterInspector : Editor
 このように、細かく部品とすることができるものは PropertyDrawer として実装すると、複雑なスパゲティーコード@<fn>{2}にならずに済むかもしれません。これは冗談ではなく、GUI の描画のためのコードは冗長になりがちなのでオススメです。
 
 
-=== インスペクターのプレビュー画面
+== プレビュー
+
+インスペクターではメッシュやテクスチャ、スプライトなどプレビュー可能なアセットがある場合にプレビュー画面で確認することが出来ます。
+
+//image[ss12][Cubeのプレハブを選択した状態のインスペクターにあるプレビューウインドウ]{
+
+//}
+
+=== プレビュー画面の表示
+
+プレビューの表示はデフォルトでは無効となっており、「プレビュー出来る状態である」とインスペクターに判断させるには@<code>{HasPreviewGUI} メソッドをオーバーライドし、戻り値として true を返す必要があります。
+
+
+//emlist{
+public override bool HasPreviewGUI ()
+{
+	//プレビュー表示出来るものがあれば true を返す
+	return true;
+}
+//}
+
+これにより@<img>{ss13}のように、普段は空のゲームオブジェクトではプレビューの表示はできませんが、できるようになりました。
+
+//image[ss13][左が無効状態（false）、右が有効状態（true）]{
+
+//}
+
+=== プレビューの表示
+
+
+==== 事前準備
+
+事前に以下のスクリプトファイルを作成しておきます。
+
+//emlist{
+using UnityEngine;
+
+public class PreviewExample : MonoBehaviour {
+
+}
+//}
 
 //emlist{
 using UnityEngine;
 using UnityEditor;
 
-[CustomEditor (typeof(Character))]
-public class CharacterInspector : Editor
+[CustomEditor (typeof(PreviewExample))]
+public class PreviewExampleInspector : Editor
 {
-	SerializedProperty exampleProperty;
+	public override bool HasPreviewGUI ()
+	{
+		return true;
+	}
+}
+//}
+
+そして新規作成した Cube に PreviewExample をアタッチします。
+
+//indepimage[ss14]
+
+
+=== プレビューの最低限の実装
+
+プレビューのウインドウが表示する最低限の実装のために3つのメソッドを知っておかなくてはいけません。
+
+: GetPreviewTitle
+  プレビュー名です。同じゲームオブジェクトにアタッチされているコンポーネントが異なるプレビューを持っている場合の識別子にもなります。
+
+//image[ss15][プレビューが複数ある場合はプレビュー名の部分がドロップダウンになる]{
+
+//}
+
+//emlist{
+public override GUIContent GetPreviewTitle ()
+{
+	return new GUIContent ("プレビュー名");
+}
+//}
+
+: OnPreviewSettings
+  右上のヘッダーにGUIを追加するために使用します。プレビュー環境を変更したりするボタンや情報を記載します。ここに適した GUIStyle がドキュメント化されておらず見つけにくいですが「ラベルは@<code>{preLabel}」「ボタンは@<code>{preButton}」「ドロップダウンは@<code>{preDropDown}」「スライダーは@<code>{preSlider}」となります。
+  また、ここでは (Editor)GUILayout を使うのを推奨しており、@<code>{EditorGUILayout.BeginHorizontal} によって水平に GUI が並べられるように設定されています。
+
+
+//image[ss16][一番右端から並べられていく]{
+
+//}
+
+//emlist{
+public override void OnPreviewSettings ()
+{
+	GUIStyle preLabel = new GUIStyle ("preLabel");
+	GUIStyle preButton = new GUIStyle ("preButton");
+
+	GUILayout.Label ("ラベル", preLabel);
+	GUILayout.Button ("ボタン", preButton);
+}
+//}
+
+: OnPreviewGUI
+
+プレビューを表示（つまりテクスチャやレンダリング結果を表示するためのGUIを表示）する場所です。メソッドの引数として描画すべき領域の Rect を取得できるのでプレビューに合わせ Rect をカスタマイズすることが出来ます。
+
+//image[ss17][プレビュー領域全体に Box が描画されている]{
+
+//}
+
+//emlist{
+public override void OnPreviewGUI (Rect r, GUIStyle background)
+{
+	GUI.Box (r, "Preview");
+}
+//}
+
+== プレビューでカメラを使う
+
+モデルデータやアニメーション編集時にプレビュー画面で、マウスドラッグによって対象オブジェクトを回転させ隅々まで見渡せる機能があります。
+
+//image[ss18][AnimationClip のプレビュー。マウスでグリグリ動かすことが出来る]{
+
+//}
+
+これらの仕組みは特別なことをやっているわけではありません。@<img>{ss18}までリッチに、とはいきませんがそこまで作るための手順を紹介していきます。
+
+
+=== PreviewRenderUtility
+
+プレビューのユーティリティクラスとして @<code>{PreviewRenderUtility} があります。このクラスには@<b>{プレビュー専用のカメラ}が用意されており、簡単に@<code>{シーン内の景色を映し出すことができます。}
+
+
+例として「対象のゲームオブジェクトをカメラで LookAt し続けるプレビュー」を作成してみましょう。
+
+//image[ss19][完成図、プレビュー画面で特定の位置からゲームオブジェクトを見ることが出来る]{
+
+//}
+
+まずは OnEnable メソッドの中で PreviewRenderUtility のインスタンスを生成し、 LookAt する対象のゲームオブジェクトをコンポーネント経由で取得します。
+
+//emlist{
+using UnityEngine;
+using UnityEditor;
+
+[CustomEditor (typeof(PreviewExample))]
+public class PreviewExampleInspector : Editor
+{
+	PreviewRenderUtility previewRenderUtility;
+	GameObject previewObject;
+
+	void OnEnable ()
+	{
+	    // true にすることでシーン内のゲームオブジェクトを描画できるようになる
+		previewRenderUtility = new PreviewRenderUtility (true);
+
+		// FieldOfView を 30 にするとちょうどいい見た目になる
+		previewRenderUtility.m_CameraFieldOfView = 30f;
+
+		// 必要に応じて nearClipPlane と farClipPlane を設定
+		previewRenderUtility.m_Camera.nearClipPlane = 0.3f;
+		previewRenderUtility.m_Camera.farClipPlane = 1000;
+
+		// コンポーネント経由でゲームオブジェクトを取得
+		var component = (Component)target;
+		previewObject = component.gameObject;
+	}
+}
+//}
+
+そして描画を行う部分です。@<code>{BeginPreview} と @<code>{EndAndDrawPreview} で囲み、その中で @<code>{Camera.Render} を呼び出します。そうすることでプレビュー画面に、 「PreviewRenderUtility が持つカメラからのレンダリング結果」が表示されるようになります。
+
+//emlist{
+public override void OnPreviewGUI (Rect r, GUIStyle background)
+{
+	previewRenderUtility.BeginPreview (r, background);
+	
+	var previewCamera = previewRenderUtility.m_Camera;
+
+	previewCamera.transform.position = 
+		previewObject.transform.position + new Vector3 (0, 2.5f, -5);
+	
+	previewCamera.transform.LookAt (previewObject.transform);
+	
+	previewCamera.Render ();
+
+	previewRenderUtility.EndAndDrawPreview (r);
+
+	
+	// 描画タイミングが少ないことによって
+	// カクつきがきになる時は Repaint を呼び出す（高負荷）
+	// Repaint ();
+}
+//}
+
+これで、@<img>{ss19}のようなプレビュー画面が出来ました。
+
+//emlist{
+using UnityEngine;
+using UnityEditor;
+
+[CustomEditor (typeof(PreviewExample))]
+public class PreviewExampleInspector : Editor
+{
 	PreviewRenderUtility previewRenderUtility;
 	GameObject previewObject;
 
@@ -492,8 +693,11 @@ public class CharacterInspector : Editor
 		previewRenderUtility = new PreviewRenderUtility (true);
 		previewRenderUtility.m_CameraFieldOfView = 30f;
 
-		var character = (Character)target;
-		previewObject = character.gameObject;
+		previewRenderUtility.m_Camera.farClipPlane = 1000;
+		previewRenderUtility.m_Camera.nearClipPlane = 0.3f; 
+
+		var component = (Component)target;
+		previewObject = component.gameObject;
 	}
 
 	void OnDisable ()
@@ -508,42 +712,202 @@ public class CharacterInspector : Editor
 		return true;
 	}
 
-	public override void OnInteractivePreviewGUI (Rect r, GUIStyle background)
+	public override void OnPreviewGUI (Rect r, GUIStyle background)
 	{
 		previewRenderUtility.BeginPreview (r, background);
-		previewRenderUtility.m_Camera.transform.position = previewObject.transform.position + Vector3.forward * -5;
-		previewRenderUtility.m_Camera.transform.LookAt (previewObject.transform);
-		previewRenderUtility.m_Camera.Render ();
-		Repaint ();
+
+		var previewCamera = previewRenderUtility.m_Camera;
+
+		previewCamera.transform.position =
+			previewObject.transform.position + new Vector3 (0, 2.5f, -5);
+		
+		previewCamera.transform.LookAt (previewObject.transform);
+		
+		previewCamera.Render ();
+
 		previewRenderUtility.EndAndDrawPreview (r);
+
 	}
+}
+//}
+
+=== プレビュー用オブジェクトを作成する
+
+
+次は@<img>{ss18}のような、マウスでグリグリ動かすプレビューを作成します。
+
+
+=== プレビューのゲームオブジェクトの生成場所
+
+
+プレビューで使用されているゲームオブジェクトはシーンの中に生成されています。
+
+下記の手順を行うことで、シーン内にあるプレビュー用ゲームオブジェクトを、プレビュー画面で表示すること可能です。 
+
+ 1. Object.Instantiate でプレビュー用ゲームオブジェクトを生成する
+ 2. プレビュー用ゲームオブジェクトに Preview 専用のレイヤー「PreviewCullingLayer」を設定
+ 3. Camera.Render の直前後にプレビュー用オブジェクトをアクティブ/非アクティブにする
+
+順を追って説明していきます。
+
+==== 1. Object.Instantiate でプレビュー用ゲームオブジェクトを生成する
+
+コンポーネントからゲームオブジェクトを取得し、Instantiate で複製を行います。
+この時、必ず @<code>{HideFlags.HideAndDontSave} を設定してヒエラルキーにゲームオブジェクトの表示を行わず、また、シーンに保存しないようにしてください。
+
+最後に、ゲームオブジェクトを非アクティブにしてシーン内で見えないようにします。
+
+//emlist{
+GameObject previewObject;
+
+void OnEnable ()
+{
+	var component = (Component)target;
+	previewObject = Instantiate (component.gameObject);
+	previewObject.hideFlags = HideFlags.HideAndDontSave;
+	previewObject.SetActive (false);
+}
+//}
+
+==== 2. プレビュー用ゲームオブジェクトに Preview 専用のレイヤー「PreviewCullingLayer」を設定
+
+プレビュー専用の @<code>{Camera.PreviewCullingLayer} が用意されています。ですが、Reflection でアクセスする必要があります。
+
+//emlist{
+var flags = BindingFlags.Static | BindingFlags.NonPublic;
+var propInfo = typeof(Camera).GetProperty ("PreviewCullingLayer", flags);
+int previewLayer = (int)propInfo.GetValue (null, new object[0]);
+//}
+
+取得した @<code>{previewLayer} をプレビュー用のカメラとゲームオブジェクトに設定します。
+
+//emlist{
+previewRenderUtility = new PreviewRenderUtility (true);
+
+// previewLayer のみ表示する
+previewRenderUtility.m_Camera.cullingMask = 1 << previewLayer;
+//}
+
+階層下すべてに @<code>{previewLayer} を設定します。
+
+//emlist{
+previewObject.layer = previewLayer;
+foreach (Transform transform in previewObject.transform) {
+	transform.gameObject.layer = previewLayer;
+}
+//}
+
+
+==== 3. Camera.Render の直前後にプレビュー用オブジェクトをアクティブ/非アクティブにする
+
+
+@<b>{Camera.Render を実行する直前後にゲームオブジェクトを有効/無効にします。}こうすることでプレビューのゲームオブジェクトはプレビュー時のみ描画されるようになります。
+
+もし、ゲーム再生中にプレビューを表示する場合、@<b>{ゲームに影響のあるコンポーネント}は無効にするか破棄するようにしてください。プレビューもシーンの中のゲームオブジェクトを表示しているだけなので影響が出てきてしまいます。
+
+//emlist{
+public override void OnInteractivePreviewGUI (Rect r, GUIStyle background)
+{
+	previewRenderUtility.BeginPreview (r, background);
+
+	previewObject.SetActive (true);
+
+	previewRenderUtility.m_Camera.Render ();
+
+	previewObject.SetActive (false);
+
+	previewRenderUtility.EndAndDrawPreview (r);
 
 }
+//}
+
+=== グリグリ動かす
+
+マウスで@<b>{ドラッグ}して、プレビューのゲームオブジェクトをグリグリ動かします。
+
+マウスドラッグ時のマウス位置の差分は @<code>{Event.current.delta} で取得可能です。この差分で得たものを @<code>{transform.RotateAround} で設定しプレビュー用のゲームオブジェクトを回転させます。また、その時にゲームオブジェクトの中心位置を把握しておかなくてはいけません。
+
+@<code>{transform.position} で取得できるものは必ずゲームオブジェクトの中心位置とは限りません。モデルデータであれば足元が原点である可能性もあります。中心位置を割り出すにはメッシュであれば Bounds を取得し、その中心位置を求めなければいけませんが、@<code>{PivotMode.Center} に設定されていれば @<code>{Tools.handlePosition} でゲームオブジェクトの中心位置を取得することが可能です。
+
+
+//image[ss20][左が@<code>{PivotMode.Pivot}、右が @<code>{PivotMode.Center}]{
 
 //}
 
+ただ、この方法だとプレハブをプレビューした時に破綻してしまいます（プレハブはアセットでシーン上にはなく、Tools.handlePosition で位置を取得できないため）。どうしてもプレハブをプレビューしたい場合は、中心位置を独自で実装する必要があります。もしメッシュがあるなら Bounds から求めることが可能です。
+
+//emlist{
+Vector3 centerPosition;
+
+void OnEnable ()
+{
+	centerPosition = GetCenterPosition ();
+}
+
+// ゲームオブジェクトの中心位置を取得
+Vector3 GetCenterPosition ()
+{
+	// 設定中のPivotモードを保持
+	var currentMode = Tools.pivotMode;
+
+	// PivotMode.Center に変更
+	Tools.pivotMode = PivotMode.Center;
+
+	// ゲームオブジェクトの中心位置を取得
+	var centerPosition = Tools.handlePosition;
+
+	// pivotMode を元に戻す
+	Tools.pivotMode = currentMode;
+
+	return centerPosition;
+}
+
+public override void OnInteractivePreviewGUI (Rect r, GUIStyle background)
+{
+	var drag = Vector2.zero;
+
+	// ドラッグ時のマウス位置の差分を取得
+	if (Event.current.type == EventType.MouseDrag) {
+		drag = Event.current.delta;
+	}
+
+	RotatePreviewObject (drag);
+}
+
+// X 軸と Y 軸それぞれ回転させる
+private void RotatePreviewObject (Vector2 drag)
+{
+	previewObject.transform.RotateAround (centerPosition, Vector3.up, -drag.x);
+	previewObject.transform.RotateAround (centerPosition, Vector3.right, -drag.y);
+}
+//}
+
+最終的なコードが以下になります。
 
 //emlist{
 using UnityEngine;
 using UnityEditor;
+using System.Reflection;
 
-[CustomEditor (typeof(Character))]
-public class CharacterInspector : Editor
+[CustomEditor (typeof(PreviewExample))]
+public class PreviewExampleInspector : Editor
 {
-	SerializedProperty exampleProperty;
 	PreviewRenderUtility previewRenderUtility;
 	GameObject previewObject;
 	Vector3 centerPosition;
 
 	void OnEnable ()
 	{
-		var previewLayer = LayerMask.NameToLayer ("Preview");
+		var flags = BindingFlags.Static | BindingFlags.NonPublic;
+		var propInfo = typeof(Camera).GetProperty ("PreviewCullingLayer", flags);
+		int previewLayer = (int)propInfo.GetValue (null, new object[0]);
+
 		previewRenderUtility = new PreviewRenderUtility (true);
 		previewRenderUtility.m_CameraFieldOfView = 30f;
 		previewRenderUtility.m_Camera.cullingMask = 1 << previewLayer;
 
-		var character = (Character)target;
-		previewObject = Instantiate (character.gameObject);
+		var component = (Component)target;
+		previewObject = Instantiate (component.gameObject);
 		previewObject.hideFlags = HideFlags.HideAndDontSave;
 
 		previewObject.layer = previewLayer;
@@ -552,14 +916,20 @@ public class CharacterInspector : Editor
 		}
 
 
-		centerPosition = GetCenterPosition ();
+		var isPrefab = PrefabUtility.GetPrefabType (target) == PrefabType.Prefab;
 
+		centerPosition = isPrefab ? Vector3.zero : GetCenterPosition ();
+
+		if (isPrefab)
+			previewObject.transform.position = Vector3.zero;
 
 		previewObject.SetActive (false);
 
+		RotatePreviewObject (new Vector2 (-120, 20));
 	}
 
-	Vector3 GetCenterPosition(){
+	Vector3 GetCenterPosition ()
+	{
 		var currentMode = Tools.pivotMode;
 		Tools.pivotMode = PivotMode.Center;
 		var centerPosition = Tools.handlePosition;
@@ -567,12 +937,16 @@ public class CharacterInspector : Editor
 		return centerPosition;
 	}
 
+	public override GUIContent GetPreviewTitle ()
+	{
+		return new GUIContent (target.name+ " Preview");
+	}
+
 	void OnDisable ()
 	{
 		DestroyImmediate (previewObject);
 		previewRenderUtility.Cleanup ();
 		previewRenderUtility = null;
-		UnityEditorInternal.InternalEditorUtility.RepaintAllViews ();
 	}
 
 	public override bool HasPreviewGUI ()
@@ -591,9 +965,8 @@ public class CharacterInspector : Editor
 		}
 
 		previewRenderUtility.m_Camera.transform.position = centerPosition + Vector3.forward * -5;
-	
-		previewObject.transform.RotateAround (centerPosition, Vector3.up, -drag.x);
-		previewObject.transform.RotateAround (centerPosition, Vector3.right, -drag.y);
+
+		RotatePreviewObject (drag);
 
 		previewObject.SetActive (true);
 		previewRenderUtility.m_Camera.Render ();
@@ -603,6 +976,12 @@ public class CharacterInspector : Editor
 
 		if (drag != Vector2.zero)
 			Repaint ();
+	}
+
+	private void RotatePreviewObject (Vector2 drag)
+	{
+		previewObject.transform.RotateAround (centerPosition, Vector3.up, -drag.x);
+		previewObject.transform.RotateAround (centerPosition, Vector3.right, -drag.y);
 	}
 }
 //}

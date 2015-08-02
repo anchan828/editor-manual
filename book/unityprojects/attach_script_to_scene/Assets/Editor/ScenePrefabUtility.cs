@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using System.Collections;
 using UnityEditor;
 using System.IO;
 using UnityEditor.Callbacks;
@@ -33,6 +32,7 @@ public class ScenePrefabUtility
 	{
 		var guid = ScenePathToGUID (scenePath);
 		var go = EditorUtility.CreateGameObjectWithHideFlags (guid, HideFlags.HideAndDontSave, components);
+
 		var prefab = PrefabUtility.CreatePrefab (string.Format ("{0}/{1}.prefab", PREFAB_FOLDER_PATH, guid), go);
 
 		Object.DestroyImmediate (go);

@@ -1,9 +1,8 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class Fuga : MonoBehaviour {
+public class NewBehaviourScript : MonoBehaviour {
 
-	public Texture tex;
 	// Use this for initialization
 	void Start () {
 	

@@ -22,7 +22,7 @@ public class Example : MonoBehaviour {
 }
 //}
 
-まずは MonoBehaviour の派生クラスを作成し、そのクラスに対するカスタムエディタを作成します。標準で実装されているハンドルを表示しないように @<code>{Tools.current = Tool.None;} としておきます。これでゲームオブジェクトの位置を変更するためのハンドルが作成できました。
+まずは MonoBehaviour の派生クラスを作成し、そのクラスに対するカスタムエディターを作成します。標準で実装されているハンドルを表示しないように @<code>{Tools.current = Tool.None;} としておきます。これでゲームオブジェクトの位置を変更するためのハンドルが作成できました。
 
 //emlist{
 using UnityEngine;

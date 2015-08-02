@@ -4,14 +4,14 @@
 
 
 //lead{
-エディタ拡張に初めて触れるとき、まずウインドウを表示することから始めるかもしれません。この章では簡単にEditorWindowを表示する方法から目的に合ったEditorWindowの選択、その特性について解説していきます。
+エディター拡張に初めて触れるとき、まずウインドウを表示することから始めるかもしれません。この章では簡単にEditorWindowを表示する方法から目的に合ったEditorWindowの選択、その特性について解説していきます。
 //}
 //pagebreak
 
 == EditorWindowとは
 
 シーンウインドウ、ゲームウインドウ、インスペクターウインドウなど、これら全てはEditorWindowです。
-Unityエディタは様々な機能を持つEditorWindowの集まりで出来ています。
+Unityエディターは様々な機能を持つEditorWindowの集まりで出来ています。
 
 
 //image[ss01][これら全てはEditorWindow]{
@@ -498,7 +498,7 @@ ScriptableWizardクラスはEditorWindowを継承しています。なのでOnGU
 === PreferenceItem
 
 PreferenceItemはUnity Preferencesにメニューを追加するための機能です。
-Unity PreferencesにはUnityエディタ全体に影響のある設定を行うためにあります。
+Unity PreferencesにはUnityエディター全体に影響のある設定を行うためにあります。
 
 
 //image[ss16][追加されるメニューは一番最後の位置に追加される]{
@@ -585,7 +585,7 @@ public class Example : EditorWindow
 
 自前でシングルトンを実装するか、GetWindowによって内部にキャッシュしておく方法でEditorWindowへとアクセスすることが出来ます。しかし、先ほど上げた2つの方法が使えない状況も出てきます。その時は@<b>{Resources}クラスにある@<b>{Resources.FindObjectsOfTypeAll}を使用します。
 
-@<code>{FindObjectsOfTypeAll}は@<b>{現在ロードされている全てのオブジェクトから特定のオブジェクトを検索し、取得}します。これはランタイムで使用するオブジェクトだけではなく、エディタで使用するオブジェクトも検索対象となります。
+@<code>{FindObjectsOfTypeAll}は@<b>{現在ロードされている全てのオブジェクトから特定のオブジェクトを検索し、取得}します。これはランタイムで使用するオブジェクトだけではなく、エディターで使用するオブジェクトも検索対象となります。
 
 //emlist[][cs]{
 using UnityEditor;
@@ -635,7 +635,7 @@ public class Example : EditorWindow
 }
 //}
 
-ウインドウ位置やサイズなども保存されています。それらのデータは直接YAML形式のファイルをテキストエディタで見れば確認できます。
+ウインドウ位置やサイズなども保存されています。それらのデータは直接YAML形式のファイルをテキストエディターで見れば確認できます。
 
 //emlist{
   m_MinSize: {x: 100, y: 100}

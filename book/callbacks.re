@@ -63,7 +63,7 @@ public class NewBehaviourScript
 
 ただし、ゲーム再生時とビルド時でシーンアセットのパスを取得する方法に差異があることに気をつけてください。
 通常、現在開いているシーンのパスを取得するには @<code>{EditorApplication.currentScene} を使用します。
-エディタ上でゲームを再生するときは大丈夫なのですが、問題なのはビルド時です。ビルド時は @<b>{Editor API の一部が動作しません。}EditorApplication.currentScene もその影響の1つです。
+エディター上でゲームを再生するときは大丈夫なのですが、問題なのはビルド時です。ビルド時は @<b>{Editor API の一部が動作しません。}EditorApplication.currentScene もその影響の1つです。
 
 //image[ss02][左がビルド時の Debug.Log。右がエディター上でゲーム再生時の Debug.Log]{
 

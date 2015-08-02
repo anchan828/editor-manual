@@ -5,7 +5,7 @@
 
 == この章で得られる知識
 
-カスタムエディタ
+カスタムエディター
 プレビュー画面オーバーライド
 
 == 本章で使用するソースコード
@@ -15,7 +15,7 @@
 //table[t1][]{
 ファイル	説明
 ------------------------
-AnimationClipEditor.cs	カスタムエディタ
+AnimationClipEditor.cs	カスタムエディター
 OverrideEditor.cs	Editorクラスのラッパー
 SpriteAnimationPreview.cs	スプライトアニメーションを行うカスタムプレビュー
 //}
@@ -33,10 +33,10 @@ AnimationClipのインスペクターは3Dアニメーションが基準とな�
 
 //}
 
-== カスタムエディタ
+== カスタムエディター
 
-既存のAnimationClipのカスタムエディタ、AnimationClipEditorをオーバーライドする形で新たにカスタムエディタを作成します。
-今回作成するカスタムエディタの名前は@<b>{SpriteAnimationClipEditor}とします。
+既存のAnimationClipのカスタムエディター、AnimationClipEditorをオーバーライドする形で新たにカスタムエディターを作成します。
+今回作成するカスタムエディターの名前は@<b>{SpriteAnimationClipEditor}とします。
 
 まずは以下のようなクラスを作成します。複数選択した場合でも動作するように@<code>{CanEditMultipleObjects}属性をつけましょう。
 
@@ -61,7 +61,7 @@ public class SpriteAnimationClipEditor : Editor
 
 === インスペクターの表示はデフォルトのままにしたい
 
-今回はプレビュー画面のみを変更したいのでOnInspectorGUIの部分が変更されてしまうのは不本意です。なので、メソッドをオーバーライドしない限りはベースとなるEditorオブジェクト（カスタムエディタで使用するもの）を流用するための@<b>{OverrideEditor}クラスを作成してみましょう。
+今回はプレビュー画面のみを変更したいのでOnInspectorGUIの部分が変更されてしまうのは不本意です。なので、メソッドをオーバーライドしない限りはベースとなるEditorオブジェクト（カスタムエディターで使用するもの）を流用するための@<b>{OverrideEditor}クラスを作成してみましょう。
 
 //emlist[コードは@<href>{https://gist.github.com/anchan828/8bd4fb7f7460eea1630a,ここ}から入手][cs]{
 #@warn(ココもうちょっと説明した方がいい気がする)

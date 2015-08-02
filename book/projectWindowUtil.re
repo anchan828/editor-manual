@@ -81,7 +81,7 @@ public class DoCreateScriptAsset : EndNameEditAction
 
 StartNameEditingIfProjectWindowExists は 2 つの生成パターンをサポートしています。
 
-@<b>{1つ目は、Unityエディタ上にはない外部ファイルを元にしてアセットを生成する方法です。}	
+@<b>{1つ目は、Unityエディター上にはない外部ファイルを元にしてアセットを生成する方法です。}	
 
 これはスクリプトファイルの生成のような場合に使用します。第5引数が外部ファイル（=リソース）のパスを指定するようになっています。この時、インスタンスIDは必要ないので 0 にします。
 

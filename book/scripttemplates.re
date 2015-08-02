@@ -228,7 +228,7 @@ public class #SCRIPTNAME# : EditorWindow
 
 //}
 
-配置した後は、@<b>{必ずUnityエディタを再起動します。}このScriptTemplatesが読み込まれるのはUnityエディタの起動時のみだからです。
+配置した後は、@<b>{必ずUnityエディターを再起動します。}このScriptTemplatesが読み込まれるのはUnityエディターの起動時のみだからです。
 
 再起動した後、@<code>{Assets/Create}メニューに自作したテンプレートファイルのメニューが追加されているのがわかります。
 

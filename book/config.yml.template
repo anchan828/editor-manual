@@ -7,7 +7,7 @@
 # ブック名(ファイル名になるもの。ASCII範囲の文字を使用)
 bookname: book
 # 書名
-booktitle: エディタ拡張
+booktitle: エディター拡張
 # 著者
 aut: 安藤 圭吾
 

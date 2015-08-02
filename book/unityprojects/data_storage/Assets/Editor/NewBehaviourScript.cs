@@ -1,10 +1,14 @@
-﻿using UnityEditor;
+﻿using UnityEngine;
+using UnityEditor;
 
-public class NewBehaviourScript
+[CreateAssetMenu]
+public class NewBehaviourScript : ScriptableObject
 {
-	[InitializeOnLoadMethod]
-	static void SaveConfig ()
-	{
-		EditorUserSettings.SetConfigValue ("Data 1", "text");		
-	}
+	[Range(0,10)]
+	public int number = 3;
+
+	public bool toggle = false;
+
+	public string[] texts = new string[5];
+
 }

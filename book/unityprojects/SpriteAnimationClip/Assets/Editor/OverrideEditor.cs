@@ -23,7 +23,7 @@ public abstract class OverrideEditor : Editor
         baseEditor.OnInspectorGUI();
     }
 
-    // ... 以下 GetInfoString、OnPreviewSettings というようにカスタムエディタで使用できるメソッド群が列挙する
+    // ... 以下 GetInfoString、OnPreviewSettings というようにカスタムエディターで使用できるメソッド群が列挙する
     // ただし、DrawPreview、OnPreviewGUI、OnInteractivePreviewGUIをすべてオーバーライドしてしまうと挙動が変更されてしまうので注意すること
 //#@@range_end(OverrideEditor)
     public override string GetInfoString()

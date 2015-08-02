@@ -1,5 +1,0 @@
-= PresetLibrary
-
-#@# //indepimage[frontispiece]
-#@# //pagebreak
-

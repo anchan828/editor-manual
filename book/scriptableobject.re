@@ -7,11 +7,11 @@ ScriptableObject は独自のアセットを作成するための仕組みです
 
 Unity には独自のシリアライズ機構を持っており、全てのオブジェクト（UnityEngine.Object）は、そのシリアライズ機構を通してデータのシリアライズ/デシリアライズを行い、ファイルとUnityエディター間のやりとりをしています。シリアライズ機構については@<chapref>{serializedobject}を参照してください。
 
-Unity 内部のアセット（マテリアルやアニメーションクリップ等）は全て UnityEngine.Object の派生クラス経由でシリアライズされて保存されています。独自のアセットを作成するために、UnityEngine.Object の派生クラスを作成しようとするかもしれませんが、ユーザーの手で UnityEngine.Object の派生クラスを作成するのは禁止されています。ユーザーが Unity のシリアライズを利用した、独自のアセットを作成するには ScriptableObject の派生クラスを使用する必要があります。
+Unity 内部のアセット（マテリアルやアニメーションクリップ等）は全て UnityEngine.Object の派生クラスです。独自のアセットを作成するために、UnityEngine.Object の派生クラスを作成したいですが、ユーザー側では UnityEngine.Object の派生クラスを作成するのは禁止されています。ユーザーが Unity のシリアライズ機構を利用した、独自のアセットを作成するには ScriptableObject を扱う必要があります。
 
 == ScriptableObject は Unity エディターの要
 
-ScriptableObject は Unity エディターのいたる所で使われています。例えば、シーンビューやゲームビューなどの EditorWindow は、ScriptableObject の派生クラスであり、また、インスペクターに GUI を表示するための Editor オブジェクトも ScriptableObject の派生クラスです。Unity エディターは ScriptableObject で作成されているといっても過言ではありません。
+ScriptableObject は Unity エディターのいたる所で使われています。例えば、シーンビューやゲームビューなどの エディターウインドウ は、ScriptableObject の派生クラスから生成されており、また、インスペクターに GUI を表示するための Editor オブジェクトも ScriptableObject の派生クラスから生成されています。Unity エディターは ScriptableObject で作成されているといっても過言ではありません。
 
 //image[ss02][アセンブリブラウザで見ると ScriptableObject が継承されているのが分かる]{
 
@@ -48,6 +48,7 @@ public class ExampleAsset : ScriptableObject
 }
 //}
 
+
 === アセットとして保存
 
 次にインスタンス化したオブジェクトをアセットとして保存します。アセットの作成は @<code>{AssetDatabase.CreateAsset} を使って作成することが可能です。
@@ -65,10 +66,25 @@ static void CreateExampleAsset ()
 }
 //}
 
-//image[ss01][]{
+//indepimage[ss01]
+
+また、@<code>{CreateAssetMenu} 属性を使うことで簡単にアセットを作成することが出来ます。
+
+//emlist{
+using UnityEngine;
+using UnityEditor;
+
+[CreateAssetMenu(menuName = "Example/Create ExampleAsset Instance")]
+public class ExampleAsset : ScriptableObject
+{
+}
 //}
 
-=== ScriptableObject をアセットから読み込む
+CreateAssetMenu を使用した場合は 「Assets/Create」配下にメニューが作成されます。
+
+//indepimage[ss07]
+
+=== スクリプトからアセットの ScriptableObject をロードする
 
 読み込む方法も簡単で @<code>{AssetDatabase.LoadAssetAtPath} を使って読み込みます。
 

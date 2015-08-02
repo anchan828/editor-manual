@@ -3,14 +3,14 @@ using UnityEditor;
 
 public class Example
 {
-	[MenuItem("Example/Create Cube")]
+	[MenuItem ("Example/Create Cube")]
 	static void CreateCube ()
 	{
 		var cube = GameObject.CreatePrimitive (PrimitiveType.Cube);
 		Undo.RegisterCreatedObjectUndo (cube, "Create Cube");
 	}
 
-	[MenuItem("Example/Random Rotate")]
+	[MenuItem ("Example/Random Rotate")]
 	static void RandomRotate ()
 	{
 		var transform = Selection.activeTransform;
@@ -31,17 +31,24 @@ public class Example
 		}
 	}
 
-	[MenuItem("Example/Change PlayerInfo")]
+	[MenuItem ("Example/Change PlayerInfo")]
 	static void ChangePlayerInfo ()
 	{
 		var player = Selection.activeGameObject.GetComponent<Player> ();
 
 		if (player) {
 			Undo.RecordObject (player, "Change PlayerInfo");
-			player.info = new PlayerInfo{
+			player.info = new PlayerInfo {
 				name = "New PlayerName",
-				hp = Random.Range(0,10)
+				hp = Random.Range (0, 10)
 			};
 		}
 	}
+
+	[MenuItem ("Example/Group Name")]
+	static void GroupName ()
+	{
+		
+	}
+
 }

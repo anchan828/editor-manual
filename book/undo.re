@@ -22,7 +22,7 @@
 
 次に@<code>{Edit/Undo Create Cube}を実行します。ショートカットキーで実行する場合は「command/ctrl + Z」です。
 
-//image[ss02][メニュー名が@<code>{Undo Create Cube}ではない場合、余計な操作を行っている可能性があります。もう一度Cubeを生成しなおしてみましょう。]{
+//image[ss02][メニュー名が@<code>{Undo Create Cube}ではない場合、余計な操作を行っている可能性があります。もう一度Cubeを生成しなおしてください。]{
 //}
 
 生成されたCubeが削除されましたか？Cubeを生成する前に戻ったことになります。これが「元に戻る = Undo」という操作です。
@@ -34,13 +34,11 @@ Undoの管理はスタックで行われています。@<fn>{LIFO}
 
 //footnote[LIFO][スタックは、後から入れたものを先に出す「LIFO（後入先出）」です。]
 
-//image[stack][スタックをイメージするとこんな感じ]{
+//image[stack][スタックのイメージ]{
 
 //}
 
-//image[ss05][]{
-
-//}
+//indepimage[ss05]
 
 
 == Undoを実装してみる
@@ -69,21 +67,21 @@ public class Example
 }
 //}
 
-Cubeを生成してもUndoを行うことは出来ません。これはUndoの実装がおこなれていないためです。
+Cubeを生成してもUndoを行うことは出来ません。これはUndoの実装が行われていないためです。
 
 //image[ss03][Undoという文字が灰色になって選択できないことがわかる]{
 
 //}
 
-さっそく@<b>{Undoクラス}を使って実装します。
+さっそく@<b>{Undoクラス}を使って、Undo を実装していきます。
 
-今回は@<code>{Undo.RegisterCreatedObjectUndo}関数を使用します。この関数はオブジェクトが生成された時に使用するUndoで、この関数でUndo登録されたオブジェクトは、Undo実行時に破棄されます。
+Undo 操作の1例として @<code>{Undo.RegisterCreatedObjectUndo} 関数を使用してUndoを実装してみましょう。この関数はオブジェクトが生成された時に使用するUndoで、この関数によって登録されたオブジェクトは、Undo実行時に破棄されます。
 
 //image[RegisterCreatedObjectUndo][RegisterCreatedObjectUndo関数とUndoを実行した時の動き]{
 
 //}
 
-@<img>{RegisterCreatedObjectUndo}では、RegisterCreatedObjectUndo関数を実行すると「Cubeを作成する」という処理を差分としてスタックに追加します@<fn>{f1}。この差分がUndoで使用される際には「Cubeを作成する前に戻す」つまり、Cubeを削除するという処理を行うことになります。
+@<img>{RegisterCreatedObjectUndo}では、RegisterCreatedObjectUndo関数を実行すると「Cubeを作成する」という処理を差分としてスタックに追加します@<fn>{f1}。Undoが実行される際には「Cubeを作成する前に戻す」つまり、Cubeを削除するという処理を行うことになります。
 
 //footnote[f1][実際にはオブジェクトとUndo名がまとめられてスタックに保存されます。]
 
@@ -171,15 +169,15 @@ public class Example
 
 == どのプロパティが変更されたかを知るPropertyDiffUndoRecorder
 
-Undoのスタックに保存されるのは「値が変更されたプロパティの、@<b>{変更前の値} 」です。
+Undoのスタックに保存されるのは「値の変更前と変更後の差分」です。
 
-なので「どのプロパティが変更されたか」を知る必要があります。その役割を担うのがPropertyDiffUndoRecorderです。
+なので「どのプロパティが変更されたか」を知る必要があります。その役割を担うのが PropertyDiffUndoRecorder です。
 
 //image[ss07][PropertyDiffUndoRecorderはプロファイラで確認することが出来る]{
 
 //}
 
-PropertyDiffUndoRecorderは、RecordObjectで登録されたオブジェクトを、Unityエディタのライフサイクルの最後あたりでUndoのFlushを呼びだすことで、Undo.RecordObjectが呼び出された時のオブジェクトの各プロパティと、Flushが呼び出された時のオブジェクトの各プロパティを使用して差分を求めます。
+PropertyDiffUndoRecorderは、Unityエディタのライフサイクルの最後に Undo の Flush を呼びだします。その時に RecordObject で登録されたオブジェクトの各プロパティと、Flush が呼び出された時の各プロパティを使用して差分を求めます。
 
 以下の順に実行され、図にしたものが@<img>{PropertyDiffUndoRecorder}です。
 
@@ -604,9 +602,6 @@ public class ExampleWindow : EditorWindow
 
 
 Undoにはグループという概念が存在します。
-実際にUndoを実装する時、UndoGroup（UndoGroupってのは私が勝手につけた）を実行していることになります。
-
-
 
 例えば、下記のコード
 
@@ -634,33 +629,23 @@ Undo.RegisterCreatedObjectUndo (effect, "Effectを作成");
 //indepimage[img01]
 
 
-
-
-この挙動で問題ない場合もあるかもしれませんが、「それぞれのUndoを個別に実行したい」という時もあると思います。
-
-
-=== まず、Groupってどのタイミングで作られるの？
-
-
-まず、エディタにもランタイムでいうAwake/Start/Updateのようなライフサイクルがあります。
-その1サイクル分が1つのグループとしてまとめられます。
+これは PropertyDiffUndoRecorder が Flush されるまで、1つのグループとしてまとめられるからです。
+Undo 時には 1グループまとめて処理が走ります。
 
 
 
-といっても、大抵は「OnGUIなどUnityが用意しているメソッド内で実行されるものが1グループにまとまる」って言った方がわかりやすいし、これも正しい。
-
+この挙動で問題ない場合もあるかもしれませんが、「それぞれのUndoを個別に実行したい」という時もあります。
 
 === それぞれのUndoを個別に実行する
 
 
-1つのグループになっているからまとめてUndoされるわけなので、これを2つのグループに分けちゃえばいいのです。
+1つのグループになっているため、まとめてUndoされるわけなので、これを2つのグループに分ければ問題ありません。
 そのためのAPIが用意されています。
-
 
 ==== Undo.IncrementCurrentGroup
 
 
-グループはint型でindexとして管理されているので、それをインクリメント(+1する)してグループを分けます。
+グループはint型でindexとして管理されているので、それをインクリメント(+1)してグループを分けます。
 そうすると、それぞれのものは別のグループとして認識され個別にUndoできるようになります。
 
 
@@ -677,3 +662,71 @@ Undo.RegisterCreatedObjectUndo (effect, "Effectを作成");
 
 
 //indepimage[img02]
+
+=== 個別だった Undo を1つにまとめる
+
+最初は個別で独立した Undo 処理でしたが、最後には Undo を1つにまとめてしまう事が可能です。
+
+カラーピッカーでこの例を見ることが出来ます。
+
+カラーピッカーの表示中は、各RGBA成分に対しての Undo が適用されます。しかし、カラーピッカーで色を決定した後は、カラーピッカーを開く前の色へと Undo しなくてはいけません。これはからピッカーを閉じた時に、各RGBA成分で分かれていた Undo を 1 つにまとめることで実現が可能になります。
+
+//image[ss12][各成分に対する Undo と、色に対する Undo の違い]{
+
+//}
+
+==== CollapseUndoOperations
+
+Undo を一つにまとめる方法は CollapseUndoOperations を使用します。
+
+CollapseUndoOperations は指定した group から今までのグループを全て1つにまとめる機能です。
+
+
+下記コードは、Cube/Plane/Cylinder を作成するコードです。各ゲームオブジェクトの生成に対して Undo が行われます。また、EditorWindow を閉じた時には Undo を実行した時に Cube/Plane/Cylinder が全て削除されます。
+
+下記コードのように @<code>{OnEnable} 内でグループIDを保持しておき、@<code>{OnDisable} で今までの Undo を1つにまとめます。
+
+
+//emlist{
+using UnityEngine;
+using UnityEditor;
+
+public class NewBehaviourScript : EditorWindow
+{
+    int groupID = 0;
+
+    [MenuItem ("Window/Example")]
+    static void Open ()
+    {
+        GetWindow<NewBehaviourScript> ();
+    }
+
+    void OnEnable ()
+    {
+        groupID = Undo.GetCurrentGroup ();
+    }
+
+    void OnDisable ()
+    {
+        Undo.CollapseUndoOperations (groupID);
+    }
+
+    void OnGUI ()
+    {
+        if (GUILayout.Button ("Cube 作成")) {
+            var cube = GameObject.CreatePrimitive (PrimitiveType.Cube);
+            Undo.RegisterCreatedObjectUndo (cube, "Create Cube");
+        }
+
+        if (GUILayout.Button ("Plane 作成")) {
+            var plane = GameObject.CreatePrimitive (PrimitiveType.Plane);
+            Undo.RegisterCreatedObjectUndo (plane, "Create Plane");
+        }
+
+        if (GUILayout.Button ("Cylinder 作成")) {
+            var cylinder = GameObject.CreatePrimitive (PrimitiveType.Cylinder);
+            Undo.RegisterCreatedObjectUndo (cylinder, "Create Cylinder");
+        }
+    }
+}
+//}

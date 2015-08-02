@@ -1,16 +1,17 @@
 = ScriptableObject
 
-前提知識としては、公式ドキュメント - @<href>{http://docs.unity3d.com/ja/current/Manual/class-ScriptableObject.html, ScriptableObject} をご覧ください。本章では、エディタ拡張で ScriptableObject を使う方法について説明していきます。
 
 == ScriptableObject とは
 
-Unity には独自のシリアライズ機構を持っており、全てのオブジェクトは UnityEngine.Object 経由でシリアライズが行われます。ですがユーザーは UnityEngine.Object の派生クラスを作成することが出来ないため、必ず ScriptableObject を使用する必要があります。
+ScriptableObject は独自のアセットを作成するための仕組みです。また、Unityのシリアライズ機構を扱うための形式とも言えます。
 
-少しいい方を変えてみると「アセットを作成するには ScriptableObject を使う必要がある」とも言えます。
+Unity には独自のシリアライズ機構を持っており、全てのオブジェクト（UnityEngine.Object）は、そのシリアライズ機構を通してデータのシリアライズ/デシリアライズを行い、ファイルとUnityエディター間のやりとりをしています。シリアライズ機構については@<chapref>{serializedobject}を参照してください。
+
+Unity 内部のアセット（マテリアルやアニメーションクリップ等）は全て UnityEngine.Object の派生クラス経由でシリアライズされて保存されています。独自のアセットを作成するために、UnityEngine.Object の派生クラスを作成しようとするかもしれませんが、ユーザーの手で UnityEngine.Object の派生クラスを作成するのは禁止されています。ユーザーが Unity のシリアライズを利用した、独自のアセットを作成するには ScriptableObject の派生クラスを使用する必要があります。
 
 == ScriptableObject は Unity エディターの要
 
-ScriptableObject は Unity エディタのいたる所で使われています。例えば、Scene ビューやGame ビューなどの EditorWindow は ScriptableObject 経由で作成されていたり、インスペクターに GUI を表示するための Editor オブジェクトも ScriptableObject で作成されています。Unity エディターは ScriptableObject で作成されているといっても過言ではありません。
+ScriptableObject は Unity エディターのいたる所で使われています。例えば、シーンビューやゲームビューなどの EditorWindow は、ScriptableObject の派生クラスであり、また、インスペクターに GUI を表示するための Editor オブジェクトも ScriptableObject の派生クラスです。Unity エディターは ScriptableObject で作成されているといっても過言ではありません。
 
 //image[ss02][アセンブリブラウザで見ると ScriptableObject が継承されているのが分かる]{
 
@@ -39,11 +40,11 @@ using UnityEditor;
 
 public class ExampleAsset : ScriptableObject
 {
-	[MenuItem ("Example/Create ExampleAsset Instance")]
-	static void CreateExampleAssetInstance ()
-	{
-		var exampleAsset = CreateInstance<ExampleAsset> ();
-	}
+    [MenuItem ("Example/Create ExampleAsset Instance")]
+    static void CreateExampleAssetInstance ()
+    {
+        var exampleAsset = CreateInstance<ExampleAsset> ();
+    }
 }
 //}
 
@@ -51,16 +52,16 @@ public class ExampleAsset : ScriptableObject
 
 次にインスタンス化したオブジェクトをアセットとして保存します。アセットの作成は @<code>{AssetDatabase.CreateAsset} を使って作成することが可能です。
 
-アセットの拡張子は、@<b>{必ず} @<code>{.asset} でなくてはいけません。他の拡張子にしてしまうと、Unity が ScriptableObject 経由で作成されたアセットと認識しません。
+アセットの拡張子は、@<b>{必ず} @<code>{.asset} でなくてはいけません。他の拡張子にしてしまうと、Unity が ScriptableObject 派生のアセットと認識しません。
 
 //emlist{
 [MenuItem ("Example/Create ExampleAsset")]
 static void CreateExampleAsset ()
 {
-	var exampleAsset = CreateInstance<ExampleAsset> ();
+    var exampleAsset = CreateInstance<ExampleAsset> ();
 
-	AssetDatabase.CreateAsset (exampleAsset, "Assets/Editor/ExampleAsset.asset");
-	AssetDatabase.Refresh ();
+    AssetDatabase.CreateAsset (exampleAsset, "Assets/Editor/ExampleAsset.asset");
+    AssetDatabase.Refresh ();
 }
 //}
 
@@ -75,7 +76,9 @@ static void CreateExampleAsset ()
 [MenuItem ("Example/Load ExampleAsset")]
 static void LoadExampleAsset ()
 {
-    var exampleAsset = AssetDatabase.LoadAssetAtPath<ExampleAsset> ("Assets/Editor/ExampleAsset.asset");
+    var exampleAsset = 
+    　　　　AssetDatabase.LoadAssetAtPath<ExampleAsset> 
+                    ("Assets/Editor/ExampleAsset.asset");
 }
 //}
 
@@ -85,6 +88,28 @@ MonoBehaviour と同じで、フィールドに SerializeField を付けるだ�
 
 //indepimage[ss03]
 
+//emlist{
+using UnityEngine;
+using UnityEditor;
+
+public class ExampleAsset : ScriptableObject
+{
+    [SerializeField]
+    string str;
+
+    [SerializeField, Range (0, 10)]
+    int number;
+
+    [MenuItem ("Example/Create ExampleAsset Instance")]
+    static void CreateExampleAssetInstance ()
+    {
+        var exampleAsset = CreateInstance<ExampleAsset> ();
+
+        AssetDatabase.CreateAsset (exampleAsset, "Assets/Editor/ExampleAsset.asset");
+        AssetDatabase.Refresh ();
+    }
+}
+//}
 
 == アイコンの変更
 
@@ -108,20 +133,4 @@ MonoBehaviour と同じで、フィールドに SerializeField を付けるだ�
 
 //image[ss06][]{
 
-//}
-
-== CustomEditor
-
-CustomEditor も MonoBehaviour と同様の方法で作成することが可能です。
-
-//emlist{
-using UnityEditor;
-
-[CustomEditor (typeof(ExampleAsset))]
-public class ExampleAssetInspector : Editor
-{
-    public override void OnInspectorGUI ()
-    {
-    }
-}
 //}

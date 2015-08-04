@@ -84,7 +84,7 @@ TextureImporter:
 
 ===[/column]
 
-== Overwriteの使い方
+== Overwriterの使い方
 
 //image[ss05][同じ名前のアセットが存在するとダイアログが出る]{
 
@@ -96,9 +96,13 @@ TextureImporter:
 
 //}
 
+== Overwriter の作り方
+
+以降は Overwriter を作成するまでの手順を説明していきます。
+
 == ファイルのインポート監視
 
-　まず、上書きするアセットがインポートされるかの監視をしなければいけません。Unityエディターに何のアセットがインポートされようとしているか、インポートされたかを知るには@<b>{AssetPostprocessor}クラスを使います。詳しいAssetPostprocessorの使い方については、@<chapref>{assetpostprocessor}を御覧ください。
+まず、上書きするアセットがインポートされるかの監視をしなければいけません。Unityエディターに何のアセットがインポートされようとしているか、インポートされたかを知るには@<b>{AssetPostprocessor}クラスを使います。
 
 
 //emlist[][cs]{
@@ -119,14 +123,45 @@ public class Overwriter : AssetPostprocessor
 }
 //}
 
-今回は@<b>{OnPostprocessAllAssets}を使用します。鋭い人はもうお気づきかもしれませんが、アセットを上書きすると言っていますが処理的には「@<b>{別アセットとしてインポートし、置き換える}」となります。これは（エディター拡張でアクセスできる範囲で）インポート前のアセットにアクセスするとき、同じファイル名があった場合にはインポートできるように@<b>{既にリネームされた}状態になってしまうためです。hoge.pngをインポートする時に、同じ名前のアセットがあればhoge 1.pngとなります。
+今回は@<b>{OnPostprocessAllAssets}を使用します。本章ではアセットを上書きするのを目的としていますが処理的には「まず@<b>{別アセットとしてインポート}した後、置き換える」処理となります。これは Unity の仕様の関係で、インポート時に、同じ階層に同名のファイルがあった場合には@<b>{既にリネームした}状態でインポートしてしまうためです。例えば、hoge.png をインポートする時に、既に同名のアセットがあればhoge 1.png となります。
 
+//image[ss12][仕様上、同名とならないように数値がふられてしまう]{
 
-この仕様を受けて、Overwriteの処理の順番は以下になります。
+//}
+
+この仕様を受けて、Overwriterの処理の順番は以下になります。
 
  1. とりあえずインポートする。ここでhoge.pngというアセットが既にある場合はhoge 1.pngとなる。
  2. 別アセットとしてインポートされた時に末尾についた「<半角スペース><数字>」が存在する場合、アセットを上書きしたいものとして判断する。
  3. 上書きするかどうかのダイアログを出し、ユーザーの確認が取れれば上書きする。
+
+===[column] DragAndDrop クラスでリネーム前のパスを取得する
+
+同名のファイルをインポートする際、リネームされた状態でインポートされます。ですが、DragAndDrop.paths にはリネーム前のファイルパスが格納されて残っています。
+
+//emlist{
+// hoge.png がある状態で、 hoge.png をインポート
+static void OnPostprocessAllAssets (
+        string[] importedAssets, 
+        string[] deletedAssets, 
+        string[] movedAssets, 
+        string[] movedFromPath)
+    {
+        if (Event.current.type != EventType.DragPerform)
+                return;
+
+        // リネーム後の hoge 1.png でインポートされていることを確認
+        var hoge1 = AssetDatabase.LoadAssetAtPath<Texture2D> ("Assets/hoge 1.png");
+        Debug.Log (hoge1);
+
+        // hoge.png のパスが格納されていることを確認
+        foreach (var path in DragAndDrop.paths) {
+            Debug.Log (path);
+        }
+    }
+//}
+
+===[/column]
 
 
 == ドラッグした時のみ処理を実行する

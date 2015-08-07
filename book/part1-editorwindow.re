@@ -18,6 +18,40 @@ Unityエディターは様々な機能を持つEditorWindowの集まりで出来
 
 //}
 
+
+== HostView と SplitView と DockArea
+
+EditorWindow は単体で描画されているわけではなく、親として @<b>{DockArea} を持ち、この DockArea によって EditorWindow は描画されています。
+
+//image[ss19][]{
+
+//}
+
+DockArea は「Webブラウザのタブ」と同じ機能を提供します。
+
+例えば、ウインドウはそれぞれ独立した3つのウインドウにすることもできますし、3つのタブにして1つのウインドウにまとめることも出来ます。
+
+//image[ss20][Chromeのタブ機能]{
+//}
+
+見た目も似ていることながら、タブを摘んで別のウインドウにする機能も実装されています。
+
+//image[ss21][DockAreaのタブ機能]{
+
+//}
+
+このように、DockArea には1つ以上の EditorWidow を描画するための機能が備わっています。例えば、2つ以上の EditorWindow が DockArea にある場合、タブ機能を使って各 EditorWindow を表示するか、 @<b>{SplitWindow} で DockArea の領域を分割して表示することが出来ます。
+
+
+//image[ss22][1つの DockArea にシーンビューとヒエラルキービューを分割して表示]{
+
+//}
+
+
+さらに DockArea は @<b>{HostView} の役割も持っています。HostView は、様々なオブジェクト・イベントとのやり取りを行うための View です。ウインドウの「Update関数」や「OnSelectionChange関数」などを実行するための機能が含まれています。
+
+3つのウインドウ「HostView」「SplitView」「DockArea」を紹介しました。これらの領域（クラス）には残念ながらアクセスすることが出来ません。ですが、覚えておくと EditorWindow の仕組みがより早く理解できるかもしれません。
+
 == EditorWindowの作成
 
 まずは@<b>{一般的な}EditorWindowを作成してみましょう。
@@ -41,7 +75,7 @@ public class Example : EditorWindow
 }
 //}
 
-2. 次にEditorWindowを表示するためのトリガーとしてメニューを追加します。MenuItemについては@<chapref>{part1-menuitem}を御覧ください。
+2. 次にEditorWindowを表示するためのトリガーとしてメニューを追加します。
 
 
 //emlist[][cs]{
@@ -49,6 +83,7 @@ using UnityEditor;
 
 public class Example : EditorWindow
 {
+    // MenuItemについては@<chapref>{part1-menuitem}をご覧ください。
     [MenuItem("Window/Example")]
     static void Open ()
     {
@@ -72,13 +107,13 @@ public class Example : EditorWindow
 }
 //}
 
-//image[ss03]["Window/Example"メニューを実行するたびにEditorWindowを作成し表示できる]{
+//image[ss03]["Window/Example"メニューを実行して表示できる。実行するたびにEditorWindowを新規作成する。]{
 
 //}
 
 == EditorWindow.GetWindow
 
-EditorWindowを作成する場合、「@<b>{複数の存在を許可するEditorWindow}」と「@<b>{単数のみ許可するEditorWindow}」の2種類が考えられます。@<b>{複数の存在を許可EditorWindow}は先ほど説明した@<code>{EditorWindow.CreateInstance}を使ってEditorWindowを作成し表示していきます。
+EditorWindowを作成する場合、「@<b>{複数の存在を許可するEditorWindow}」と「@<b>{単数のみ許可するEditorWindow}」の2種類が考えられます。@<b>{複数の存在を許可するEditorWindow}は先ほど説明した@<code>{EditorWindow.CreateInstance}を使ってEditorWindowを作成し表示していきます。
 
 === 単数のみ許可するEditorWindow
 
@@ -102,7 +137,7 @@ public class Example : EditorWindow
 }
 //}
 
-これでも良いのですが、「既にEditorWindowが存在すればそのインスタンスを取得する。なければ生成する。ついでにShowを実行する。」というAPIが存在します。それが@<code>{EditorWindow.GetWindow}です。
+これでも良いのですが、「既にEditorWindowが存在すればそのインスタンスを取得する。なければ生成する。最後にShow関数を実行する。」という複数の機能を1つにまとめたAPIが存在します。それが@<code>{EditorWindow.GetWindow}です。
 
 //emlist[][cs]{
 using UnityEditor;
@@ -119,7 +154,7 @@ public class Example : EditorWindow
 
 GetWindowを実行すると内部でインスタンスがキャッシュされます。
 
-更にGetWindowでは便利な機能があり、特定のEditorWindowにタブウインドウとして表示する事が可能です。
+更にGetWindow関数には便利な機能があり、特定のEditorWindowにタブウインドウとして表示する事が可能です。（DockAreaにEditorWindowを追加）
 
 //image[ss04][シーンウインドウにタブウインドウとして追加することができる]{
 
@@ -207,6 +242,7 @@ public class Example : EditorWindow
 
     void OnGUI ()
     {
+        // エスケープを押した時に閉じる
         if (Event.current.keyCode == KeyCode.Escape) {
             exampleWindow.Close();
         }
@@ -291,8 +327,8 @@ public class ExamplePupupContent : PopupWindowContent
 
 === ShowAsDropDown
 
-Popupと同じウインドウタイトルと閉じるボタンが無いウインドウです。
-ただし、PCの画面サイズを考慮し表示させようとしている位置で十分な広さを確保できなかった場合、ウインドウの表示領域を守るためにX/Y軸の位置が自動的にズレるようになります。言い換えると、画面の隅っこでウインドウを出したとしても必ずPCの表示領域にすべて表示されます。
+Popupと同じで、「ウインドウのタイトル」「閉じるボタン」が無いウインドウです。
+ただし、PCの画面サイズを考慮して、ウインドウを表示する位置で@<b>{十分な広さを確保できなかった場合}、ウインドウの表示領域を画面内に収めるために X/Y 軸の位置が自動的に補正されるようになります。言い換えると、画面の隅っこでウインドウを出したとしても必ずPCの表示領域にすべて表示されます。
 
 //image[ss10][黒いのがShowAsDropDownで表示したウインドウだとする]{
 
@@ -322,11 +358,7 @@ public class Example : EditorWindow
 
 === ScriptableWizard
 
- * GameObjectを作る
- * Prefabを作る
- * アセットを作る
-
-このように何かを「作る」時に使用するウインドウです。
+「GameObjectを作る」「Prefabを作る」「アセットを作る」、このように何かを「作る」時に使用するウインドウです。
 ScriptableWizardは今まで紹介してきたウインドウとは少し異なります。
 
 ==== ScriptableWizardの作り方
@@ -342,13 +374,14 @@ public class Example : ScriptableWizard
 //}
 
 
-2. 次にScriptableWizardを表示するためのトリガーとしてメニューを追加します。MenuItemについては@<chapref>{part1-menuitem}を御覧ください。
+2. 次にScriptableWizardを表示するためのトリガーとしてメニューを追加します。
 
 //emlist[][cs]{
 using UnityEditor;
 
 public class Example : ScriptableWizard
 {
+    // MenuItemについては@<chapref>{part1-menuitem}をご覧ください。
     [MenuItem("Window/Example")]
     static void Open ()
     {
@@ -472,7 +505,7 @@ using UnityEngine;
 
 public class Example : ScriptableWizard
 {
-    public string gameObjectName;
+   
 
     [MenuItem("Window/Example")]
     static void Open ()
@@ -483,6 +516,40 @@ public class Example : ScriptableWizard
     void OnWizardUpdate ()
     {
         Debug.Log ("Update");
+    }
+}
+//}
+
+==== DrawWizardGUI
+
+ウィザート内のGUIを描画するためのメソッドです。このメソッドをオーバーライドすることによりGUIをカスタマイズすることが出来ます。
+
+ただし、戻り値として @<code>{true} を返すようにしてください。trueを返さなければ @<code>{OnWizardUpdate} が呼び出されなくなってしまいます。
+
+
+//image[ss23][今まで表示されていたプロパティがなくなりラベルが表示された]{
+
+//}
+
+//emlist{
+using UnityEditor;
+using UnityEngine;
+
+public class Example : ScriptableWizard
+{
+    public string gameObjectName;
+
+    [MenuItem ("Window/Example")]
+    static void Open ()
+    {
+        DisplayWizard<Example> ("Example Wizard");
+    }
+
+    protected override bool DrawWizardGUI ()
+    {
+        EditorGUILayout.LabelField ("Label");
+        // false を返すことでOnWizardUpdateが呼び出されなくなる
+        return true;
     }
 }
 //}
@@ -580,6 +647,33 @@ public class Example : EditorWindow
     }
 }
 //}
+
+== ウインドウにアイコンを追加する
+
+アイコンを追加するには@<code>{EditorWindow.titleContent}にアイコンを持つ GUIContent を代入します。
+
+//image[ss24][アイコンはとても小さいので分かりやすいものにすること]{
+
+//}
+
+//emlist{
+using UnityEditor;
+using UnityEngine;
+
+public class Example : EditorWindow
+{
+    [MenuItem ("Window/Example")]
+    static void SaveEditorWindow ()
+    {
+        var window = GetWindow<Example> ();
+
+        var icon = AssetDatabase.LoadAssetAtPath<Texture> ("Assets/Editor/Example.png");
+
+        window.titleContent = new GUIContent ("Hoge", icon);
+    }
+}
+//}
+
 
 == GetWindowを使わずに既にあるEditorWindowを取得するには？
 

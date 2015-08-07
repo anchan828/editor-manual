@@ -1,10 +1,13 @@
 = EditorGUI (EdirotGUILayout)
 
-//indepimage[frontispiece]
+
+//image[frontispiece][頑張ればこのような GUI を作ることも出来る]{
+
+//}
 
 
 //lead{
-この機能を知らなくてはエディター拡張では何も出来ないと言っても過言ではありません。この章ではEditorGUIやEditorGUILayoutで出来ることを説明していきます。サンプルコードは簡略化の関係でEditorGUILayoutを使用することが多くなります。
+この機能を知らなくてはエディター拡張では何も出来ないと言っても過言ではありません。この章では全てを紹介することは出来ませんが、知っておくと EditorGUI や EditorGUILayout で出来ることの幅が広がるものを中心に説明していきます。サンプルコードは簡略化の関係でEditorGUILayoutを使用することが多くなります。
 //}
 
 //pagebreak
@@ -248,19 +251,112 @@ public class NewBehaviourScript : EditorWindow
 
 == EditorGUI.ObjectField
 
-== EditorGUI.showMixedValue
+オブジェクトの参照を扱うフィールドです。引数に受け付けるオブジェクトの型を指定することが出来ます。
+
+また、テクスチャ系（Texture2DやSprite）は特殊なサムネイル形式のフィールドになります。
+
+//image[ss11][通常はオブジェクトのアイコンと受け付けるオブジェクトの型名]{
+
+//}
+
+//emlist{
+void OnGUI ()
+{
+    EditorGUILayout.ObjectField (null, typeof(Object), false);
+    
+    EditorGUILayout.ObjectField (null, typeof(Material), false);
+
+    EditorGUILayout.ObjectField (null, typeof(AudioClip), false);
+
+    var options = new []{GUILayout.Width (64), GUILayout.Height (64)};
+
+    EditorGUILayout.ObjectField (null, typeof(Texture), false, options);
+
+    EditorGUILayout.ObjectField (null, typeof(Sprite), false, options);
+}
+//}
+
 
 == EditorGUI.MultiFloatField
 
+複数の float 値を編集するフィールドを1行で描画するためのものです。
+
+インスペクターで Vector3 の値を編集するような描画になります。
+
+//image[ss12][決められた Rect 内ですべての要素を均等に描画する]{
+
+//}
+
+//emlist{
+float[] numbers = new float[] {
+    0,
+    1,
+    2
+};
+
+GUIContent[] contents = new GUIContent[] {
+    new GUIContent ("X"),
+    new GUIContent ("Y"),
+    new GUIContent ("Z")
+};
+
+void OnGUI ()
+{
+    EditorGUI.MultiFloatField (
+        new Rect (30, 30, 200, EditorGUIUtility.singleLineHeight),
+        new GUIContent ("Label"), 
+        contents, 
+        numbers);
+}
+//}
+
 == EditorGUI.indentLevel
 
-== EditorGUI.FocusTextInControl
+インデントのレベルを管理します。以下のコードのように部分的にインデントを増減させることにより、インスペクターやヒエラルキーで見るような階層構造を構成することが出来ます。
 
-== EditorGUILayout.BeginHorizontal / EditorGUILayout.BeginVertical
+//image[ss13][ヒエラルキーでよく見る親子関係]{
+
+//}
+
+//emlist{
+void OnGUI ()
+{
+    EditorGUILayout.LabelField ("Parent");
+
+    EditorGUI.indentLevel++;
+
+    EditorGUILayout.LabelField ("Child");
+    EditorGUILayout.LabelField ("Child");
+
+    EditorGUI.indentLevel--;
+
+    EditorGUILayout.LabelField ("Parent");
+
+    EditorGUI.indentLevel++;
+
+    EditorGUILayout.LabelField ("Child");
+}
+//}
+
+これは EditorGUI と EditorGUILayout の両方に効果があります。
 
 == EditorGUILayout.Knob
 
-== EditorGUILayout.Separator
+角度や、決められた範囲内で値を設定するための「つまみ（ノブ）」を作成します。マウスでドラッグしたり、表示されているラベルをクリックすることで値を直接入力することが出来ます。
+
+//image[ss14][マウスでドラッグすることで値を調整できる]{
+
+//}
+
+//emlist{
+float angle = 0;
+
+void OnGUI ()
+{
+    angle = EditorGUILayout.Knob (Vector2.one * 64,
+        angle, 0, 360, "度", Color.gray, Color.red, true);
+}
+//}
 
 == ○○Scope
 
@@ -310,7 +406,7 @@ CloseScopeメソッドはDispose時に呼び出されるメソッドです。コ
 == 見た目はボタン、中身はトグル
 
 
-エディターには見た目（GUIStyle）はボタンだけど、動作はトグルのようなオン/オフとなる部分、またはボタンの群があり切り替わっていくものがいくつかあります。
+エディターには見た目（GUIStyle）はボタンだが、動作はトグルのようなオン/オフとなる部分、またはボタンの群があり切り替わっていくものがいくつかあります。
 
 //image[ss07][ツール、再生ボタン、PlayerSettingsのプラットフォーム別設定][]{
 

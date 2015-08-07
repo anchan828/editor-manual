@@ -4,7 +4,7 @@
 
 
 //lead{
-知らないとエディター拡張では何も出来ないと言っても過言ではないほど重要なMenuItemについて解説します。この章ではMenuItemで出来ることを紹介していきます。「実際にどう使っていくか」というのはこの章でも軽く説明はしますがこの章以降で@<b>{嫌というほど}扱っていきますので自然と理解していくでしょう。
+知らないとエディター拡張では何も出来ないと言っても過言ではないほど重要なMenuItemについて解説します。この章ではMenuItemで出来ることを紹介していきます。「実際にどう使っていくか」というのはこの章でも軽く説明はしますがこの章以外でも@<b>{嫌というほど}扱っていきますので自然と理解していくでしょう。
 //}
 
 //pagebreak
@@ -24,7 +24,7 @@ MenuItemは「Unityエディターの上側にあるメニューバーやコン�
 
 == MenuItemの使いドコロ
 
-メニューは何らかのトリガーとなっています。標準では
+メニューは何らかのトリガーとなっています。Unity標準では
 
  * ゲームオブジェクトの生成 ( @<i>{GameObject/Create Empty} )
  * シーンの作成 ( @<i>{File/New Scene} )
@@ -32,18 +32,18 @@ MenuItemは「Unityエディターの上側にあるメニューバーやコン�
  
 などがメニューとして既に登録されています。
 
-MenuItemを使用して独自のメニューを追加するタイミングは@<b>{Editorスクリプトを実行する時}です。目的別に取り上げるなら
+ユーザーがMenuItemを使用して独自のメニューを追加する目的としては、任意のタイミングで@<b>{Editorスクリプトを実行する時}です。目的別に取り上げるなら
 
  * 独自ウインドウの表示
  * AssetBundleの作成
  * アセットの作成
- * アセットのインポート設定変更
+ * 選択したアセット何らかのアクションを行う
 
-などが上げられます。これらを実行するための入口となるのがMenuItemです。
+などが上げられます。これらを実行するための入口（トリガー）となるのがMenuItemです。
 
-== MenuItemを使ってメニューを表示してみよう
+== MenuItemを使ってメニューを表示する
 
-まずは簡単にメニューを追加してみましょう。
+まずは簡単にメニューを追加してみます。
 MenuItemはAttributeとして提供されており、@<b>{static}メソッドに付加することで機能します。
 
 //emlist[][cs]{
@@ -101,22 +101,22 @@ public class NewBehaviourScript
 
 //}
 
-//image[ss05][階層の深さは特に制限はありませんが操作性を考えて3階層位までにしましょう]{
+//image[ss05][階層の深さは特に制限はありませんが操作性を考えて3階層まで]{
 
 //}
 
-== 実行できないMenuItemを作成しよう
+== 実行できないMenuItemを作成する
 
 MenuItemで追加したメニューが@<b>{実行されてしまうと都合が悪い}場合もあります。そこでMenuItemで追加したメニューを実行できないようにする機能があります。
 
 
-//image[ss06][Child2メニューの文字が灰色になっており実行できないようになっている]{
+//image[ss06][Child2メニューの文字が灰色になっており、実行できないようになっている]{
 
 //}
 
-MenuItemの第2引数に@<code>{isValidateFunction}が存在し、これは@<b>{メニューを表示した時に実行可能かどうかのチェックを行う}ためのものです。isValidateFunctionにtrueを設定することでメソッドはValidateメソッドになります。さらにValidateメソッドは戻り値がbool型のメソッドとなり、戻り値としてtrueを返すと実行可能、falseを返すと実行不可となります。
+MenuItemの第2引数に@<code>{isValidateFunction}が存在し、これは@<b>{メニューを表示した時に実行可能かどうかのチェックを行う}ためのものです。@<code>{isValidateFunction}にtrueを設定することでメソッドはValidateメソッドになります。さらにValidateメソッドは戻り値がbool型のメソッドとなり、戻り値としてtrueを返すと実行可能、falseを返すと実行不可となります。
 
-また、Validateメソッドは単独では動作しません。必ずisValidateFunctionがfalseのメソッドを用意する必要があります。isValidateFunctionのデフォルトがfalseなので引数を省略しても問題ありません。
+また、Validateメソッドは単独では動作しません。必ず@<code>{isValidateFunction}がfalseのメソッドを用意する必要があります。@<code>{isValidateFunction}のデフォルトがfalseなので引数を省略しても問題ありません。
 
 //emlist[][cs]{
 using UnityEditor;
@@ -138,12 +138,13 @@ public class NewBehaviourScript
     [MenuItem("CustomMenu/Example/Child2", true)]
     static bool ValidateExample2 ()
     {
-        return false; // 今回はfalse固定
+        // 今回はfalse固定にして実行できないようにする
+        return false; 
     }
 }
 //}
 
-== MenuItemの表示順を変更してみよう
+== MenuItemの表示順を変更する
 
 メニューの表示順を指定することが可能です。MenuItemの第3引数@<code>{priority}で指定します。
 
@@ -202,7 +203,7 @@ public class NewBehaviourScript
 
 
 
-== MenuItemにチェックを入れてみよう
+== MenuItemにチェックを入れる
 
 @<code>{Menu.GetChecked}と@<code>{Menu.SetChecked}を使用することで子メニューにチェックを入れることが出来ます。
 
@@ -225,7 +226,7 @@ public class NewBehaviourScript
 }
 //}
 
-== ホットキー（ショートカットキー）を実装してみよう
+== ホットキー（ショートカットキー）を実装する
 
 MenuItemで追加したメニューはホットキーで実行することが可能です。
 第1引数のメニューパスの最後に「半角スペース + 修飾子キー + 任意の文字」の文字列をつけることにより実装できます。
@@ -266,6 +267,9 @@ KP/					/
 KP=					=
 //}
 
+=== ファンクションキーのみのショートカットは作成できない
+
+ファンクションキーのみ（ "_F1" など）の作成することは出来ません。
 
 == CONTEXT
 
@@ -326,65 +330,4 @@ public class NewBehaviourScript
 
 //image[ss12][上記コードをMain CameraのTransformで実行したもの]{
 
-//}
-
-
-== 何かつくろう
-
-=== EditorフォルダやResourcesフォルダを作成する
-
-//image[ss13][]{
-
-//}
-
-//emlist[][cs]{
-using UnityEditor;
-using UnityEngine;
-using System.IO;
-
-public class NewBehaviourScript
-{
-    [MenuItem("Assets/Create/TemplateFolder/Editor", false, 1)]
-    static void CreateEditorFolder ()
-    {
-        CreateFolder ("Editor");
-    }
-
-    [MenuItem("Assets/Create/TemplateFolder/Resources", false, 2)]
-    static void CreateResourcesFolder ()
-    {
-        CreateFolder ("Resources");
-    }
-
-    [MenuItem("Assets/Create/TemplateFolder/Scripts", false, 3)]
-    static void CreateScriptsFolder ()
-    {
-        CreateFolder ("Scripts");
-    }
-
-    [MenuItem("Assets/Create/TemplateFolder/Prefabs", false, 4)]
-    static void CreatePrefabsFolder ()
-    {
-        CreateFolder ("Prefabs");
-    }
-    
-    [MenuItem("Assets/Create/TemplateFolder/Shaders", false, 5)]
-    static void CreateShadersFolder ()
-    {
-        CreateFolder ("Shaders");
-    }
-
-    static void CreateFolder (string name)
-    {
-        string path = "Assets";
-
-        if (Selection.activeObject != null) {
-            var assetPath = AssetDatabase.GetAssetPath (Selection.activeObject);
-            path = Directory.Exists (assetPath) ? assetPath : Path.GetDirectoryName (assetPath);
-        }
-    
-        AssetDatabase.CreateFolder (path, name);
-    }
-
-}
 //}

@@ -3,27 +3,10 @@
 //indepimage[frontispiece]
 //pagebreak
 
-== この章で得られる知識
-
- * 自作スクリプトテンプレートファイルの作成
- * MenuItem
-
-== 本章で使用するソースコード
-
-@<href>{https://github.com/anchan828/ScriptTemplates}
-
-//table[t1][]{
-ファイル	説明
-------------------------
-120-C# Editor Script-NewEditor.cs.txt	InitializeOnLoadの付いたよく使う形式
-121-C# EditorWindow Script-NewEditorWindow.cs.txt	EditorWindow作成でよく使う形式
-122-C# EditorCallbacks Script-New EditorCallbacks.cs.txt	Callbacks系でよく使う形式
-//}
-
-== 概要
 
 EditorWindowを生成するスクリプトを作成する時、みなさんはどうしていますか？
-ここで、かなり長くなりますが「EditorWindowのGUI部分を作成する準備が整うまで」を順番に説明していきます。
+
+ここで、長くなりますが「EditorWindowを作成してGUI描画部分を実装する準備が整うまで」を順番に説明していきます。
 
 
  * NewBehaviourScript.csを作成
@@ -286,6 +269,6 @@ priorityが86のC# Scriptが2つありますが、仕様としてpriorityが低�
 
 自作のテンプレートとして表示する時には、デフォルトのテンプレートの近くにあったほうがいいので、priorityは@<b>{64-70}、または@<b>{95-190} が好ましいです。
 
-== 使いドコロ
+== ProjectWindowUtil との組み合わせ
 
-新規プロジェクトでガツガツとスクリプトの追加、またはシェーダーの追加を行う時に重宝しそうですね。
+ProjectWindowUtil クラスの @<code>{ProjectWindowUtil.StartNameEditingIfProjectWindowExists} と組み合わせると @<code>{Assets/ScriptTemplates} にテンプレートファイルを置かずとも、スクリプトを作成できるようになります。詳しくは @<chapref>{projectWindowUtil} をご覧ください。

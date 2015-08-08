@@ -1,10 +1,11 @@
 
 = GUIを自作する
 
-//indepimage[frontispiece]
 //pagebreak
 
-例えば@<b>{EditorGUILayout.ObjectField}でSpriteのフィールドを表示した時、Texture系であればプレビューがあるGUIに変化しますがSpriteはプレビューが実装されていません。
+例えば@<b>{EditorGUILayout.ObjectField}でSpriteのフィールドを表示した時、Texture系であればプレビューがあるGUIに変化しますがSpriteはプレビューが実装されていませんでした。
+
+@<b>{注: 本章は　ObjectField　が Sprite に対応していない時に執筆されたものです。なので目的となる「Sprite に対応したフィールドの作成」は無駄になりますが、その過程で使用する技術は有用なので掲載しています。}
 
 //image[ss01][Texture2DとSpriteのGUIを並べたもの][scale=0.5]{
 
@@ -25,10 +26,6 @@ void OnGUI ()
 
 @<b>{プレビュー対応しているSpriteField}のような自分でGUIを作成する事が可能です。
 
-これから話すことは以下のコードを見ながら読むと理解が深まるかもしれません。
-
-
-@<href>{https://github.com/anchan828/unitejapan2014/blob/master/SpriteField/Assets/SpriteField/Editor/CustomEditorGUI.cs, CustomEditorGUI.cs - SpriteField}
 
 == GUIを作る
 

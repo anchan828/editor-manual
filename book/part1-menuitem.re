@@ -1,13 +1,9 @@
 = MenuItem
 
-//indepimage[frontispiece]
-
 
 //lead{
 知らないとエディター拡張では何も出来ないと言っても過言ではないほど重要なMenuItemについて解説します。この章ではMenuItemで出来ることを紹介していきます。「実際にどう使っていくか」というのはこの章でも軽く説明はしますがこの章以外でも@<b>{嫌というほど}扱っていきますので自然と理解していくでしょう。
 //}
-
-//pagebreak
 
 == MenuItemとは
 
@@ -267,6 +263,8 @@ KP/					/
 KP=					=
 //}
 
+//pagebreak
+
 === ファンクションキーのみのショートカットは作成できない
 
 ファンクションキーのみ（ "_F1" など）の作成することは出来ません。
@@ -289,21 +287,15 @@ public class NewBehaviourScript
 {
     // Transformにメニューを追加
     [MenuItem("CONTEXT/Transform/Example1")]
-    static void Example1 ()
-    {
-    }
+    static void Example1 () { }
 
     // コンポーネント（全て）にメニューを追加
     [MenuItem("CONTEXT/Component/Example2")]
-    static void Example2 ()
-    {
-    }
+    static void Example2 () { }
 
     // ExampleScript（スクリプト）にメニューを追加
     [MenuItem("CONTEXT/ExampleScript/Example3")]
-    static void Example3 ()
-    {
-    }
+    static void Example3 () { }
 }
 //}
 

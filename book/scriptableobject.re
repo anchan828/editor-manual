@@ -93,7 +93,8 @@ CreateAssetMenu を使用した場合は 「Assets/Create」配下にメニュ�
 static void LoadExampleAsset ()
 {
     var exampleAsset = 
-    　　　　AssetDatabase.LoadAssetAtPath<ExampleAsset> ("Assets/Editor/ExampleAsset.asset");
+    　　　　AssetDatabase.LoadAssetAtPath<ExampleAsset> 
+                               ("Assets/Editor/ExampleAsset.asset");
 }
 //}
 

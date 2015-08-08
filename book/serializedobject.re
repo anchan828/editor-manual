@@ -1,7 +1,7 @@
 = SerializedObjectについて
 
 
-Unity上では、ファイル（Unity上ではアセット）を少し特殊な形式へと変換して使用します。本章ではオブジェクトの基板である SerializedObject について解説していきます。また、シリアライズについて@<b>{すべてを網羅した}情報は、Unity公式のマニュアルにて説明されています。本章では入門として知っておいて欲しい情報を抜粋して解説します。@<href>{http://docs.unity3d.com/Manual/script-Serialization.html}
+Unity上では、ファイル（Unity上ではアセット）を少し特殊な形式へと変換して使用します。本章ではオブジェクトの基板である SerializedObject について解説していきます。また、「シリアライズについて@<b>{すべてを網羅した}情報」は、Unity公式のマニュアルにて説明されています。本章では入門として知っておいて欲しい情報を抜粋して解説します。@<href>{http://docs.unity3d.com/Manual/script-Serialization.html}
 
 == SerializedObjectとは
 
@@ -37,6 +37,10 @@ Unityエディター上、つまりエディター拡張では@<b>{できるだ�
 UnityEngine.Object をアセットとして保存する場合、@<b>{バイナリ形式} 、または @<b>{YAML 形式のテキストデータ}として保存されます。これらのシリアル化を担うのが SerializedObject です。
 
 単純なイメージとしては @<img>{ss02} となります。 UnityEngine.Object をアセットとして保存するには SerializedObject に一度変換します。次に、変換された SerializedObject はアセットと @<b>{.meta} ファイルの作成を試みます。
+
+//image[ss02][データの流れ]{
+
+//}
 
 ==== アセットと .meta ファイル
 
@@ -76,17 +80,13 @@ m_ColorSpace
 
 また逆に、アセットをインポートするときは、アセットと .meta ファイル（.metaファイルがなければデフォルト設定で自動生成）から SerializedObject が生成され、 UnityEngine.Object へと変換されます。
 
-//image[ss02][データの流れ]{
-
-//}
-
 === シリアライズ対象のクラス変数
 
 
 UnityEngine.Object の派生クラス（ユーザーがよく触るのは MonoBehaviour や ScriptableObject、Editor、EditorWindow など）にて、シリアライズ対象のフィールドであると判断させるには条件があります。
 
 
- * public 変数であること、または SerializeField 属性の付いた変数であること
+ * public 変数であること、または SerializeField 属性の付いたフィールドであること
  * シリアライズ可能な Unity がサポートしているタイプであること （sbyte、short、int、long、byte、ushort、uint、ulong、float、double、bool、char、string、UnityEngine.Object、Serializable 属性を付加したクラスと構造体、等）
 
 
@@ -96,12 +96,24 @@ UnityEngine.Object の派生クラス（ユーザーがよく触るのは MonoBe
  * abstract クラスではないこと
 
 
-よく入門書などで、「@<strong>{インスペクターに変数の値を表示するにはpublicにする}」ということを目にしたかもしれません。これはプログラマー以外でも理解しやすいように言っているだけで、また public 変数にするのはシリアライズ対象の条件の1つでしかありません。エディター拡張を行うユーザーは private 変数に SerializeField 属性を付けることをお勧めします。外部から SerializeField 属性の付いた変数にアクセスするときは SerializedObject 経由でアクセスします。 
+よく入門書などで、「@<strong>{インスペクターに変数の値を表示するにはpublicにする}」ということを目にしたかもしれません。これはプログラマー以外でも理解しやすいように言っているだけで、public 変数にするのはシリアライズ対象の条件の1つでしかありません。エディター拡張を行うユーザーは private フィールドに SerializeField 属性を付けることをお勧めします。
 
 
+//emlist{
+[SerializeField]
+private string m_str;
 
+public string str {
+	get {
+		return m_str;
+	}
+	set { 
+		m_str = value;
+	}
+}
+//}
 
-
+外部から SerializeField 属性の付いたフィールドにアクセスするときは @<b>{SerializedObject} 経由でアクセスします。 
 
 == SerializedObjectの使い方
 
@@ -327,7 +339,7 @@ Rigidbody:
 
 また、マテリアルなどの Unity独自のアセットもテキストエディタで見ることが出来ます。
 
-豆知識として、@<code>{UnityEditorInternal.InternalEditorUtility.SaveToSerializedFileAndForget} で UnityEngine.Object をアセットとして保存することが出来ます。
+豆知識として、UnityEditorInternal名前空間にある@<b>{InternalEditorUtility.SaveToSerializedFileAndForget}で UnityEngine.Object をアセットとして保存することが出来ます。
 
 //emlist{
 using UnityEngine;

@@ -1,41 +1,25 @@
 = SpriteAnimationPreview(スプライトアニメーション)
 
 //indepimage[frontispiece]
+
+スプライトを再生するアニメーションクリップを作成した場合に、インスペクターのプレビュー画面でスプライトアニメーションの再生を行う仕組みを実装します。
+
 //pagebreak
 
-== この章で得られる知識
-
-カスタムエディター
-プレビュー画面オーバーライド
-
-== 本章で使用するソースコード
-
-@<href>{https://gist.github.com/anchan828/1a95a3f6b88c81053582}
-
-//table[t1][]{
-ファイル	説明
-------------------------
-AnimationClipEditor.cs	カスタムエディター
-OverrideEditor.cs	Editorクラスのラッパー
-SpriteAnimationPreview.cs	スプライトアニメーションを行うカスタムプレビュー
-//}
-
-== 概要
-
-スプライトを再生するアニメーションクリップを作成した場合、スプライトアニメーションの再生を確認したいことがよくあります。
-本章ではスプリトアニメーションの確認をインスペクターのプレビュー画面で行えるようにデフォルトのプレビュー画面をオーバーライドして実装します。
 
 === デフォルトのAnimationClipのプレビュー
 
-AnimationClipのインスペクターは3Dアニメーションが基準となっており、プレビュー画面も3Dアニメーションしか再生できず2Dアニメーションでは使用することが出来ません。
+AnimationClipのインスペクターは3Dモデルのためのアニメーションが基準となっており、プレビュー画面も3Dアニメーションしか再生できず、2Dアニメーションでは使用することが出来ません。
 
 //image[ss01][3Dアニメーションのプレビューがデフォルト][]{
 
 //}
 
+インスペクターをカスタマイズして、2D のアニメーションにも対応できるようにしていきます。
+
 == カスタムエディター
 
-既存のAnimationClipのカスタムエディター、AnimationClipEditorをオーバーライドする形で新たにカスタムエディターを作成します。
+既存のAnimationClipのカスタムエディター、@<code>{AnimationClipEditor}をオーバーライドする形で新たにカスタムエディターを作成します。
 今回作成するカスタムエディターの名前は@<b>{SpriteAnimationClipEditor}とします。
 
 まずは以下のようなクラスを作成します。複数選択した場合でも動作するように@<code>{CanEditMultipleObjects}属性をつけましょう。
@@ -63,7 +47,7 @@ public class SpriteAnimationClipEditor : Editor
 
 今回はプレビュー画面のみを変更したいのでOnInspectorGUIの部分が変更されてしまうのは不本意です。なので、メソッドをオーバーライドしない限りはベースとなるEditorオブジェクト（カスタムエディターで使用するもの）を流用するための@<b>{OverrideEditor}クラスを作成してみましょう。
 
-//emlist[コードは@<href>{https://gist.github.com/anchan828/8bd4fb7f7460eea1630a,ここ}から入手][cs]{
+//emlist[][cs]{
 #@warn(ココもうちょっと説明した方がいい気がする)
 #@maprange(unityprojects/SpriteAnimationClip/Assets/Editor/OverrideEditor.cs,OverrideEditor)
 #@end
@@ -185,3 +169,78 @@ Spriteの保持の仕方などは省いていますが、実際に使用する�
 @<code>{CanEditMultipleObjects}を実装すれば複数のスプライトアニメーションを同時に再生可能です。
 
 //indepimage[ss11][]
+
+
+== さらに機能を追加していく
+
+さらに改良し、Sprite Animation Preview@<fn>{1}	としてアセットストアで配布しています。配布するまでに行った細かな実装について説明していきます。
+
+//indepimage[ss12]
+
+
+=== AssetPreview.GetAssetPreview のテクスチャはサイズが小さい
+
+元々は、@<code>{AssetPreview.GetAssetPreview} はプロジェクトビューなどで表示するための機能です。プロジェクトビューではそこまで高解像度なテクスチャサイズは必要としていません。なので強制的に 128x128 へとリサイズされます。
+
+「Sprite Animation Preview」では、品質面でプレビューの表示に @<code>{AssetPreview.GetAssetPreview} を使用せず、@<b>{SpriteEditorから直接プレビュー画像を取得}するようにしました。
+
+==== Editor オブジェクトを動的に作成
+
+Editorオブジェクトは、任意のタイミングでユーザーが作成することが出来ます。
+
+Unity標準で使用されている Sprite オブジェクトのための @<code>{SpriteInspector} を作成します。
+
+//emlist{
+private List<Editor> GetSpriteEditors(params Sprite[] sprites)
+{
+    var type = Types.GetType("UnityEditor.SpriteInspector", "UnityEditor.dll");
+    var editors = new List<Editor>();
+                
+	foreach (var sprite in sprites)
+    {
+		Editor _editor = Editor.CreateEditor(sprite, type);
+
+        if (_editor != null)
+            editors.Add(_editor);
+    }
+
+    return editors;
+}
+//}
+
+==== プレビュー用テクスチャの取得
+
+プレビューのテクスチャは @<b>{RenderStaticPreview} で取得することが出来ます。
+
+//emlist{
+var editor = spriteEditors[i];
+var previewTexture = editor.RenderStaticPreview("", null, 
+                        (int)previewRect.width,
+                        (int)previewRect.height);
+//}
+
+==== 動的に作成したオブジェクトの破棄を忘れないこと
+
+必ず、作成した Editor オブジェクトを破棄するコードを実装するようにしてください。破棄するタイミングは @<b>{OnDisable} など、オブジェクトが必要なくなったタイミングで呼び出します。
+
+//emlist{
+public void OnDisable()
+{
+    foreach (var spriteEditor in spriteEditors)
+    {
+        Object.DestroyImmediate(spriteEditor);
+    }
+}
+//}
+
+//image[ss14][破棄しないと作成した Editor オブジェクトが残り続けてしまい、メモリを圧迫する]{
+
+//}
+
+また、プレビューで使用したテクスチャも破棄するようにします。
+
+//image[ss13][テクスチャが残り続けてしまい、メモリを圧迫する]{
+
+//}
+
+//footnote[1][@<href>{https://www.assetstore.unity3d.com/jp/#!/content/37611}]

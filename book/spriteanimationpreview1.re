@@ -3,22 +3,11 @@
 //indepimage[frontispiece]
 //pagebreak
 
-== この章で得られる知識
-
-
-== 本章で使用するソースコード
-
-@<href>{https://gist.github.com/anchan828/1a95a3f6b88c81053582}
-
-//table[t1][]{
-ファイル	説明
-------------------------
-SpriteAnimationClipPreview.cs	SpriteAnimationClipのカスタムプレビュー
-//}
-
 == 概要
 
-スプライトを再生するアニメーションクリップを作成した場合、このクリップには@<b>{どのスプライトが登録されているか}を確認することはよくあります。
+
+スプライトを登録している AnimationClip をインスペクターのプレビュー画面で一覧表示してみます。
+
 
 === AnimationClipに登録されているスプライトの確認方法
 
@@ -26,7 +15,7 @@ AnimationClipに登録されているスプライトの確認方法はいくつ�
 
 ==== Animationウインドウで確認する
 
-これがおそらく正規で行える確認方法です。
+正規で行える唯一の確認方法です。
 
 //image[ss01][Window → Animationからウインドウを表示することができる]{
 
@@ -87,7 +76,7 @@ public class SpritePreview : ObjectPreview
 
 イメージとしては、インスペクターに表示されているエディターオブジェクトには必ず「@<b>{デフォルトプレビュー}」というものが存在します。それらに付属するものとしてカスタムエディターは実装されます。その状態が「fireball」と「Sprites」が表示されている@<img>{ss03}です。
 
-イメージはこのような感じ。
+イメージは以下のようになります。
 
 //image[ss04][デフォルトプレビューとカスタムプレビュー。複数のプレビューを持つことができる。]{
 
@@ -114,14 +103,13 @@ public override void OnPreviewGUI(Rect r, GUIStyle background)
 
 まずはスプライトを取得します。
 
-=== スプライトはObjectReferenceKeyframeで管理されている
+=== スプライトは ObjectReferenceKeyframe で管理されている
 
-スプライトなどのオブジェクトのアニメーションは @<b>{ObjectReferenceCurve} によって管理されています。そして、オブジェクト1つ1つは @<b>{ObjectReferenceKeyframe} によって管理されます。
-
-===[column] ObjectReferenceKeyframe と Keyframe の違い
-AnimationClipには ObjectReferenceKeyframe と Keyframe の2種類のキーフレームがあります。
+何をアニメーションさせるかで使用するキーフレームが変化します。AnimationClipには ObjectReferenceKeyframe と Keyframe の2種類のキーフレームがあります。
 普段良く目にするのは Keyframe の @<b>{Float型の値を保持するキーフレーム}です。それに対し、
 ObjectReferenceKeyframe は @<b>{オブジェクトの参照を保持するキーフレーム}となります。
+
+==== ObjectReferenceKeyframe と Keyframe の違い
 
 //image[ss06][Positionを操作するのはKeyframe、Spriteを操作するのはObjectReferenceKeyframe]{
 
@@ -129,9 +117,9 @@ ObjectReferenceKeyframe は @<b>{オブジェクトの参照を保持するキ�
 
 保持する値がFloatか参照かの違いはありますが、他は変わりありません。
 
-===[/column]
+=== ObjectReferenceKeyframe の参照を取得するには
 
-ObjectReferenceKeyframe で参照されているスプライト、もう少し詳しく言うと、SpriteRendererのSpriteプロパティのスプライトをアニメーションするために参照されているスプライトを取得するためにはAnimationClip中にある幾つものアニメーションカーブから特定の アニメーションカーブ、つまり ObjectReferenceKeyframe を得なければいけません。そのための機能が @<b>{EditorCurveBinding} です。
+例えば、@<b>{SpriteRenderer} の Sprite プロパティで「アニメーション設定されているスプライトの一覧を取得する」ためには、AnimationClip に設定されている幾つものアニメーションカーブのプロパティから、スプライトをアニメーションさせる特定のプロパティを得なければいけません。そのための機能として @<b>{EditorCurveBinding} があります。
 
 === EditorCurveBinding
 
@@ -248,18 +236,22 @@ public override void OnPreviewGUI(Rect r, GUIStyle background)
 ====[column] 初回だけプレビュー画像が表示されない
 
 
-
-
-
 ここで @<code>{AssetPreview.GetAssetPreview} の特徴を掴んでおきましょう。GetAssetPreviewで作成するプレビュー用のテクスチャはキャッシュされています。もし、オブジェクトに対するテクスチャがキャッシュされていない場合（つまり初回）はテクスチャの生成を行うためにGetAssetPreviewは@<b>{null}を返します。nullを返した時のその状態が@<img>{ss11}です。
 
 //image[ss11][テクスチャがnullなためスプライト名だけが表示されている]{
 
 //}
 
-すぐにインスペクターの再描画処理が走ればテクスチャは描画されますが、インスペクターウインドウはインスペクターを操作しない限りは自動で再描画を行わないので、初回だけテクスチャが表示されないことに困る場面が出てくるかもしれません。
+本来であれば @<code>{AssetPreview.IsLoadingAssetPreview} を使用してロード中（生成中）かどうかを判断し、スキップする仕組みを実装しなければいけません
 
-この問題を回避するには簡単で、プレビュー前にプレビュー用のテクスチャをキャッシュさせればいいので適当なところで @<code>{AssetPreview.GetAssetPreview} を実行します。
+//emlist{
+if (AssetPreview.IsLoadingAssetPreview (target.GetInstanceID ())) {
+    var previewTexture = AssetPreview.GetAssetPreview (target);
+    EditorGUI.DrawTextureTransparent (r, previewTexture);
+}
+//}
+
+ですが、この問題を回避するにはもう1つ簡単な方法で回避することも出来ます。プレビュー前にプレビュー用のテクスチャをキャッシュさせればいいので適当なところで @<code>{AssetPreview.GetAssetPreview} を実行します。
 
 //emlist[][cs]{
 public override void Initialize(Object[] targets)

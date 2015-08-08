@@ -5,7 +5,6 @@
 
 //}
 
-
 //lead{
 この機能を知らなくてはエディター拡張では何も出来ないと言っても過言ではありません。この章では全てを紹介することは出来ませんが、知っておくと EditorGUI や EditorGUILayout で出来ることの幅が広がるものを中心に説明していきます。サンプルコードは簡略化の関係でEditorGUILayoutを使用することが多くなります。
 //}
@@ -45,7 +44,7 @@ public class NewBehaviourScript : EditorWindow
 
 
 
-== EditorGUI.BeginChangeCheck / EndChangeCheck
+== ChangeCheck
 
 BeginChangeCheckとEndChangeCheckでの間でGUIが使用されている時、GUIに何らかの変更が生じた場合にEndChangeCheckがtrueを返します。
 
@@ -121,7 +120,7 @@ void OnGUI ()
 }
 //}
 
-== EditorGUI.BeginDisabledGroup / EndDisabledGroup
+== DisabledGroup
 
 //image[ss02][下側のGUIが薄くなっていて操作することが出来ない]{
 
@@ -188,7 +187,7 @@ void Display ()
 }
 //}
 
-== EditorGUILayout.BeginFadeGroup / EndFadeGroup
+== FadeGroup
 
 //image[ss03][左側がフェード中。右側が通常の状態]{
 
@@ -242,7 +241,12 @@ public class NewBehaviourScript : EditorWindow
     {
         EditorGUILayout.BeginVertical ();
         EditorGUILayout.ToggleLeft ("Toggle", false);
-        tex = EditorGUILayout.ObjectField (tex, typeof(Texture), false, GUILayout.Width (128), GUILayout.Height (128)) as Texture;
+
+        var options = new GUILayout[]{GUILayout.Width (128), GUILayout.Height (128)};
+
+        tex = EditorGUILayout.ObjectField (
+                tex, typeof(Texture), false, options) as Texture;
+
         GUILayout.Button ("Button");
         EditorGUILayout.EndVertical ();
     }
@@ -255,7 +259,7 @@ public class NewBehaviourScript : EditorWindow
 
 また、テクスチャ系（Texture2DやSprite）は特殊なサムネイル形式のフィールドになります。
 
-//image[ss11][通常はオブジェクトのアイコンと受け付けるオブジェクトの型名]{
+//image[ss11][通常はオブジェクトのアイコンと受け付けるオブジェクトの型名][scale=0.7]{
 
 //}
 
@@ -385,7 +389,7 @@ CloseScopeメソッドはDispose時に呼び出されるメソッドです。コ
 
 同じようにして GUI.Scope を継承したクラスでスコープを作成することが可能です。今回は試しに@<img>{ss05}のようなスコープ内のみGUIの背景を変更するBackgroundColorScopeを作成してみましょう。
 
-//image[ss05][1つのボタンごとに色が変更されている][]{
+//image[ss05][1つのボタンごとに色が変更されている][scale=0.8]{
 
 //}
 

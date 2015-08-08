@@ -157,7 +157,8 @@ public class Example : MonoBehaviour
 //emlist{
 using UnityEngine;
 
-[System.AttributeUsage (System.AttributeTargets.Field, Inherited = true, AllowMultiple = false)]
+[System.AttributeUsage (System.AttributeTargets.Field,
+                               Inherited = true, AllowMultiple = false)]
 public class Range2Attribute : PropertyAttribute
 {
     public readonly int min;
@@ -182,7 +183,8 @@ using UnityEngine;
 [CustomPropertyDrawer (typeof(Range2Attribute))]
 internal sealed class RangeDrawer : PropertyDrawer
 {
-    public override void OnGUI (Rect position, SerializedProperty property, GUIContent label)
+    public override void OnGUI (Rect position, 
+                      SerializedProperty property, GUIContent label)
     {
         Range2Attribute range2 = (Range2Attribute)attribute;
 
@@ -231,9 +233,20 @@ API として @<img>{ss06} のようにノブ（取って）を表示する @<co
 private readonly MethodInfo knobMethodInfo = typeof(EditorGUI).GetMethod("Knob",
        BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Static);
 
-private float Knob(Rect position, Vector2 knobSize, float currentValue, float start, float end, string unit, Color backgroundColor, Color activeColor, bool showValue)
+private float Knob(Rect position, Vector2 knobSize, 
+                      float currentValue, float start, 
+                      float end, string unit, 
+                      Color backgroundColor, Color activeColor, 
+                      bool showValue)
 {
-    var invoke = knobMethodInfo.Invoke(null, new object[] { position, knobSize, currentValue, start, end, unit, backgroundColor, activeColor, showValue, GUIUtility.GetControlID("Knob".GetHashCode(), FocusType.Native, position) });
+    var controlID = GUIUtility.GetControlID("Knob".GetHashCode(), 
+                                              FocusType.Native, position);
+
+    var invoke = knobMethodInfo.Invoke(null, new object[] { 
+        position, knobSize, currentValue, 
+        start, end, unit, backgroundColor, 
+        activeColor, showValue, 
+        controlID });
     return (float)(invoke ?? 0);
 }
 //}
@@ -246,19 +259,24 @@ private float Knob(Rect position, Vector2 knobSize, float currentValue, float st
 [CustomPropertyDrawer(typeof(AngleAttribute))]
 public class AngleDrawer : PropertyDrawer
 {
-    private AngleAttribute angleAttribute { get { return (AngleAttribute)attribute; } }
+  private AngleAttribute angleAttribute { get { return (AngleAttribute)attribute; } }
 
-    public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
-    {
-        // 略
-    }
+  public override void OnGUI (Rect position, 
+                    SerializedProperty property, GUIContent label)
+  {
+    // 略
+  }
 
-    // 戻り値として返した値が GUI の高さとして使用されるようになる
-    public override float GetPropertyHeight(SerializedProperty property, GUIContent label)
-    {
-        var height = base.GetPropertyHeight(property, label);
-        return property.propertyType != SerializedPropertyType.Float ? height : angleAttribute.knobSize + 4;
-    }
+  // 戻り値として返した値が GUI の高さとして使用されるようになる
+  public override float GetPropertyHeight(SerializedProperty property, 
+                                                            GUIContent label)
+  {
+      var height = base.GetPropertyHeight(property, label);
+
+      var floatType = property.propertyType != SerializedPropertyType.Float;
+
+      return floatType ? height : angleAttribute.knobSize + 4;
+  }
 }
 //}
 
@@ -318,7 +336,8 @@ AnimatorController GetAnimatorController(SerializedProperty property)
 
     if (anim == null)
     {
-        Debug.LogException(new MissingComponentException("Missing Aniamtor Component"));
+        var exception = new MissingComponentException("Missing Aniamtor Component");
+        Debug.LogException(exception);
         return null;
     }
 
@@ -355,7 +374,8 @@ BeginDisabledGroup と EndDisabledGroup、または DisabledGroupScope を使っ
 インスペクターで編集できなくなったといっても、インスペクターを Debug モードにすると編集することが出来ますし、スクリプトから値の編集ができるので注意してください。
 
 //emlist{
-public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
+public override void OnGUI(Rect position, 
+                             SerializedProperty property, GUIContent label)
 {
     EditorGUI.BeginDisabledGroup(true);
     EditorGUI.PropertyField(position, property, label);
@@ -462,8 +482,14 @@ public class PreviewTextureAttributeExample : MonoBehaviour
 //emlist{
 void DrawTexture(Rect position, Texture2D texture)
 {
-    float width = Mathf.Clamp(texture.width, position.width * 0.7f, position.width * 0.7f);
-    var rect = new Rect(position.width * 0.15f, position.y + 16, width, texture.height * (width / texture.width));
+    float width = Mathf.Clamp(texture.width, 
+                              position.width * 0.7f, 
+                              position.width * 0.7f);
+
+    var rect = new Rect(position.width * 0.15f, 
+                        position.y + 16, 
+                        width, 
+                        texture.height * (width / texture.width));
 
     if (style == null)
     {

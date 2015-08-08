@@ -14,7 +14,8 @@ public class ButtonToggle : EditorWindow
 
 	void OnGUI ()
 	{
-		selected = GUILayout.SelectionGrid (selected, new string[]{ "1", "2", "3" },1, "PreferencesKeysElement");
+		selected = GUILayout.SelectionGrid (selected, 
+			new string[]{ "1", "2", "3" }, 1, "PreferencesKeysElement");
 	}
 }
 
@@ -62,7 +63,8 @@ int selected;
 
 void OnGUI ()
 {
-	selected = GUILayout.Toolbar (selected, new string[]{ "1", "2", "3" }, EditorStyles.toolbarButton);
+	selected = GUILayout.Toolbar (selected, 
+	    new string[]{ "1", "2", "3" }, EditorStyles.toolbarButton);
 }
 //#@@range_end(ButtonToggle_Pattern4)
 */
@@ -73,7 +75,8 @@ int selected;
 
 void OnGUI ()
 {
-	selected = GUILayout.SelectionGrid (selected, new string[]{ "1", "2", "3" },1, "PreferencesKeysElement");
+	selected = GUILayout.SelectionGrid (selected, 
+	    new string[]{ "1", "2", "3" },1, "PreferencesKeysElement");
 }
 //#@@range_end(ButtonToggle_Pattern5)
 */

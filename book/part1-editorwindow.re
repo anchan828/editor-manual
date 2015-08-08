@@ -345,8 +345,10 @@ public class Example : EditorWindow
         if (exampleWindow == null) {
             exampleWindow = CreateInstance<Example> ();
         }
-      
-        exampleWindow.ShowAsDropDown (new Rect (100, 100, 300, 100), new Vector2 (300, 100));
+        
+        var buttonRect = new Rect (100, 100, 300, 100);
+        var windowSize = new Vector2 (300, 100);
+        exampleWindow.ShowAsDropDown (buttonRect, windowSize);
     }
 }
 //}
@@ -502,8 +504,6 @@ using UnityEngine;
 
 public class Example : ScriptableWizard
 {
-   
-
     [MenuItem("Window/Example")]
     static void Open ()
     {

@@ -65,13 +65,13 @@ public class ExampleWindow : EditorWindow
     {
         EditorGUI.BeginChangeCheck ();
 
-        intervalTime = EditorGUILayout.IntSlider ("シーン自動保存間隔（秒）", intervalTime, 1, 3600);
+        // シーン自動保存間隔（秒）
+        intervalTime = EditorGUILayout.IntSlider ("間隔（秒）", intervalTime, 1, 3600);
 
         if (EditorGUI.EndChangeCheck ())
             EditorPrefs.SetInt (AUTO_SAVE_INTERVAL_TIME, intervalTime);
     }
 }
-
 //}
 
 

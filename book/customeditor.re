@@ -2,14 +2,11 @@
 
 カスタムエディターは、インスペクターやシーンビューに表示されているGUIをカスタマイズするためのものです。本章ではカスタムエディターの基本的な使い方だけでなく、インスペクターの仕組みについても紹介していきます。
 
-
-
 == インスペクターの Debug モード
 
-#@# CustomEditor は、@<b>{Editorオブジェクトを独自でカスタマイズしたもの}になります。
 例えば、Cube を作成し、インスペクターを見ると BoxCollider や MeshRenderer などのコンポーネントがアタッチされていることがわかります。
 
-//image[ss07][Cubeを作成し、Cubeを選択している状態]{
+//image[ss07][Cubeを作成し、Cubeを選択している状態][scale=0.5]{
 
 //}
 
@@ -69,19 +66,20 @@ using UnityEngine;
 
 public class Character : MonoBehaviour
 {
-	[Range (0, 255)]
-	public int 基本攻撃力;
-	[Range (0, 99)]
-	public int 剣の強さ;
-	[Range (0, 99)]
-	public int ちから;
+  [Range (0, 255)]
+  public int 基本攻撃力;
+  [Range (0, 99)]
+  public int 剣の強さ;
+  [Range (0, 99)]
+  public int ちから;
 
-	// プレイヤーの能力と、剣の強さから攻撃力を求めるプロパティ
-	public int 攻撃力 {
-		get {
-			return 基本攻撃力 + Mathf.FloorToInt (基本攻撃力 * (剣の強さ + ちから - 8) / 16);
-		}
-	}
+  // プレイヤーの能力と、剣の強さから攻撃力を求めるプロパティ
+  public int 攻撃力 {
+      get {
+        return 基本攻撃力 + 
+               Mathf.FloorToInt (基本攻撃力 * (剣の強さ + ちから - 8) / 16);
+      }
+  }
 }
 //}
 
@@ -119,21 +117,21 @@ using UnityEditor;
 [CustomEditor (typeof(Character))]
 public class CharacterInspector : Editor
 {
-	Character character = null;
+    Character character = null;
 
-	void OnEnable ()
-	{
-	    // Character コンポーネントを取得
-		character = (Character) target;
-	}
+    void OnEnable ()
+    {
+        // Character コンポーネントを取得
+        character = (Character) target;
+    }
 
-	public override void OnInspectorGUI ()
-	{
-		base.OnInspectorGUI ();
+    public override void OnInspectorGUI ()
+    {
+        base.OnInspectorGUI ();
 
-		// 攻撃力の数値をラベルとして表示する
-		EditorGUILayout.LabelField ("攻撃力", character.攻撃力.ToString ());
-	}
+        // 攻撃力の数値をラベルとして表示する
+        EditorGUILayout.LabelField ("攻撃力", character.攻撃力.ToString ());
+    }
 }
 //}
 
@@ -158,7 +156,7 @@ using UnityEngine;
 
 public class Character : MonoBehaviour
 {
-	public int hp;
+    public int hp;
 }
 //}
 
@@ -179,24 +177,25 @@ using UnityEditor;
 [CustomEditor (typeof(Character))]
 public class CharacterInspector : Editor
 {
-	SerializedProperty hpProperty;
+    SerializedProperty hpProperty;
 
-	void OnEnable ()
-	{
-		hpProperty = serializedObject.FindProperty ("hp");
-	}
+    void OnEnable ()
+    {
+        hpProperty = serializedObject.FindProperty ("hp");
+    }
 
-	public override void OnInspectorGUI ()
-	{
-		serializedObject.Update ();
+    public override void OnInspectorGUI ()
+    {
+        serializedObject.Update ();
 
-		EditorGUILayout.IntSlider (hpProperty, 0, 100);
+        EditorGUILayout.IntSlider (hpProperty, 0, 100);
 
-		// どちらも同じ処理
-		//hpProperty.intValue = EditorGUILayout.IntSlider ("Hp", hpProperty.intValue, 0, 100);
+        // どちらも同じ処理
+        //hpProperty.intValue = 
+        //    EditorGUILayout.IntSlider ("Hp", hpProperty.intValue, 0, 100);
 
-		serializedObject.ApplyModifiedProperties ();
-	}
+        serializedObject.ApplyModifiedProperties ();
+    }
 }
 //}
 
@@ -213,17 +212,17 @@ using UnityEditor;
 [CustomEditor (typeof(Character))]
 public class CharacterInspector : Editor
 {
-	Character character;
+    Character character;
 
-	void OnEnable ()
-	{
-		character = (Character) target;
-	}
+    void OnEnable ()
+    {
+        character = (Character) target;
+    }
 
-	public override void OnInspectorGUI ()
-	{
-		character.hp = EditorGUILayout.IntSlider ("Hp", character.hp, 0, 100);
-	}
+    public override void OnInspectorGUI ()
+    {
+        character.hp = EditorGUILayout.IntSlider ("Hp", character.hp, 0, 100);
+    }
 }
 //}
 
@@ -237,25 +236,25 @@ Character character;
 
 void OnEnable ()
 {
-	character = (Character) target;
+    character = (Character) target;
 }
 
 public override void OnInspectorGUI ()
 {
-	EditorGUI.BeginChangeCheck ();
+    EditorGUI.BeginChangeCheck ();
 
-	var hp = EditorGUILayout.IntSlider ("Hp", character.hp, 0, 100);
+    var hp = EditorGUILayout.IntSlider ("Hp", character.hp, 0, 100);
 
-	if (EditorGUI.EndChangeCheck ()) {
+    if (EditorGUI.EndChangeCheck ()) {
 
-		// 変更前に Undo に登録
-		Undo.RecordObject (character, "Change hp");
+        // 変更前に Undo に登録
+        Undo.RecordObject (character, "Change hp");
 
-		character.hp = hp;
+        character.hp = hp;
 
-		// プロパティーが変更されたことを通知
-		EditorUtility.SetDirty (character);
-	}
+        // プロパティーが変更されたことを通知
+        EditorUtility.SetDirty (character);
+    }
 }
 //}
 
@@ -298,21 +297,21 @@ using UnityEditor;
 [CustomEditor (typeof(Character))]
 public class CharacterInspector : Editor
 {
-	SerializedProperty hpProperty;
+    SerializedProperty hpProperty;
 
-	void OnEnable ()
-	{
-		hpProperty = serializedObject.FindProperty ("hp");
-	}
+    void OnEnable ()
+    {
+        hpProperty = serializedObject.FindProperty ("hp");
+    }
 
-	public override void OnInspectorGUI ()
-	{
-		serializedObject.Update ();
+    public override void OnInspectorGUI ()
+    {
+        serializedObject.Update ();
 
-		EditorGUILayout.IntSlider (hpProperty, 0, 100);
+        EditorGUILayout.IntSlider (hpProperty, 0, 100);
 
-		serializedObject.ApplyModifiedProperties ();
-	}
+        serializedObject.ApplyModifiedProperties ();
+    }
 }
 //}
 
@@ -344,36 +343,37 @@ using System.Linq;
 [CustomEditor (typeof(Character))]
 public class CharacterInspector : Editor
 {
-	Character[] characters;
+    Character[] characters;
 
-	void OnEnable ()
-	{
-		characters = targets.Cast<Character> ().ToArray ();
-	}
+    void OnEnable ()
+    {
+        characters = targets.Cast<Character> ().ToArray ();
+    }
 
-	public override void OnInspectorGUI ()
-	{
-		EditorGUI.BeginChangeCheck ();
+    public override void OnInspectorGUI ()
+    {
+        EditorGUI.BeginChangeCheck ();
 
-		// 異なる値が 2 以上であれば true
-		EditorGUI.showMixedValue = characters.Select (x => x.hp).Distinct ().Count () > 1;
+        // 異なる値が 2 以上であれば true
+        EditorGUI.showMixedValue = 
+            characters.Select (x => x.hp).Distinct ().Count () > 1;
 
-		var hp = EditorGUILayout.IntSlider ("Hp", characters [0].hp, 0, 100);
+        var hp = EditorGUILayout.IntSlider ("Hp", characters [0].hp, 0, 100);
 
-		EditorGUI.showMixedValue = false;
+        EditorGUI.showMixedValue = false;
 
-		if (EditorGUI.EndChangeCheck ()) {
+        if (EditorGUI.EndChangeCheck ()) {
 
-			// 全てのコンポーネントを Undo に登録
-			Undo.RecordObjects (characters, "Change hp");
+            // 全てのコンポーネントを Undo に登録
+            Undo.RecordObjects (characters, "Change hp");
 
-			// 全てのコンポーネントに値を代入して更新
-			foreach (var character in characters) {
-				character.hp = hp;
-				EditorUtility.SetDirty (character);
-			}
-		}
-	}
+            // 全てのコンポーネントに値を代入して更新
+            foreach (var character in characters) {
+                character.hp = hp;
+                EditorUtility.SetDirty (character);
+            }
+        }
+    }
 }
 //}
 
@@ -393,8 +393,8 @@ public class CharacterInspector : Editor
 [System.Serializable]
 public class Example
 {
-	public int minHp;
-	public int maxHp;
+    public int minHp;
+    public int maxHp;
 }
 //}
 
@@ -403,7 +403,7 @@ using UnityEngine;
 
 public class Character : MonoBehaviour
 {
-	public Example example;
+    public Example example;
 }
 //}
 
@@ -413,43 +413,46 @@ public class Character : MonoBehaviour
 [CustomPropertyDrawer (typeof(Example))]
 public class ExampleDrawer : PropertyDrawer
 {
-	public override void OnGUI (Rect position, SerializedProperty property, GUIContent label)
-	{
-		using (new EditorGUI.PropertyScope (position, label, property)) {
+    public override void OnGUI (Rect position, 
+                           SerializedProperty property, GUIContent label)
+    {
+        using (new EditorGUI.PropertyScope (position, label, property)) {
 
-			var minHpProperty = property.FindPropertyRelative ("minHp");
-			var maxHpProperty = property.FindPropertyRelative ("maxHp");
+            var minHpProperty = property.FindPropertyRelative ("minHp");
+            var maxHpProperty = property.FindPropertyRelative ("maxHp");
 
 
-			var minMaxSliderRect = new Rect (position) {
-				height = position.height * 0.5f
-			};
+            var minMaxSliderRect = new Rect (position) {
+                height = position.height * 0.5f
+            };
 
-			var labelRect = new Rect (minMaxSliderRect) {
-				x = minMaxSliderRect.x + EditorGUIUtility.labelWidth,
-				y = minMaxSliderRect.y + minMaxSliderRect.height
-			};
+            var labelRect = new Rect (minMaxSliderRect) {
+                x = minMaxSliderRect.x + EditorGUIUtility.labelWidth,
+                y = minMaxSliderRect.y + minMaxSliderRect.height
+            };
 
-			float minHp = minHpProperty.intValue;
-			float maxHp = maxHpProperty.intValue;
+            float minHp = minHpProperty.intValue;
+            float maxHp = maxHpProperty.intValue;
 
-			EditorGUI.BeginChangeCheck ();
+            EditorGUI.BeginChangeCheck ();
 
-			EditorGUI.MinMaxSlider (label, minMaxSliderRect, ref minHp, ref maxHp, 0, 100);
+            EditorGUI.MinMaxSlider (label, 
+                        minMaxSliderRect, ref minHp, ref maxHp, 0, 100);
 
-			EditorGUI.LabelField (labelRect, minHp.ToString (), maxHp.ToString ());
+            EditorGUI.LabelField (labelRect, minHp.ToString (), maxHp.ToString ());
 
-			if (EditorGUI.EndChangeCheck ()) {
-				minHpProperty.intValue = Mathf.FloorToInt (minHp);
-				maxHpProperty.intValue = Mathf.FloorToInt (maxHp);
-			}
-		}
-	}
+            if (EditorGUI.EndChangeCheck ()) {
+                minHpProperty.intValue = Mathf.FloorToInt (minHp);
+                maxHpProperty.intValue = Mathf.FloorToInt (maxHp);
+            }
+        }
+    }
 
-	public override float GetPropertyHeight (SerializedProperty property, GUIContent label)
-	{
-		return base.GetPropertyHeight (property, label) * 2;
-	}
+    public override float GetPropertyHeight (SerializedProperty property, 
+                                                                GUIContent label)
+    {
+        return base.GetPropertyHeight (property, label) * 2;
+    }
 }
 //}
 
@@ -463,21 +466,21 @@ using UnityEditor;
 [CustomEditor (typeof(Character))]
 public class CharacterInspector : Editor
 {
-	SerializedProperty exampleProperty;
+    SerializedProperty exampleProperty;
 
-	void OnEnable ()
-	{
-		exampleProperty = serializedObject.FindProperty ("example");
-	}
+    void OnEnable ()
+    {
+        exampleProperty = serializedObject.FindProperty ("example");
+    }
 
-	public override void OnInspectorGUI ()
-	{
-		serializedObject.Update ();
+    public override void OnInspectorGUI ()
+    {
+        serializedObject.Update ();
 
-		EditorGUILayout.PropertyField (exampleProperty);
+        EditorGUILayout.PropertyField (exampleProperty);
 
-		serializedObject.ApplyModifiedProperties ();
-	}
+        serializedObject.ApplyModifiedProperties ();
+    }
 }
 //}
 
@@ -500,8 +503,8 @@ public class CharacterInspector : Editor
 //emlist{
 public override bool HasPreviewGUI ()
 {
-	//プレビュー表示出来るものがあれば true を返す
-	return true;
+    //プレビュー表示出来るものがあれば true を返す
+    return true;
 }
 //}
 
@@ -533,10 +536,10 @@ using UnityEditor;
 [CustomEditor (typeof(PreviewExample))]
 public class PreviewExampleInspector : Editor
 {
-	public override bool HasPreviewGUI ()
-	{
-		return true;
-	}
+    public override bool HasPreviewGUI ()
+    {
+        return true;
+    }
 }
 //}
 
@@ -559,7 +562,7 @@ public class PreviewExampleInspector : Editor
 //emlist{
 public override GUIContent GetPreviewTitle ()
 {
-	return new GUIContent ("プレビュー名");
+    return new GUIContent ("プレビュー名");
 }
 //}
 
@@ -575,11 +578,11 @@ public override GUIContent GetPreviewTitle ()
 //emlist{
 public override void OnPreviewSettings ()
 {
-	GUIStyle preLabel = new GUIStyle ("preLabel");
-	GUIStyle preButton = new GUIStyle ("preButton");
+    GUIStyle preLabel = new GUIStyle ("preLabel");
+    GUIStyle preButton = new GUIStyle ("preButton");
 
-	GUILayout.Label ("ラベル", preLabel);
-	GUILayout.Button ("ボタン", preButton);
+    GUILayout.Label ("ラベル", preLabel);
+    GUILayout.Button ("ボタン", preButton);
 }
 //}
 
@@ -594,7 +597,7 @@ public override void OnPreviewSettings ()
 //emlist{
 public override void OnPreviewGUI (Rect r, GUIStyle background)
 {
-	GUI.Box (r, "Preview");
+    GUI.Box (r, "Preview");
 }
 //}
 
@@ -629,25 +632,25 @@ using UnityEditor;
 [CustomEditor (typeof(PreviewExample))]
 public class PreviewExampleInspector : Editor
 {
-	PreviewRenderUtility previewRenderUtility;
-	GameObject previewObject;
+    PreviewRenderUtility previewRenderUtility;
+    GameObject previewObject;
 
-	void OnEnable ()
-	{
-	    // true にすることでシーン内のゲームオブジェクトを描画できるようになる
-		previewRenderUtility = new PreviewRenderUtility (true);
+    void OnEnable ()
+    {
+        // true にすることでシーン内のゲームオブジェクトを描画できるようになる
+        previewRenderUtility = new PreviewRenderUtility (true);
 
-		// FieldOfView を 30 にするとちょうどいい見た目になる
-		previewRenderUtility.m_CameraFieldOfView = 30f;
+        // FieldOfView を 30 にするとちょうどいい見た目になる
+        previewRenderUtility.m_CameraFieldOfView = 30f;
 
-		// 必要に応じて nearClipPlane と farClipPlane を設定
-		previewRenderUtility.m_Camera.nearClipPlane = 0.3f;
-		previewRenderUtility.m_Camera.farClipPlane = 1000;
+        // 必要に応じて nearClipPlane と farClipPlane を設定
+        previewRenderUtility.m_Camera.nearClipPlane = 0.3f;
+        previewRenderUtility.m_Camera.farClipPlane = 1000;
 
-		// コンポーネント経由でゲームオブジェクトを取得
-		var component = (Component)target;
-		previewObject = component.gameObject;
-	}
+        // コンポーネント経由でゲームオブジェクトを取得
+        var component = (Component)target;
+        previewObject = component.gameObject;
+    }
 }
 //}
 
@@ -656,23 +659,23 @@ public class PreviewExampleInspector : Editor
 //emlist{
 public override void OnPreviewGUI (Rect r, GUIStyle background)
 {
-	previewRenderUtility.BeginPreview (r, background);
-	
-	var previewCamera = previewRenderUtility.m_Camera;
+    previewRenderUtility.BeginPreview (r, background);
+    
+    var previewCamera = previewRenderUtility.m_Camera;
 
-	previewCamera.transform.position = 
-		previewObject.transform.position + new Vector3 (0, 2.5f, -5);
-	
-	previewCamera.transform.LookAt (previewObject.transform);
-	
-	previewCamera.Render ();
+    previewCamera.transform.position = 
+        previewObject.transform.position + new Vector3 (0, 2.5f, -5);
+    
+    previewCamera.transform.LookAt (previewObject.transform);
+    
+    previewCamera.Render ();
 
-	previewRenderUtility.EndAndDrawPreview (r);
+    previewRenderUtility.EndAndDrawPreview (r);
 
-	
-	// 描画タイミングが少ないことによって
-	// カクつきがきになる時は Repaint を呼び出す（高負荷）
-	// Repaint ();
+    
+    // 描画タイミングが少ないことによって
+    // カクつきがきになる時は Repaint を呼び出す（高負荷）
+    // Repaint ();
 }
 //}
 
@@ -685,49 +688,49 @@ using UnityEditor;
 [CustomEditor (typeof(PreviewExample))]
 public class PreviewExampleInspector : Editor
 {
-	PreviewRenderUtility previewRenderUtility;
-	GameObject previewObject;
+    PreviewRenderUtility previewRenderUtility;
+    GameObject previewObject;
 
-	void OnEnable ()
-	{
-		previewRenderUtility = new PreviewRenderUtility (true);
-		previewRenderUtility.m_CameraFieldOfView = 30f;
+    void OnEnable ()
+    {
+        previewRenderUtility = new PreviewRenderUtility (true);
+        previewRenderUtility.m_CameraFieldOfView = 30f;
 
-		previewRenderUtility.m_Camera.farClipPlane = 1000;
-		previewRenderUtility.m_Camera.nearClipPlane = 0.3f; 
+        previewRenderUtility.m_Camera.farClipPlane = 1000;
+        previewRenderUtility.m_Camera.nearClipPlane = 0.3f; 
 
-		var component = (Component)target;
-		previewObject = component.gameObject;
-	}
+        var component = (Component)target;
+        previewObject = component.gameObject;
+    }
 
-	void OnDisable ()
-	{
-		previewRenderUtility.Cleanup ();
-		previewRenderUtility = null;
-		previewObject = null;
-	}
+    void OnDisable ()
+    {
+        previewRenderUtility.Cleanup ();
+        previewRenderUtility = null;
+        previewObject = null;
+    }
 
-	public override bool HasPreviewGUI ()
-	{
-		return true;
-	}
+    public override bool HasPreviewGUI ()
+    {
+        return true;
+    }
 
-	public override void OnPreviewGUI (Rect r, GUIStyle background)
-	{
-		previewRenderUtility.BeginPreview (r, background);
+    public override void OnPreviewGUI (Rect r, GUIStyle background)
+    {
+        previewRenderUtility.BeginPreview (r, background);
 
-		var previewCamera = previewRenderUtility.m_Camera;
+        var previewCamera = previewRenderUtility.m_Camera;
 
-		previewCamera.transform.position =
-			previewObject.transform.position + new Vector3 (0, 2.5f, -5);
-		
-		previewCamera.transform.LookAt (previewObject.transform);
-		
-		previewCamera.Render ();
+        previewCamera.transform.position =
+            previewObject.transform.position + new Vector3 (0, 2.5f, -5);
+        
+        previewCamera.transform.LookAt (previewObject.transform);
+        
+        previewCamera.Render ();
 
-		previewRenderUtility.EndAndDrawPreview (r);
+        previewRenderUtility.EndAndDrawPreview (r);
 
-	}
+    }
 }
 //}
 
@@ -762,10 +765,10 @@ GameObject previewObject;
 
 void OnEnable ()
 {
-	var component = (Component)target;
-	previewObject = Instantiate (component.gameObject);
-	previewObject.hideFlags = HideFlags.HideAndDontSave;
-	previewObject.SetActive (false);
+    var component = (Component)target;
+    previewObject = Instantiate (component.gameObject);
+    previewObject.hideFlags = HideFlags.HideAndDontSave;
+    previewObject.SetActive (false);
 }
 //}
 
@@ -793,7 +796,7 @@ previewRenderUtility.m_Camera.cullingMask = 1 << previewLayer;
 //emlist{
 previewObject.layer = previewLayer;
 foreach (Transform transform in previewObject.transform) {
-	transform.gameObject.layer = previewLayer;
+    transform.gameObject.layer = previewLayer;
 }
 //}
 
@@ -808,15 +811,15 @@ foreach (Transform transform in previewObject.transform) {
 //emlist{
 public override void OnInteractivePreviewGUI (Rect r, GUIStyle background)
 {
-	previewRenderUtility.BeginPreview (r, background);
+    previewRenderUtility.BeginPreview (r, background);
 
-	previewObject.SetActive (true);
+    previewObject.SetActive (true);
 
-	previewRenderUtility.m_Camera.Render ();
+    previewRenderUtility.m_Camera.Render ();
 
-	previewObject.SetActive (false);
+    previewObject.SetActive (false);
 
-	previewRenderUtility.EndAndDrawPreview (r);
+    previewRenderUtility.EndAndDrawPreview (r);
 
 }
 //}
@@ -841,44 +844,44 @@ Vector3 centerPosition;
 
 void OnEnable ()
 {
-	centerPosition = GetCenterPosition ();
+    centerPosition = GetCenterPosition ();
 }
 
 // ゲームオブジェクトの中心位置を取得
 Vector3 GetCenterPosition ()
 {
-	// 設定中のPivotモードを保持
-	var currentMode = Tools.pivotMode;
+    // 設定中のPivotモードを保持
+    var currentMode = Tools.pivotMode;
 
-	// PivotMode.Center に変更
-	Tools.pivotMode = PivotMode.Center;
+    // PivotMode.Center に変更
+    Tools.pivotMode = PivotMode.Center;
 
-	// ゲームオブジェクトの中心位置を取得
-	var centerPosition = Tools.handlePosition;
+    // ゲームオブジェクトの中心位置を取得
+    var centerPosition = Tools.handlePosition;
 
-	// pivotMode を元に戻す
-	Tools.pivotMode = currentMode;
+    // pivotMode を元に戻す
+    Tools.pivotMode = currentMode;
 
-	return centerPosition;
+    return centerPosition;
 }
 
 public override void OnInteractivePreviewGUI (Rect r, GUIStyle background)
 {
-	var drag = Vector2.zero;
+    var drag = Vector2.zero;
 
-	// ドラッグ時のマウス位置の差分を取得
-	if (Event.current.type == EventType.MouseDrag) {
-		drag = Event.current.delta;
-	}
+    // ドラッグ時のマウス位置の差分を取得
+    if (Event.current.type == EventType.MouseDrag) {
+        drag = Event.current.delta;
+    }
 
-	RotatePreviewObject (drag);
+    RotatePreviewObject (drag);
 }
 
 // X 軸と Y 軸それぞれ回転させる
 private void RotatePreviewObject (Vector2 drag)
 {
-	previewObject.transform.RotateAround (centerPosition, Vector3.up, -drag.x);
-	previewObject.transform.RotateAround (centerPosition, Vector3.right, -drag.y);
+    previewObject.transform.RotateAround (centerPosition, Vector3.up, -drag.x);
+    previewObject.transform.RotateAround (centerPosition, Vector3.right, -drag.y);
 }
 //}
 
@@ -892,97 +895,97 @@ using System.Reflection;
 [CustomEditor (typeof(PreviewExample))]
 public class PreviewExampleInspector : Editor
 {
-	PreviewRenderUtility previewRenderUtility;
-	GameObject previewObject;
-	Vector3 centerPosition;
+    PreviewRenderUtility previewRenderUtility;
+    GameObject previewObject;
+    Vector3 centerPosition;
 
-	void OnEnable ()
-	{
-		var flags = BindingFlags.Static | BindingFlags.NonPublic;
-		var propInfo = typeof(Camera).GetProperty ("PreviewCullingLayer", flags);
-		int previewLayer = (int)propInfo.GetValue (null, new object[0]);
+    void OnEnable ()
+    {
+        var flags = BindingFlags.Static | BindingFlags.NonPublic;
+        var propInfo = typeof(Camera).GetProperty ("PreviewCullingLayer", flags);
+        int previewLayer = (int)propInfo.GetValue (null, new object[0]);
 
-		previewRenderUtility = new PreviewRenderUtility (true);
-		previewRenderUtility.m_CameraFieldOfView = 30f;
-		previewRenderUtility.m_Camera.cullingMask = 1 << previewLayer;
+        previewRenderUtility = new PreviewRenderUtility (true);
+        previewRenderUtility.m_CameraFieldOfView = 30f;
+        previewRenderUtility.m_Camera.cullingMask = 1 << previewLayer;
 
-		var component = (Component)target;
-		previewObject = Instantiate (component.gameObject);
-		previewObject.hideFlags = HideFlags.HideAndDontSave;
+        var component = (Component)target;
+        previewObject = Instantiate (component.gameObject);
+        previewObject.hideFlags = HideFlags.HideAndDontSave;
 
-		previewObject.layer = previewLayer;
-		foreach (Transform transform in previewObject.transform) {
-			transform.gameObject.layer = previewLayer;
-		}
+        previewObject.layer = previewLayer;
+        foreach (Transform transform in previewObject.transform) {
+            transform.gameObject.layer = previewLayer;
+        }
 
 
-		var isPrefab = PrefabUtility.GetPrefabType (target) == PrefabType.Prefab;
+        var isPrefab = PrefabUtility.GetPrefabType (target) == PrefabType.Prefab;
 
-		centerPosition = isPrefab ? Vector3.zero : GetCenterPosition ();
+        centerPosition = isPrefab ? Vector3.zero : GetCenterPosition ();
 
-		if (isPrefab)
-			previewObject.transform.position = Vector3.zero;
+        if (isPrefab)
+            previewObject.transform.position = Vector3.zero;
 
-		previewObject.SetActive (false);
+        previewObject.SetActive (false);
 
-		RotatePreviewObject (new Vector2 (-120, 20));
-	}
+        RotatePreviewObject (new Vector2 (-120, 20));
+    }
 
-	Vector3 GetCenterPosition ()
-	{
-		var currentMode = Tools.pivotMode;
-		Tools.pivotMode = PivotMode.Center;
-		var centerPosition = Tools.handlePosition;
-		Tools.pivotMode = currentMode;
-		return centerPosition;
-	}
+    Vector3 GetCenterPosition ()
+    {
+        var currentMode = Tools.pivotMode;
+        Tools.pivotMode = PivotMode.Center;
+        var centerPosition = Tools.handlePosition;
+        Tools.pivotMode = currentMode;
+        return centerPosition;
+    }
 
-	public override GUIContent GetPreviewTitle ()
-	{
-		return new GUIContent (target.name+ " Preview");
-	}
+    public override GUIContent GetPreviewTitle ()
+    {
+        return new GUIContent (target.name+ " Preview");
+    }
 
-	void OnDisable ()
-	{
-		DestroyImmediate (previewObject);
-		previewRenderUtility.Cleanup ();
-		previewRenderUtility = null;
-	}
+    void OnDisable ()
+    {
+        DestroyImmediate (previewObject);
+        previewRenderUtility.Cleanup ();
+        previewRenderUtility = null;
+    }
 
-	public override bool HasPreviewGUI ()
-	{
-		return true;
-	}
+    public override bool HasPreviewGUI ()
+    {
+        return true;
+    }
 
-	public override void OnInteractivePreviewGUI (Rect r, GUIStyle background)
-	{
-		previewRenderUtility.BeginPreview (r, background);
+    public override void OnInteractivePreviewGUI (Rect r, GUIStyle background)
+    {
+        previewRenderUtility.BeginPreview (r, background);
 
-		var drag = Vector2.zero;
+        var drag = Vector2.zero;
 
-		if (Event.current.type == EventType.MouseDrag) {
-			drag = Event.current.delta;
-		}
+        if (Event.current.type == EventType.MouseDrag) {
+            drag = Event.current.delta;
+        }
 
-		previewRenderUtility.m_Camera.transform.position = centerPosition + Vector3.forward * -5;
+        previewRenderUtility.m_Camera.transform.position = centerPosition + Vector3.forward * -5;
 
-		RotatePreviewObject (drag);
+        RotatePreviewObject (drag);
 
-		previewObject.SetActive (true);
-		previewRenderUtility.m_Camera.Render ();
-		previewObject.SetActive (false);
+        previewObject.SetActive (true);
+        previewRenderUtility.m_Camera.Render ();
+        previewObject.SetActive (false);
 
-		previewRenderUtility.EndAndDrawPreview (r);
+        previewRenderUtility.EndAndDrawPreview (r);
 
-		if (drag != Vector2.zero)
-			Repaint ();
-	}
+        if (drag != Vector2.zero)
+            Repaint ();
+    }
 
-	private void RotatePreviewObject (Vector2 drag)
-	{
-		previewObject.transform.RotateAround (centerPosition, Vector3.up, -drag.x);
-		previewObject.transform.RotateAround (centerPosition, Vector3.right, -drag.y);
-	}
+    private void RotatePreviewObject (Vector2 drag)
+    {
+        previewObject.transform.RotateAround (centerPosition, Vector3.up, -drag.x);
+        previewObject.transform.RotateAround (centerPosition, Vector3.right, -drag.y);
+    }
 }
 //}
 

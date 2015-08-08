@@ -30,7 +30,7 @@ public class NewBehaviourScript : MonoBehaviour
 
 ですが、開発時のUnityエディターで生成されるAssembly-CSharp.dllにはUnityEditor.dllの参照が行われているためスクリプトのコンパイルエラーは発生しません。@<b>{UnityEditor.dllの参照が行われないのはビルド時に生成されるAssembly-CSharp.dllのみ}ということを覚えておきましょう。この仕様を知らないと「突然ビルドが通らなくなった」原因になってしまいます。
 
-//image[ss02][Monodevelopで見るとUnityEditor.dllの参照を行っている。]{
+//image[ss02][Monodevelopで見るとUnityEditor.dllの参照を行っている。][scale=0.5]{
 
 //}
 
@@ -52,11 +52,11 @@ Editorフォルダーの場所は特に制限はありません。どこにで�
 
 ただし、「Standard Assets」「Pro Standard Assets」「Plugins」フォルダー内にEditorフォルダーを作成した場合は、スクリプトは@<b>{Assembly-CSharp-Editor-firstpass.dll}へとコンパイルされます。
 
-//image[ss04][firstpassが参照されているのが分かる]{
+//image[ss04][firstpassが参照されているのが分かる][scale=0.5]{
 
 //}
 
-逆に、@<b>{firstpassからはAssembly-CSharp-Editor.dllを参照できないので気をつけてください。}
+Assembly-CSharp-Editor からは firstpass を参照することが出来ますが、逆に、@<b>{firstpass からは Assembly-CSharp-Editor.dll を参照できないので気をつけてください。}
 
 ===[column] Editorフォルダーに含めずに動作させる方法
 
@@ -116,13 +116,13 @@ var tex = EditorGUIUtility.Load ("logo.png") as Texture;
 [InitializeOnLoadMethod]
 static void GetBultinAssetNames ()
 {
-	var flags = BindingFlags.Static | BindingFlags.NonPublic;
-	MethodInfo info = typeof(EditorGUIUtility).GetMethod ("GetEditorAssetBundle", flags);
-	AssetBundle bundle = info.Invoke (null, new object[0]) as AssetBundle;
+    var flags = BindingFlags.Static | BindingFlags.NonPublic;
+    var info = typeof(EditorGUIUtility).GetMethod ("GetEditorAssetBundle", flags);
+    var bundle = info.Invoke (null, new object[0]) as AssetBundle;
 
-	foreach (var n in bundle.GetAllAssetNames()) {
-		Debug.Log (n);
-	}
+    foreach (var n in bundle.GetAllAssetNames()) {
+        Debug.Log (n);
+    }
 }
 //}
 

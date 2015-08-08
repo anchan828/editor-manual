@@ -93,8 +93,7 @@ CreateAssetMenu を使用した場合は 「Assets/Create」配下にメニュ�
 static void LoadExampleAsset ()
 {
     var exampleAsset = 
-    　　　　AssetDatabase.LoadAssetAtPath<ExampleAsset> 
-                    ("Assets/Editor/ExampleAsset.asset");
+    　　　　AssetDatabase.LoadAssetAtPath<ExampleAsset> ("Assets/Editor/ExampleAsset.asset");
 }
 //}
 
@@ -135,11 +134,9 @@ public class ExampleAsset : ScriptableObject
 
 スクリプトアセットを選択してアイコンの部分を選択すると、アイコン変更パネルが表示されます。ここで「Other」ボタンをクリックして変更したいアイコンのテクスチャを選んでください。
 
-//image[ss04][]{
+//indepimage[ss04]
 
-//}
-
-//image[ss05][わかりにくいがスクリプトと ScriptableObject にアイコンが設定されたのが分かる]{
+//image[ss05][わかりにくいがスクリプトと ScriptableObject にアイコンが設定された]{
 
 //}
 

@@ -1,8 +1,5 @@
 = ScriptTemplates
 
-//indepimage[frontispiece]
-//pagebreak
-
 
 EditorWindowを生成するスクリプトを作成する時、みなさんはどうしていますか？
 
@@ -262,7 +259,6 @@ Folder	53
 C# Script	81
 Javascript	82
 Shader	83
-Compute Shader	84
 //}
 
 priorityが86のC# Scriptが2つありますが、仕様としてpriorityが低いものがテンプレートとして優先されます。

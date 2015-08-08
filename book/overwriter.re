@@ -1,33 +1,5 @@
 = Overwriter
 
-//indepimage[frontispiece]
-//pagebreak
-
-== この章で得られる知識
-
- * Unityの管理外でファイルの変更が非推奨なワケ
- * AssetDatabase.CopyAssetの不具合？
- * AssetPostprocessor.OnPostprocessAllAssets
- * EditorUtility.DisplayDialog
- * EditorUtility.DisplayDialogComplex
- * AssetDatabase.CopyAsset
- * FileUtil.ReplaceFile
- * AssetDatabase.DeleteAsset
- * AssetDatabase.ImportAsset
-
-== 本章で使用するソースコード
-
-@<href>{https://gist.github.com/anchan828/1a95a3f6b88c81053582}
-
-//table[t1][]{
-ファイル	説明
-------------------------
-OverwriteAsset.cs	アセット管理
-Overwriter.cs	AssetPostprocessorを継承したクラス
-//}
-
-== 概要
-
 ファイルをドラッグ＆ドロップによって上書きすることはよくあります。みなさんも必ずと言っていいほど経験しているのではないでしょうか。
 
 //image[ss01][Finderで同じ名前のファイルがある時に表示されるダイアログ（Mac）]{

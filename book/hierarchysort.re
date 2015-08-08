@@ -1,7 +1,5 @@
 = HierarchySort
 
-//indepimage[frontispiece]
-
 
 Hierarchyウインドウでは、ゲームオブジェクトの順番を任意に並び替えることが可能です。デフォルトでは uGUI の描画順を決定する @<b>{Transform Sort} となります。また、Preferencesウインドウにある「Enable Alpha Numeric Sorting」を有効にすると、ゲームオブジェクトをアルファベット順に並び替える @<b>{Alphabetical Sort} を選択できるようになります。
 

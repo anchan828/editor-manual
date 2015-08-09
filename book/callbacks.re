@@ -18,23 +18,23 @@ using UnityEditor.iOS.Xcode;
 
 public class NewBehaviourScript
 {
-	[PostProcessBuild]
-	static void OnPostProcessBuild (BuildTarget buildTarget, string path)
-	{
-		if (buildTarget != BuildTarget.iOS)
-			return;
+    [PostProcessBuild]
+    static void OnPostProcessBuild (BuildTarget buildTarget, string path)
+    {
+        if (buildTarget != BuildTarget.iOS)
+            return;
 
-		var xcodeprojPath = Path.Combine (path, "Unity-iPhone.xcodeproj");
-		var pbxprojPath = Path.Combine (xcodeprojPath, "project.pbxproj");
+        var xcodeprojPath = Path.Combine (path, "Unity-iPhone.xcodeproj");
+        var pbxprojPath = Path.Combine (xcodeprojPath, "project.pbxproj");
 
-		PBXProject proj = new PBXProject ();
-		proj.ReadFromFile (pbxprojPath);
+        PBXProject proj = new PBXProject ();
+        proj.ReadFromFile (pbxprojPath);
 
-		var target = proj.TargetGuidByName("Unity-iPhone");
+        var target = proj.TargetGuidByName("Unity-iPhone");
 
-		proj.AddFrameworkToProject (target, "Social.framework", false);
-		proj.WriteToFile (pbxprojPath);
-	}
+        proj.AddFrameworkToProject (target, "Social.framework", false);
+        proj.WriteToFile (pbxprojPath);
+    }
 }
 //}
 
@@ -53,11 +53,11 @@ using UnityEditor.Callbacks;
 
 public class NewBehaviourScript
 {
-	[PostProcessScene]
-	static void OnPostProcessScene ()
-	{
-		new GameObject ("OnPostProcessScene: " + Application.loadedLevelName);
-	}
+    [PostProcessScene]
+    static void OnPostProcessScene ()
+    {
+        new GameObject ("OnPostProcessScene: " + Application.loadedLevelName);
+    }
 }
 //}
 
@@ -76,15 +76,15 @@ using UnityEngine;
 
 public class NewBehaviourScript
 {
-	[PostProcessScene]
-	static void OnPostProcessScene ()
-	{
-		var currentScenePath = EditorApplication.currentScene;
-		
-		// ゲーム再生時はシーンのパスを取得できる
-		// ビルド時は空文字
-		Debug.Log (currentScenePath);
-	}
+    [PostProcessScene]
+    static void OnPostProcessScene ()
+    {
+        var currentScenePath = EditorApplication.currentScene;
+        
+        // ゲーム再生時はシーンのパスを取得できる
+        // ビルド時は空文字
+        Debug.Log (currentScenePath);
+    }
 }
 //}
 
@@ -98,10 +98,10 @@ public class NewBehaviourScript
 [PostProcessScene]
 static void OnPostProcessScene ()
 {
-	var index = Application.loadedLevel;
-	var currentScenePath = EditorBuildSettings.scenes [index].path;
+    var index = Application.loadedLevel;
+    var currentScenePath = EditorBuildSettings.scenes [index].path;
 
-	Debug.Log (currentScenePath);
+    Debug.Log (currentScenePath);
 }
 //}
 
@@ -114,7 +114,7 @@ Unity エディターの起動時や、スクリプトのコンパイル直後�
 
 注意したいのはエディター上でゲーム再生時直後にも InitializeOnLoad 属性の付いた静的コンストラクタが呼び出されてしまいます。
 
-対策として、静的コンストラクタ内で@<code>{EditorApplication.isPlayingOrWillChangePlaymode}を使い、ゲーム再生時に呼び出されたものであるかを判断します。
+対策として、静的コンストラクタ内で @<b>{EditorApplication.isPlayingOrWillChangePlaymode} を使い、ゲーム再生時に呼び出されたものであるかを判断します。
 
 //emlist{
 using UnityEditor;
@@ -123,13 +123,13 @@ using UnityEngine;
 [InitializeOnLoad]
 public class NewBehaviourScript
 {
-	static NewBehaviourScript ()
-	{
-		if (EditorApplication.isPlayingOrWillChangePlaymode)
-			return;
-		
-		Debug.Log ("call");
-	}
+    static NewBehaviourScript ()
+    {
+        if (EditorApplication.isPlayingOrWillChangePlaymode)
+            return;
+        
+        Debug.Log ("call");
+    }
 }
 //}
 
@@ -143,13 +143,13 @@ using UnityEngine;
 [InitializeOnLoad]
 public class NewBehaviourScript
 {
-	static NewBehaviourScript ()
-	{
-		if (EditorApplication.timeSinceStartup > 10)
-			return;
-		
-		Debug.Log ("call");
-	}
+    static NewBehaviourScript ()
+    {
+        if (EditorApplication.timeSinceStartup > 10)
+            return;
+        
+        Debug.Log ("call");
+    }
 }
 //}
 
@@ -169,17 +169,17 @@ using UnityEditor.Callbacks;
 public class NewBehaviourScript
 {
 
-	[DidReloadScripts(0)]
-	static void First ()
-	{
-		Debug.Log ("最初に処理する");
-	}
+    [DidReloadScripts(0)]
+    static void First ()
+    {
+        Debug.Log ("最初に処理する");
+    }
 
-	[DidReloadScripts(1)]
-	static void Second ()
-	{
-		Debug.Log ("次に処理する");
-	}
+    [DidReloadScripts(1)]
+    static void Second ()
+    {
+        Debug.Log ("次に処理する");
+    }
 }
 //}
 
@@ -194,34 +194,34 @@ using UnityEngine;
 public class NewBehaviourScript
 {
 
-	[InitializeOnLoadMethod]
-	static void ChangeBundleIdentifier ()
-	{
-		// プラットフォームごとに bundleIdentifier を切り替える
-		EditorUserBuildSettings.activeBuildTargetChanged += () => {
-			
-			var bundleIdentifier = "com.kyusyukeigo.superapp";
+    [InitializeOnLoadMethod]
+    static void ChangeBundleIdentifier ()
+    {
+        // プラットフォームごとに bundleIdentifier を切り替える
+        EditorUserBuildSettings.activeBuildTargetChanged += () => {
+            
+            var bundleIdentifier = "com.kyusyukeigo.superapp";
 
-			switch (EditorUserBuildSettings.activeBuildTarget) {
-				case BuildTarget.iOS:
-					bundleIdentifier += ".ios";
-					break;
-				case BuildTarget.Android:
-					bundleIdentifier += ".android";
-					break;
-				case BuildTarget.WSAPlayer:
-					bundleIdentifier += ".wp";
-					break;
-				default:
-					break;
-			}
+            switch (EditorUserBuildSettings.activeBuildTarget) {
+                case BuildTarget.iOS:
+                    bundleIdentifier += ".ios";
+                    break;
+                case BuildTarget.Android:
+                    bundleIdentifier += ".android";
+                    break;
+                case BuildTarget.WSAPlayer:
+                    bundleIdentifier += ".wp";
+                    break;
+                default:
+                    break;
+            }
 
-			if (Debug.isDebugBuild)
-				bundleIdentifier += ".dev";
+            if (Debug.isDebugBuild)
+                bundleIdentifier += ".dev";
 
-			PlayerSettings.bundleIdentifier = bundleIdentifier;
-		};
-	}
+            PlayerSettings.bundleIdentifier = bundleIdentifier;
+        };
+    }
 }
 //}
 
@@ -231,7 +231,7 @@ public class NewBehaviourScript
 
 シーン内の全ゲームオブジェクトを対象に処理をしている場合に使用すると便利です。
 
-下記コードは、シーン内のカメラをリストアップするコードです。@<fn>{1}
+下記コードは、シーン内のカメラをリストアップするコードです。
 
 //emlist{
 using UnityEditor;
@@ -241,42 +241,44 @@ using System.Linq;
 public class NewBehaviourScript
 {
 
-	[InitializeOnLoadMethod]
-	static void DrawCameraNames ()
-	{
-		
-		var selected = 0;
-		var displayNames = new string[0];
-		var windowRect = new Rect (10, 20, 100, 24);
+    [InitializeOnLoadMethod]
+    static void DrawCameraNames ()
+    {
+        
+        var selected = 0;
+        var displayNames = new string[0];
+        var windowRect = new Rect (10, 20, 100, 24);
 
 
-		EditorApplication.hierarchyWindowChanged += () => {
-			var cameras = Object.FindObjectsOfType<Camera> ();
-			displayNames = new string[]{ "None", "" };
-			ArrayUtility.AddRange (ref displayNames, cameras.Select (c => c.name).ToArray ());
-		};
+        EditorApplication.hierarchyWindowChanged += () => {
+            var cameras = Object.FindObjectsOfType<Camera> ();
+            displayNames = new string[]{ "None", "" };
+            ArrayUtility.AddRange (ref displayNames, 
+                 cameras.Select (c => c.name).ToArray ());
+        };
 
-		EditorApplication.hierarchyWindowChanged ();
+        EditorApplication.hierarchyWindowChanged ();
 
-		SceneView.onSceneGUIDelegate += (sceneView) => {
+        SceneView.onSceneGUIDelegate += (sceneView) => {
 
-			GUI.skin = EditorGUIUtility.GetBuiltinSkin (EditorSkin.Inspector);
+            GUI.skin = EditorGUIUtility.GetBuiltinSkin (EditorSkin.Inspector);
 
-			Handles.BeginGUI ();
+            Handles.BeginGUI ();
 
-			int windowID = EditorGUIUtility.GetControlID (FocusType.Passive, windowRect);
+            int windowID = 
+                EditorGUIUtility.GetControlID (FocusType.Passive, windowRect);
 
-			windowRect = GUILayout.Window (windowID, windowRect, (id) => {
+            windowRect = GUILayout.Window (windowID, windowRect, (id) => {
 
-				selected = EditorGUILayout.Popup (selected, displayNames);
+                selected = EditorGUILayout.Popup (selected, displayNames);
 
-				GUI.DragWindow ();
+                GUI.DragWindow ();
 
-			}, "Window");
+            }, "Window");
 
-			Handles.EndGUI ();
-		};
-	}
+            Handles.EndGUI ();
+        };
+    }
 }
 //}
 
@@ -299,34 +301,34 @@ using UnityEngine;
 public class NewBehaviourScript
 {
 
-	[InitializeOnLoadMethod]
-	static void DrawComponentIcons ()
-	{
-		EditorApplication.hierarchyWindowItemOnGUI += (instanceID, selectionRect) => {
+    [InitializeOnLoadMethod]
+    static void DrawComponentIcons ()
+    {
+        EditorApplication.hierarchyWindowItemOnGUI += (instanceID, selectionRect) => {
 
-			var go = (GameObject)EditorUtility.InstanceIDToObject (instanceID);
+            var go = (GameObject)EditorUtility.InstanceIDToObject (instanceID);
 
-			if (go == null)
-				return;
+            if (go == null)
+                return;
 
-			var position = new Rect (selectionRect) {
-				width = 16,
-				height = 16,
-				x = Screen.width - 20
-			};
+            var position = new Rect (selectionRect) {
+                width = 16,
+                height = 16,
+                x = Screen.width - 20
+            };
 
-			foreach (var component in go.GetComponents<Component>()) {
+            foreach (var component in go.GetComponents<Component>()) {
 
-				if (component is Transform)
-					continue;
+                if (component is Transform)
+                    continue;
 
-				var icon = AssetPreview.GetMiniThumbnail (component);
+                var icon = AssetPreview.GetMiniThumbnail (component);
 
-				GUI.Label (position, icon);
-				position.x -= 16;
-			}
-		};
-	}
+                GUI.Label (position, icon);
+                position.x -= 16;
+            }
+        };
+    }
 }
 //}
 
@@ -338,21 +340,21 @@ public class NewBehaviourScript
 [InitializeOnLoadMethod]
 static void CheckPlaymodeState ()
 {
-	EditorApplication.playmodeStateChanged += () => {
-			
-		if (EditorApplication.isPaused) {
-			// 一時停止中
-		}
+    EditorApplication.playmodeStateChanged += () => {
+            
+        if (EditorApplication.isPaused) {
+            // 一時停止中
+        }
 
-		if (EditorApplication.isPlaying) {
-			// 再生中
-		}
+        if (EditorApplication.isPlaying) {
+            // 再生中
+        }
 
-		if (EditorApplication.isPlayingOrWillChangePlaymode) {
-			// 再生中または再生ボタンを押した直後
-			// コンパイルや様々な処理が走っている状態
-		}
-	};
+        if (EditorApplication.isPlayingOrWillChangePlaymode) {
+            // 再生中または再生ボタンを押した直後
+            // コンパイルや様々な処理が走っている状態
+        }
+    };
 }
 //}
 
@@ -366,50 +368,58 @@ using System.Reflection;
 [InitializeOnLoad]
 public class CompileError
 {
- 	// 効果音。自由に変更する
-	// http://commons.nicovideo.jp/material/nc32797
-	const string musicPath = "Assets/Editor/nc32797.wav";
-	const BindingFlags flags = BindingFlags.NonPublic | BindingFlags.Instance;
+     // 効果音。自由に変更する
+    // http://commons.nicovideo.jp/material/nc32797
+    const string musicPath = "Assets/Editor/nc32797.wav";
+    const BindingFlags flags = BindingFlags.NonPublic | BindingFlags.Instance;
 
-	static CompileError ()
-	{
-		EditorApplication.playmodeStateChanged += () => {
+    static CompileError ()
+    {
+        EditorApplication.playmodeStateChanged += () => {
 
-			// 再生ボタンをおした時であること
-			if (!EditorApplication.isPlayingOrWillChangePlaymode && EditorApplication.isPlaying)
-				return;
-			
-			// SceneViewが存在すること
-			if (SceneView.sceneViews.Count == 0)
-				return;
+            // 再生ボタンをおした時であること
+            if (!EditorApplication.isPlayingOrWillChangePlaymode
+                 && EditorApplication.isPlaying)
+                return;
+            
+            // SceneViewが存在すること
+            if (SceneView.sceneViews.Count == 0)
+                return;
 
-			EditorApplication.delayCall += () => {
-				var content = typeof(EditorWindow).GetField ("m_Notification", flags).GetValue (SceneView.sceneViews [0]) as GUIContent;
-				if (content != null && !string.IsNullOrEmpty (content.text)) {
-					GetAudioSource ().Play ();
-				}
-			};
-		};
-	}
+            EditorApplication.delayCall += () => {
+                var content = typeof(EditorWindow)
+                    .GetField ("m_Notification", flags)
+                    .GetValue (SceneView.sceneViews [0]) as GUIContent;
 
-	static AudioSource GetAudioSource ()
-	{
-		var gameObjectName = "HideAudioSourceObject";
-		var gameObject = GameObject.Find (gameObjectName);
+                if (content != null && !string.IsNullOrEmpty (content.text)) {
+                    GetAudioSource ().Play ();
+                }
+            };
+        };
+    }
 
-		if (gameObject == null) {
-			//HideAndDontSaveフラグを立てて非表示・保存しないようにする
-			gameObject = EditorUtility.CreateGameObjectWithHideFlags (gameObjectName, HideFlags.HideAndDontSave, typeof(AudioSource));
-		}
+    static AudioSource GetAudioSource ()
+    {
+        var gameObjectName = "HideAudioSourceObject";
+        var gameObject = GameObject.Find (gameObjectName);
 
-		var hideAudioSource = gameObject.GetComponent<AudioSource> ();
+        if (gameObject == null) {
+            //HideAndDontSaveフラグを立てて非表示・保存しないようにする
+            gameObject = 
+                EditorUtility.CreateGameObjectWithHideFlags (gameObjectName, 
+                    HideFlags.HideAndDontSave, typeof(AudioSource));
+        }
 
-		if (hideAudioSource.clip == null) {
-			hideAudioSource.clip = AssetDatabase.LoadAssetAtPath (musicPath, typeof(AudioClip)) as AudioClip;
-		}
+        var hideAudioSource = gameObject.GetComponent<AudioSource> ();
 
-		return hideAudioSource;
-	}
+        if (hideAudioSource.clip == null) {
+            hideAudioSource.clip = 
+                AssetDatabase.LoadAssetAtPath (musicPath, 
+                                            typeof(AudioClip)) as AudioClip;
+        }
+
+        return hideAudioSource;
+    }
 }
 //}
 
@@ -423,21 +433,21 @@ using UnityEngine;
 
 public class NewBehaviourScript : EditorWindow
 {
-	[MenuItem ("Window/Example")]
-	static void CheckModifierKeysChanged ()
-	{
-		GetWindow<NewBehaviourScript> ();
-	}
+    [MenuItem ("Window/Example")]
+    static void CheckModifierKeysChanged ()
+    {
+        GetWindow<NewBehaviourScript> ();
+    }
 
-	void OnEnable ()
-	{
-		EditorApplication.modifierKeysChanged += Repaint;
-	}
+    void OnEnable ()
+    {
+        EditorApplication.modifierKeysChanged += Repaint;
+    }
 
-	void OnGUI ()
-	{
-		GUILayout.Label (Event.current.modifiers.ToString());
-	}
+    void OnGUI ()
+    {
+        GUILayout.Label (Event.current.modifiers.ToString());
+    }
 }
 
 //}
@@ -457,35 +467,35 @@ using System.IO;
 public class NewBehaviourScript
 {
 
-	[InitializeOnLoadMethod]
-	static void TestWWW ()
-	{
-		// 画像を取得して保存する
-		EditorWWW ("http://placehold.it/350x150", (www) => {
+    [InitializeOnLoadMethod]
+    static void TestWWW ()
+    {
+        // 画像を取得して保存する
+        EditorWWW ("http://placehold.it/350x150", (www) => {
 
-			var assetPath = "Assets/New Texture.png";
-			File.WriteAllBytes (assetPath, www.bytes);
-			AssetDatabase.ImportAsset(assetPath);
-		
-		});
-	}
+            var assetPath = "Assets/New Texture.png";
+            File.WriteAllBytes (assetPath, www.bytes);
+            AssetDatabase.ImportAsset(assetPath);
+        
+        });
+    }
 
-	static void EditorWWW (string url, Action<WWW> callback)
-	{
-		var www = new WWW (url);
+    static void EditorWWW (string url, Action<WWW> callback)
+    {
+        var www = new WWW (url);
 
-		EditorApplication.CallbackFunction update = null;
+        EditorApplication.CallbackFunction update = null;
 
-		update = () => {
-			// 毎フレームチェック
-			if (www.isDone && string.IsNullOrEmpty (www.error)) {
-				callback (www);
-				EditorApplication.update -= update;
-			}
-		};
+        update = () => {
+            // 毎フレームチェック
+            if (www.isDone && string.IsNullOrEmpty (www.error)) {
+                callback (www);
+                EditorApplication.update -= update;
+            }
+        };
 
-		EditorApplication.update += update;
-	}
+        EditorApplication.update += update;
+    }
 }
 //}
 
@@ -500,35 +510,35 @@ using System;
 [InitializeOnLoad]
 class EditorApplicationUtility
 {
-	public static Action<EditorWindow> focusedWindowChanged;
+    public static Action<EditorWindow> focusedWindowChanged;
 
-	static EditorWindow currentFocusedWindow;
+    static EditorWindow currentFocusedWindow;
 
-	static EditorApplicationUtility ()
-	{
-		EditorApplication.update += FocusedWindowChanged;
+    static EditorApplicationUtility ()
+    {
+        EditorApplication.update += FocusedWindowChanged;
 
-	}
+    }
 
-	static void FocusedWindowChanged ()
-	{
-		if (currentFocusedWindow != EditorWindow.focusedWindow) {
-			currentFocusedWindow = EditorWindow.focusedWindow;
-			focusedWindowChanged (currentFocusedWindow);
-		}
-	}
+    static void FocusedWindowChanged ()
+    {
+        if (currentFocusedWindow != EditorWindow.focusedWindow) {
+            currentFocusedWindow = EditorWindow.focusedWindow;
+            focusedWindowChanged (currentFocusedWindow);
+        }
+    }
 }
 
 
 [InitializeOnLoad]
 public class Test
 {
-	static Test ()
-	{
-		EditorApplicationUtility.focusedWindowChanged += (window) => {
-			Debug.Log (window);
-		};
-	}
+    static Test ()
+    {
+        EditorApplicationUtility.focusedWindowChanged += (window) => {
+            Debug.Log (window);
+        };
+    }
 }
 //}
 
@@ -556,17 +566,17 @@ using UnityEngine;
 
 public class NewBehaviourScript : MonoBehaviour
 {
-	public GameObject go;
+    public GameObject go;
 
-	#if UNITY_EDITOR
-	void OnValidate ()
-	{
-		UnityEditor.EditorApplication.delayCall += () => {
-			DestroyImmediate (go);
-			go = null;
-		};
-	}
-	#endif
+    #if UNITY_EDITOR
+    void OnValidate ()
+    {
+        UnityEditor.EditorApplication.delayCall += () => {
+            DestroyImmediate (go);
+            go = null;
+        };
+    }
+    #endif
 }
 //}
 
@@ -590,34 +600,36 @@ using CallbackFunction = UnityEditor.EditorApplication.CallbackFunction;
 [InitializeOnLoad]
 class EditorApplicationUtility
 {
-	static BindingFlags flags = BindingFlags.Static | BindingFlags.Instance | BindingFlags.NonPublic;
-	static FieldInfo info = typeof(EditorApplication).GetField ("globalEventHandler", flags);
+    static BindingFlags flags = 
+        BindingFlags.Static | BindingFlags.Instance | BindingFlags.NonPublic;
+    
+    static FieldInfo info = typeof(EditorApplication)
+                                     .GetField ("globalEventHandler", flags);
 
-	public static CallbackFunction globalEventHandler {
-		get { 
-			return  (CallbackFunction)info.GetValue (null);
-		}
-		set { 
-			CallbackFunction functions = (CallbackFunction)info.GetValue (null);
-			functions += value;  
-			info.SetValue (null, (object)functions);
-		}
-	}
+    public static CallbackFunction globalEventHandler {
+        get { 
+            return  (CallbackFunction)info.GetValue (null);
+        }
+        set { 
+            CallbackFunction functions = (CallbackFunction)info.GetValue (null);
+            functions += value;  
+            info.SetValue (null, (object)functions);
+        }
+    }
 }
 
 
 [InitializeOnLoad]
 public class Test
 {
-	static Test ()
-	{
-		EditorApplicationUtility.globalEventHandler += () => {
-			Debug.Log (Event.current);
-		};
-	}
+    static Test ()
+    {
+        EditorApplicationUtility.globalEventHandler += () => {
+            Debug.Log (Event.current);
+        };
+    }
 }
 //}
 
 
-//footnote[1][本来は更にコードを加え SyncCamera になります。@<href>{https://github.com/anchan828/unitejapan2014/blob/master/SyncCamera/Assets/SyncCamera/Editor/SyncCamera.cs}]
 //footnote[2][200回/秒実行されるのはバグとの報告アリ。ドキュメントでは 100回/秒と記載されています。]

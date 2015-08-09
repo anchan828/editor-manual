@@ -1,11 +1,10 @@
 
 = GUIを自作する
 
-//pagebreak
 
 例えば@<b>{EditorGUILayout.ObjectField}でSpriteのフィールドを表示した時、Texture系であればプレビューがあるGUIに変化しますがSpriteはプレビューが実装されていませんでした。
 
-@<b>{注: 本章は　ObjectField　が Sprite に対応していない時に執筆されたものです。なので目的となる「Sprite に対応したフィールドの作成」は無駄になりますが、その過程で使用する技術は有用なので掲載しています。}
+@<b>{注: 本章はObjectFieldがSpriteに対応していない時に執筆されたものです。なので目的となる「Sprite に対応したフィールドの作成」は無駄になりますが、その過程で使用する技術は有用なので掲載しています。}
 
 //image[ss01][Texture2DとSpriteのGUIを並べたもの][scale=0.5]{
 

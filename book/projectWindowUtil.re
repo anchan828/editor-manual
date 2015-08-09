@@ -20,13 +20,13 @@ using UnityEditor;
 
 public class NewBehaviourScript
 {
-	[MenuItem ("Assets/Create ExampleAssets")]
-	static void CreateExampleAssets ()
-	{
-		var material = new Material (Shader.Find ("Standard"));
+    [MenuItem ("Assets/Create ExampleAssets")]
+    static void CreateExampleAssets ()
+    {
+        var material = new Material (Shader.Find ("Standard"));
 
-		ProjectWindowUtil.CreateAsset (material, "New Material.mat");
-	}
+        ProjectWindowUtil.CreateAsset (material, "New Material.mat");
+    }
 }
 //}
 
@@ -48,30 +48,30 @@ using UnityEditor.ProjectWindowCallback;
 
 public class DoCreateScriptAsset : EndNameEditAction
 {
-	public override void Action (int instanceId, string pathName, string resourceFile)
-	{
-		var text = File.ReadAllText (resourceFile);
-		
-		var className = Path.GetFileNameWithoutExtension (pathName);
-		
-		// 半角スペースを除く
-		className = className.Replace (" ", "");
+    public override void Action (int instanceId, string pathName, string resourceFile)
+    {
+        var text = File.ReadAllText (resourceFile);
+        
+        var className = Path.GetFileNameWithoutExtension (pathName);
+        
+        // 半角スペースを除く
+        className = className.Replace (" ", "");
 
-		// 他のパラメータ名について知りたい場合は
-		// @<chapref>{scripttemplates}を参照してください
-		text = text.Replace ("#SCRIPTNAME#", className);
+        // 他のパラメータ名について知りたい場合は
+        // @<chapref>{scripttemplates}を参照してください
+        text = text.Replace ("#SCRIPTNAME#", className);
 
-		text += "\n//コード追加！";
+        text += "\n//コード追加！";
 
-		// UTF8 の BOM 付きで保存
-		var encoding = new UTF8Encoding (true, false);
+        // UTF8 の BOM 付きで保存
+        var encoding = new UTF8Encoding (true, false);
 
-		File.WriteAllText (pathName, text, encoding);
+        File.WriteAllText (pathName, text, encoding);
 
-		AssetDatabase.ImportAsset (pathName);
-		var asset = AssetDatabase.LoadAssetAtPath<MonoScript> (pathName);
-		ProjectWindowUtil.ShowCreatedAsset (asset);
-	}
+        AssetDatabase.ImportAsset (pathName);
+        var asset = AssetDatabase.LoadAssetAtPath<MonoScript> (pathName);
+        ProjectWindowUtil.ShowCreatedAsset (asset);
+    }
 }
 //}
 
@@ -81,7 +81,7 @@ public class DoCreateScriptAsset : EndNameEditAction
 
 StartNameEditingIfProjectWindowExists は 2 つの生成パターンをサポートしています。
 
-@<b>{1つ目は、Unityエディター上にはない外部ファイルを元にしてアセットを生成する方法です。}	
+@<b>{1つ目は、Unityエディター上にはない外部ファイルを元にしてアセットを生成する方法です。}    
 
 これはスクリプトファイルの生成のような場合に使用します。第5引数が外部ファイル（=リソース）のパスを指定するようになっています。この時、インスタンスIDは必要ないので 0 にします。
 
@@ -91,14 +91,19 @@ StartNameEditingIfProjectWindowExists は 2 つの生成パターンをサポー
 [MenuItem ("Assets/Create ExampleAssets")]
 static void CreateExampleAssets ()
 {
-	var resourceFile = Path.Combine (EditorApplication.applicationContentsPath, "Resources/ScriptTemplates/81-C# Script-NewBehaviourScript.cs.txt");
-	
-	// cs は "cs Script Icon"
-	// js は "js Script Icon"
-	Texture2D csIcon = EditorGUIUtility.IconContent ("cs Script Icon").image as Texture2D;
-	var endNameEditAction = ScriptableObject.CreateInstance<DoCreateScriptAsset> ();
+    var resourceFile = Path.Combine (EditorApplication.applicationContentsPath,
+     "Resources/ScriptTemplates/81-C# Script-NewBehaviourScript.cs.txt");
+    
+    // cs は "cs Script Icon"
+    // js は "js Script Icon"
+    Texture2D csIcon =
+                   EditorGUIUtility.IconContent ("cs Script Icon").image as Texture2D;
+    
+    var endNameEditAction =
+                   ScriptableObject.CreateInstance<DoCreateScriptAsset> ();
 
-	ProjectWindowUtil.StartNameEditingIfProjectWindowExists (0, endNameEditAction, "NewBehaviourScript.cs", csIcon, resourceFile);
+    ProjectWindowUtil.StartNameEditingIfProjectWindowExists (0, endNameEditAction, 
+    	                        "NewBehaviourScript.cs", csIcon, resourceFile);
 }
 //}
 
@@ -118,17 +123,17 @@ using UnityEditor.ProjectWindowCallback;
 
 public class DoCreateMaterialAsset : EndNameEditAction
 {
-	public override void Action (int instanceId, string pathName, string resourceFile)
-	{
-		var mat = (Material)EditorUtility.InstanceIDToObject (instanceId);
+    public override void Action (int instanceId, string pathName, string resourceFile)
+    {
+        var mat = (Material)EditorUtility.InstanceIDToObject (instanceId);
 
-		// 強制的にマテリアルを赤色にする
-		mat.color = Color.red;
+        // 強制的にマテリアルを赤色にする
+        mat.color = Color.red;
 
-		AssetDatabase.CreateAsset (mat, pathName);
-		AssetDatabase.ImportAsset (pathName);
-		ProjectWindowUtil.ShowCreatedAsset (mat);
-	}
+        AssetDatabase.CreateAsset (mat, pathName);
+        AssetDatabase.ImportAsset (pathName);
+        ProjectWindowUtil.ShowCreatedAsset (mat);
+    }
 }
 //}
 
@@ -140,18 +145,20 @@ using UnityEditor;
 
 public class NewBehaviourScript
 {
-	[MenuItem ("Assets/Create ExampleAssets")]
-	static void CreateExampleAssets ()
-	{
-		var material = new Material (Shader.Find ("Standard"));
-		
-		// マテリアルのアイコンを取得
-		var icon = AssetPreview.GetMiniThumbnail (material);
+    [MenuItem ("Assets/Create ExampleAssets")]
+    static void CreateExampleAssets ()
+    {
+        var material = new Material (Shader.Find ("Standard"));
+        var instanceID = material.GetInstanceID ();
+        // マテリアルのアイコンを取得
+        var icon = AssetPreview.GetMiniThumbnail (material);
 
-		var endNameEditAction = ScriptableObject.CreateInstance<DoCreateMaterialAsset> ();
+        var endNameEditAction = 
+                   ScriptableObject.CreateInstance<DoCreateMaterialAsset> ();
 
-		ProjectWindowUtil.StartNameEditingIfProjectWindowExists (material.GetInstanceID (), endNameEditAction, "New Material.mat", icon, "");
-	}
+        ProjectWindowUtil.StartNameEditingIfProjectWindowExists (instanceID, 
+        	                    endNameEditAction, "New Material.mat", icon, "");
+    }
 }
 //}
 

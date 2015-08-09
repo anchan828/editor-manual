@@ -1,17 +1,12 @@
 ﻿using UnityEditor;
 using UnityEngine;
+
 public class Example : EditorWindow
 {
-	[SerializeField]
-	string text;
-
-	[SerializeField]
-	bool boolean;
-
-	[MenuItem ("Assets/Save EditorWindow")]
-	static void SaveEditorWindow ()
+	[MenuItem("CONTEXT/Transform/Example1")]
+	static void Example1 (MenuCommand menuCommand)
 	{
-		AssetDatabase.CreateAsset (CreateInstance<Example> (), "Assets/Example.asset");
-		AssetDatabase.Refresh ();
+		// 実行したTransformの情報が取得できる
+		Debug.Log (menuCommand.context);
 	}
 }

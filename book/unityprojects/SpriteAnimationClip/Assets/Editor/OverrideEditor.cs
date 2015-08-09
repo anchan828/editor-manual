@@ -6,7 +6,9 @@ using UnityEditor;
 //#@@range_begin(OverrideEditor)
 public abstract class OverrideEditor : Editor
 {
-    readonly MethodInfo methodInfo = typeof(Editor).GetMethod("OnHeaderGUI", BindingFlags.NonPublic | BindingFlags.Instance);
+    readonly BindingFlags flags = BindingFlags.NonPublic | BindingFlags.Instance;
+    readonly MethodInfo methodInfo = 
+        typeof(Editor).GetMethod("OnHeaderGUI", flags);
 
     private Editor m_BaseEditor;
     protected Editor baseEditor

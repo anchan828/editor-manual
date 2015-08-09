@@ -12,7 +12,8 @@ public class SpriteAnimationClipEditor : OverrideEditor
     protected override Editor GetBaseEditor()
     {
         Editor editor = null;
-        var baseType = Types.GetType("UnityEditor.AnimationClipEditor", "UnityEditor.dll");
+        var baseType = 
+            Types.GetType("UnityEditor.AnimationClipEditor", "UnityEditor.dll");
         CreateCachedEditor(targets, baseType, ref editor);
         return editor;
     }
@@ -62,7 +63,9 @@ public class SpriteAnimationClipEditor : OverrideEditor
         if (dic.TryGetValue(target, out settings))
         {
             //#@@range_begin(currentSpriteNum)
-            var currentSpriteNum = Mathf.FloorToInt(timeControl.GetCurrentTime(settings.stopTime) * settings.frameRate);
+            var currentSpriteNum = 
+                Mathf.FloorToInt(timeControl.GetCurrentTime(settings.stopTime) 
+                                                                  * settings.frameRate);
             //#@@range_end(currentSpriteNum)
             var sprite = settings.sprites[currentSpriteNum];
             var texture = AssetPreview.GetAssetPreview(sprite);
@@ -82,9 +85,12 @@ public class SpriteAnimationClipEditor : OverrideEditor
 
         if (animationClip != null)
         {
-            var editorCurveBinding = EditorCurveBinding.PPtrCurve("", typeof(SpriteRenderer), "m_Sprite");
+            var editorCurveBinding = 
+                EditorCurveBinding.PPtrCurve("", typeof(SpriteRenderer), "m_Sprite");
 
-            var objectReferenceKeyframes = AnimationUtility.GetObjectReferenceCurve(animationClip, editorCurveBinding);
+            var objectReferenceKeyframes = 
+                AnimationUtility.GetObjectReferenceCurve(animationClip, 
+                                                         editorCurveBinding);
 
             var _sprites = objectReferenceKeyframes
                 .Select(objectReferenceKeyframe => objectReferenceKeyframe.value)
@@ -135,7 +141,9 @@ public class SpriteAnimationClipEditor : OverrideEditor
 
         EditorGUI.BeginChangeCheck();
 
-        var isPlaying = GUILayout.Toggle(timeControl.isPlaying, buttonContent, previewButtonSettingsStyle);
+        var isPlaying = 
+            GUILayout.Toggle(timeControl.isPlaying, 
+                                buttonContent, previewButtonSettingsStyle);
 
         if (EditorGUI.EndChangeCheck())
         {
@@ -153,7 +161,8 @@ public class SpriteAnimationClipEditor : OverrideEditor
         var speedScale = EditorGUIUtility.IconContent("SpeedScale");
 
         GUILayout.Box(speedScale, preLabel);
-        timeControl.speed = GUILayout.HorizontalSlider(timeControl.speed, 0, 10, preSlider, preSliderThumb);
+        timeControl.speed = 
+            GUILayout.HorizontalSlider(timeControl.speed, 0, 10, preSlider, preSliderThumb);
         GUILayout.Label(timeControl.speed.ToString("0.00"), preLabel, GUILayout.Width(40));
     }
     //#@@range_end(DrawSpeedSlider)

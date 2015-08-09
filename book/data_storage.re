@@ -146,7 +146,7 @@ cd /Applications/Unity/Unity.app/Contents/Tools
 ./binary2text /path/to/unityproject/Library/EditorUserSettings.asset
 //}
 
-暗号化されている値が保存されていることがわかりました。
+値が、暗号化されて保存されていることがわかりました。
 
 //emlist{
 External References

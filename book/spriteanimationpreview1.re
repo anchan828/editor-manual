@@ -138,21 +138,23 @@ AnimationClip と EditorCurveBinding を使用して Sprite の参照が格納�
 //emlist[][cs]{
 private Sprite[] GetSprites(AnimationClip animationClip)
 {
-    var sprites = new Sprite[0];
+  var sprites = new Sprite[0];
+  
+  if (animationClip != null)
+  {
+    var editorCurveBinding = 
+      EditorCurveBinding.PPtrCurve("", typeof(SpriteRenderer), "m_Sprite");
     
-    if (animationClip != null)
-    {
-        var editorCurveBinding = EditorCurveBinding.PPtrCurve("", typeof(SpriteRenderer), "m_Sprite");
-        
-        var objectReferenceKeyframes = AnimationUtility.GetObjectReferenceCurve(animationClip, editorCurveBinding);
-        
-        sprites = objectReferenceKeyframes
-           .Select(objectReferenceKeyframe => objectReferenceKeyframe.value)
-           .OfType<Sprite>()
-           .ToArray();
-    }
+    var objectReferenceKeyframes = 
+      AnimationUtility.GetObjectReferenceCurve(animationClip, editorCurveBinding);
     
-    return sprites;
+    sprites = objectReferenceKeyframes
+       .Select(objectReferenceKeyframe => objectReferenceKeyframe.value)
+       .OfType<Sprite>()
+       .ToArray();
+  }
+  
+  return sprites;
 }
 //}
 
@@ -179,6 +181,8 @@ public override void OnPreviewGUI(Rect r, GUIStyle background)
 //}
 
 GUI.SelectionGrid はかなり優れもので、@<b>{決められたRect値の範囲内で均等になるようにGUIContentを配置することが出来ます。}
+
+//pagebreak
 
 == スプライトの表示（その2）
 

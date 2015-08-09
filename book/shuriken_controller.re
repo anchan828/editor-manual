@@ -49,24 +49,25 @@ using UnityEditor;
 using System.Linq;
 public class NewBehaviourScript
 {
-	[MenuItem ("Assets/Get SerializedObject")]
-	static void GetSerializedObject ()
-	{
-		var particleSystems = Selection.gameObjects.Select (o => o.GetComponent<ParticleSystem> ());
+  [MenuItem ("Assets/Get SerializedObject")]
+  static void GetSerializedObject ()
+  {
+    var particleSystems = 
+        Selection.gameObjects.Select (o => o.GetComponent<ParticleSystem> ());
 
-		foreach (var particleSystem in particleSystems) {
+    foreach (var particleSystem in particleSystems) {
 
-			var so = new SerializedObject (particleSystem);
-			Debug.Log (so);
+      var so = new SerializedObject (particleSystem);
+      Debug.Log (so);
 
-		}
-	}
+    }
+  }
 
-	[MenuItem ("Assets/Get SerializedObject", true)]
-	static bool GetSerializedObjectValidate ()
-	{
-		return Selection.gameObjects.Any (o => o.GetComponent<ParticleSystem> ());
-	}
+  [MenuItem ("Assets/Get SerializedObject", true)]
+  static bool GetSerializedObjectValidate ()
+  {
+    return Selection.gameObjects.Any (o => o.GetComponent<ParticleSystem> ());
+  }
 }
 //}
 
@@ -106,9 +107,9 @@ Prefab やアセットに出来ない（アセットにする手法が提供さ�
 
 //emlist{
 InternalEditorUtility.SaveToSerializedFileAndForget (
-	new Object[]{ particleSystem }, 
-	"particleSystem.txt", 
-	true);
+  new Object[]{ particleSystem }, 
+  "particleSystem.txt", 
+  true);
 //}
 
 上記のようにAPIを呼び出すことでプロジェクトフォルダ以下に @<code>{particleSystem.txt} が生成され YAML 形式のデータを見ることが出来ます。
@@ -123,7 +124,7 @@ var so = new SerializedObject (particleSystem);
 var prop = so.GetIterator ();
 
 while (prop.NextVisible (true)) {
-	Debug.Log (prop.propertyPath);
+  Debug.Log (prop.propertyPath);
 }
 //}
 

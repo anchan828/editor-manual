@@ -16,12 +16,12 @@ public class NewBehaviourScript : MonoBehaviour {
 
     // Use this for initialization
     void Start () {
-    
+
     }
-    
+
     // Update is called once per frame
     void Update () {
-    
+
     }
 }
 //}
@@ -88,7 +88,7 @@ public class NewBehaviourScript : EditorWindow
 
     void OnGUI ()
     {
-        
+
     }
 }
 //}
@@ -113,8 +113,12 @@ public class NewBehaviourScript : EditorWindow
 
 テンプレートファイルは、以下の場所に保存されています。
 
- * Mac: @<code>{/Applications/Unity/Unity.app/Contents/Resources/ScriptTemplates}
- * Windows: @<code>{C:\Program Files (x86)\Unity\Editor\Data\Resources\ScriptTemplates}
+//table[t6][ビルトインのScriptTemplates]{
+OS	保存場所
+-----------------
+Mac	/Applications/Unity/Unity.app/Contents/Resources/ScriptTemplates
+Windows	C:\Program Files\Unity\Editor\Data\Resources\ScriptTemplates
+//}
 
 //image[ss01][]{
 //}
@@ -131,12 +135,12 @@ public class #SCRIPTNAME# : MonoBehaviour {
 
     // Use this for initialization
     void Start () {
-    
+
     }
 
     // Update is called once per frame
     void Update () {
-    
+
     }
 }
 //}
@@ -186,7 +190,7 @@ public class #SCRIPTNAME# : EditorWindow
 
     void OnGUI ()
     {
-    
+
     }
 }
 //}
@@ -197,8 +201,12 @@ public class #SCRIPTNAME# : EditorWindow
 
 1つはUnityがインストールされている場所
 
- * Mac: @<code>{/Applications/Unity/Unity.app/Contents/Resources/ScriptTemplates}
- * Windows: @<code>{C:\Program Files (x86)\Unity\Editor\Data\Resources\ScriptTemplates}
+//table[t5][ビルトインのScriptTemplates]{
+OS	保存場所
+-----------------
+Mac	/Applications/Unity/Unity.app/Contents/Resources/ScriptTemplates
+Windows	C:\Program Files\Unity\Editor\Data\Resources\ScriptTemplates
+//}
 
 もう1つは、Unityプロジェクトの@<code>{Assets/ScriptTemplates}です。
 
@@ -238,7 +246,7 @@ public class NewEditorWindow : EditorWindow
 
     void OnGUI ()
     {
-    
+
     }
 }
 //}
@@ -267,4 +275,4 @@ priorityが86のC# Scriptが2つありますが、仕様としてpriorityが低�
 
 == ProjectWindowUtil との組み合わせ
 
-ProjectWindowUtil クラスの @<code>{ProjectWindowUtil.StartNameEditingIfProjectWindowExists} と組み合わせると @<code>{Assets/ScriptTemplates} にテンプレートファイルを置かずとも、スクリプトを作成できるようになります。詳しくは @<chapref>{projectWindowUtil} をご覧ください。
+ProjectWindowUtil クラスの @<code>{StartNameEditingIfProjectWindowExists} と組み合わせると @<code>{Assets/ScriptTemplates} にテンプレートファイルを置かずとも、スクリプトを作成できるようになります。詳しくは @<chapref>{projectWindowUtil} をご覧ください。

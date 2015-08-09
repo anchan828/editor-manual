@@ -31,15 +31,16 @@ using UnityEditor;
 [CustomEditor (typeof(Example))]
 public class ExampleInspector : Editor
 {
-	void OnSceneGUI ()
-	{
-		Tools.current = Tool.None;
-		var component = target as Example;
+    void OnSceneGUI ()
+    {
+        Tools.current = Tool.None;
+        var component = target as Example;
 
-		
-		var transform = component.transform;
-		transform.position = Handles.PositionHandle (transform.position, transform.rotation);
-	}
+        
+        var transform = component.transform;
+        transform.position = 
+            Handles.PositionHandle (transform.position, transform.rotation);
+    }
 }
 //}
 
@@ -54,14 +55,17 @@ public class ExampleInspector : Editor
 //emlist{
 void OnSceneGUI ()
 {
-	var component = target as Example;
-	
-	var transform = component.transform;
-	
-	if (Tools.current == Tool.Move)
-		transform.rotation = Handles.RotationHandle (transform.rotation, transform.position);
-	else if (Tools.current == Tool.Rotate)
-		transform.position = Handles.PositionHandle (transform.position, transform.rotation);
+    var component = target as Example;
+    
+    var transform = component.transform;
+    
+    if (Tools.current == Tool.Move) {
+        transform.rotation =
+            Handles.RotationHandle (transform.rotation, transform.position);
+    } else if (Tools.current == Tool.Rotate) {
+        transform.position = 
+            Handles.PositionHandle (transform.position, transform.rotation);
+    }
 }
 //}
 
@@ -82,16 +86,16 @@ void OnSceneGUI ()
 //emlist{
 void OnSceneGUI ()
 {
-	Tools.current = Tool.None;
-	var component = target as Example;
-	PositionHandle (component.transform);
+    Tools.current = Tool.None;
+    var component = target as Example;
+    PositionHandle (component.transform);
 }
 
 void PositionHandle (Transform transform)
 {
-	Handles.Slider (transform.position, transform.right); // X 軸
-	Handles.Slider (transform.position, transform.up); // Y 軸
-	Handles.Slider (transform.position, transform.forward); // Z 軸
+    Handles.Slider (transform.position, transform.right); // X 軸
+    Handles.Slider (transform.position, transform.up); // Y 軸
+    Handles.Slider (transform.position, transform.forward); // Z 軸
 }
 //}
 
@@ -106,15 +110,15 @@ void PositionHandle (Transform transform)
 //emlist{
 void PositionHandle (Transform transform)
 {
-	Handles.color = Handles.xAxisColor;
-	Handles.Slider (transform.position, transform.right); // X 軸
+    Handles.color = Handles.xAxisColor;
+    Handles.Slider (transform.position, transform.right); // X 軸
 
-	Handles.color = Handles.yAxisColor;
-	Handles.Slider (transform.position, transform.up); // Y 軸
+    Handles.color = Handles.yAxisColor;
+    Handles.Slider (transform.position, transform.up); // Y 軸
 
-	Handles.color = Handles.zAxisColor;
-	Handles.Slider (transform.position, transform.forward); // Z 軸
-}	
+    Handles.color = Handles.zAxisColor;
+    Handles.Slider (transform.position, transform.forward); // Z 軸
+}    
 //}
 
 //indepimage[ss07]
@@ -127,27 +131,27 @@ Sliderで移動させた結果をオブジェクトへ反映しましょう。
 //emlist{
 void OnSceneGUI ()
 {
-	Tools.current = Tool.None;
-	var component = target as Example;
-	var transform = component.transform;
+    Tools.current = Tool.None;
+    var component = target as Example;
+    var transform = component.transform;
 
-	transform.position = PositionHandle (transform);
+    transform.position = PositionHandle (transform);
 }
 
 Vector3 PositionHandle (Transform transform)
 {
-	var position = transform.position;
+    var position = transform.position;
 
-	Handles.color = Handles.xAxisColor;
-	position = Handles.Slider (position, transform.right); // X 軸
+    Handles.color = Handles.xAxisColor;
+    position = Handles.Slider (position, transform.right); // X 軸
 
-	Handles.color = Handles.yAxisColor;
-	position = Handles.Slider (position, transform.up); // Y 軸
+    Handles.color = Handles.yAxisColor;
+    position = Handles.Slider (position, transform.up); // Y 軸
 
-	Handles.color = Handles.zAxisColor;
-	position = Handles.Slider (position, transform.forward); // Z 軸
+    Handles.color = Handles.zAxisColor;
+    position = Handles.Slider (position, transform.forward); // Z 軸
 
-	return position;
+    return position;
 }
 //}
 
@@ -170,31 +174,34 @@ Vector3 snap;
 void OnEnable ()
 {
     // SnapSettings の値を取得する
-	var snapX = EditorPrefs.GetFloat ("MoveSnapX", 1f);
-	var snapY = EditorPrefs.GetFloat ("MoveSnapY", 1f);
-	var snapZ = EditorPrefs.GetFloat ("MoveSnapZ", 1f);
-	snap = new Vector3 (snapX, snapY, snapZ);
+    var snapX = EditorPrefs.GetFloat ("MoveSnapX", 1f);
+    var snapY = EditorPrefs.GetFloat ("MoveSnapY", 1f);
+    var snapZ = EditorPrefs.GetFloat ("MoveSnapZ", 1f);
+    snap = new Vector3 (snapX, snapY, snapZ);
 }
 
 Vector3 PositionHandle (Transform transform)
 {
-	var position = transform.position;
+    var position = transform.position;
 
-	var size = 1; 
+    var size = 1; 
 
-	// X 軸
-	Handles.color = Handles.xAxisColor;
-	position = Handles.Slider (position, transform.right, size, Handles.ArrowCap, snap.x); 
+    // X 軸
+    Handles.color = Handles.xAxisColor;
+    position = 
+        Handles.Slider (position, transform.right, size, Handles.ArrowCap, snap.x); 
 
-	// Y 軸
-	Handles.color = Handles.yAxisColor;
-	position = Handles.Slider (position, transform.up, size, Handles.ArrowCap, snap.y); 
+    // Y 軸
+    Handles.color = Handles.yAxisColor;
+    position = 
+        Handles.Slider (position, transform.up, size, Handles.ArrowCap, snap.y); 
 
-	// Z 軸
-	Handles.color = Handles.zAxisColor;
-	position = Handles.Slider (position, transform.forward, size, Handles.ArrowCap, snap.z); 
+    // Z 軸
+    Handles.color = Handles.zAxisColor;
+    position = 
+        Handles.Slider (position, transform.forward, size, Handles.ArrowCap, snap.z); 
 
-	return position;
+    return position;
 }
 //}
 
@@ -264,7 +271,7 @@ MonoBehaviour の派生クラスに Vector3 の配列を持たせ、
 //emlist{
 public class Example2 : MonoBehaviour {
 
-	public Vector3[] vertexes;
+    public Vector3[] vertexes;
 }
 //}
 
@@ -273,7 +280,7 @@ CustomEditor 側で使用します。
 //emlist{
 void OnSceneGUI ()
 {
-	Handles.DrawAAPolyLine (component.vertexes);
+    Handles.DrawAAPolyLine (component.vertexes);
 }
 //}
 
@@ -294,14 +301,14 @@ void OnSceneGUI ()
 //emlist{
 void OnSceneGUI ()
 {
-	var vertexes = component.vertexes;
+    var vertexes = component.vertexes;
 
-	for (int i = 0; i < vertexes.Length; i++) {
+    for (int i = 0; i < vertexes.Length; i++) {
 
-		vertexes [i] = Handles.PositionHandle (vertexes [i], Quaternion.identity);
-	}
+        vertexes [i] = Handles.PositionHandle (vertexes [i], Quaternion.identity);
+    }
 
-	Handles.DrawAAPolyLine (vertexes);
+    Handles.DrawAAPolyLine (vertexes);
 }
 //}
 
@@ -326,41 +333,44 @@ using UnityEditorInternal;
 [CustomEditor (typeof(Example2))]
 public class ExampleInspector2 : Editor
 {
-	ReorderableList reorderableList;
-	Example2 component;
+    ReorderableList reorderableList;
+    Example2 component;
 
-	void OnEnable ()
-	{
-		Tools.current = Tool.None;
-		component = target as Example2;
-		reorderableList = new ReorderableList (component.vertexes, typeof(Vector3));
+    void OnEnable ()
+    {
+        Tools.current = Tool.None;
+        component = target as Example2;
+        reorderableList = new ReorderableList (component.vertexes, typeof(Vector3));
 
-		reorderableList.drawElementCallback = (rect, index, isActive, isFocused) => {
-			component.vertexes [index] = EditorGUI.Vector3Field (rect, GUIContent.none, component.vertexes [index]);
-		};
+        reorderableList.drawElementCallback = (rect, index, isActive, isFocused) => {
+            component.vertexes [index] = 
+                EditorGUI.Vector3Field (rect, GUIContent.none, 
+                                          component.vertexes [index]);
+        };
 
-		reorderableList.onAddCallback = (list) => {
-			ArrayUtility.Add (ref component.vertexes, Vector3.zero);
-			ActiveEditorTracker.sharedTracker.ForceRebuild ();
-		};
-		reorderableList.onRemoveCallback = (list) => {
-			ArrayUtility.Remove (ref component.vertexes, component.vertexes [list.index]);
-			ActiveEditorTracker.sharedTracker.ForceRebuild ();
-		};
-		reorderableList.onChangedCallback = (list) => SceneView.RepaintAll ();
-	}
+        reorderableList.onAddCallback = (list) => {
+            ArrayUtility.Add (ref component.vertexes, Vector3.zero);
+            ActiveEditorTracker.sharedTracker.ForceRebuild ();
+        };
+        reorderableList.onRemoveCallback = (list) => {
+            ArrayUtility.Remove (ref component.vertexes, 
+                                    component.vertexes [list.index]);
+            ActiveEditorTracker.sharedTracker.ForceRebuild ();
+        };
+        reorderableList.onChangedCallback = (list) => SceneView.RepaintAll ();
+    }
 
-	public override void OnInspectorGUI ()
-	{
-		reorderableList.DoLayoutList ();
-	}
+    public override void OnInspectorGUI ()
+    {
+        reorderableList.DoLayoutList ();
+    }
 }
 //}
 
 
 == GUI の描画（2D）
 
-//image[ss15][ナビゲーションウインドウを開いている時に右下に GUI が表示されている]{
+//image[ss15][ナビゲーションウインドウを開いている時に右下に GUI が表示されている][scale=0.5]{
 
 //}
 
@@ -374,11 +384,11 @@ public class ExampleInspector2 : Editor
 //emlist{
 void OnSceneGUI ()
 {
-	Handles.BeginGUI ();
+    Handles.BeginGUI ();
 
-	GUILayout.Button ("Button", GUILayout.Width (50));
+    GUILayout.Button ("Button", GUILayout.Width (50));
 
-	Handles.EndGUI ();
+    Handles.EndGUI ();
 }
 //}
 //image[ss16][左上にボタンが表示された]{
@@ -393,15 +403,15 @@ GUI.Scope の機能を使って、 Handles.BeginGUI と EndGUI の記述を省�
 //emlist{
 public class HandleGUIScope : GUI.Scope
 {
-	public HandleGUIScope ()
-	{
-		Handles.BeginGUI ();
-	}
+    public HandleGUIScope ()
+    {
+        Handles.BeginGUI ();
+    }
 
-	protected override void CloseScope ()
-	{
-		Handles.EndGUI ();
-	}
+    protected override void CloseScope ()
+    {
+        Handles.EndGUI ();
+    }
 }
 //}
 
@@ -410,9 +420,9 @@ public class HandleGUIScope : GUI.Scope
 //emlist{
 void OnSceneGUI ()
 {
-	using (new HandleGUIScope ()) {
-		GUILayout.Button ("Button", GUILayout.Width (50));
-	}
+    using (new HandleGUIScope ()) {
+        GUILayout.Button ("Button", GUILayout.Width (50));
+    }
 }
 //}
 
@@ -433,20 +443,20 @@ Rect windowRect;
 
 void OnSceneGUI ()
 {
-	Handles.BeginGUI ();
+    Handles.BeginGUI ();
 
-	windowRect = GUILayout.Window (windowID, windowRect, (id) => {
+    windowRect = GUILayout.Window (windowID, windowRect, (id) => {
 
-		EditorGUILayout.LabelField ("Label");
+        EditorGUILayout.LabelField ("Label");
 
-		EditorGUILayout.ToggleLeft ("Toggle", false);
+        EditorGUILayout.ToggleLeft ("Toggle", false);
 
-		GUILayout.Button ("Button");
+        GUILayout.Button ("Button");
 
-		GUI.DragWindow();
-		
-	}, "Window", GUILayout.Width (100));
+        GUI.DragWindow();
+        
+    }, "Window", GUILayout.Width (100));
 
-	Handles.EndGUI ();
+    Handles.EndGUI ();
 }
 //}

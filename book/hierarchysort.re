@@ -20,14 +20,14 @@ HierarchySortを自作するには、@<b>{BaseHierarchySort}を継承したク�
 //emlist[][cs]{
 public class AlphaNumericSort : BaseHierarchySort
 {
-	public override int Compare(GameObject lhs, GameObject rhs)
-	{
-		if (lhs == rhs) return 0;
-		if (lhs == null) return -1;
-		if (rhs == null) return 1;
+    public override int Compare(GameObject lhs, GameObject rhs)
+    {
+        if (lhs == rhs) return 0;
+        if (lhs == null) return -1;
+        if (rhs == null) return 1;
 
-		return EditorUtility.NaturalCompare(lhs.name, rhs.name);
-	}
+        return EditorUtility.NaturalCompare(lhs.name, rhs.name);
+    }
 }
 //}
 
@@ -135,7 +135,8 @@ public class TagSort : BaseHierarchySort
 
 
 //emlist[][cs]{
-Type hierarcyType = Types.GetType("UnityEditor.SceneHierarchyWindow", "UnityEditor.dll");
+Type hierarcyType = 
+    Types.GetType("UnityEditor.SceneHierarchyWindow", "UnityEditor.dll");
 //}
 
 
@@ -163,7 +164,8 @@ SerializedObject hierarcyWindowObject = new SerializedObject(hierarcyWindow);
 
 
 //emlist[][cs]{
-var currentSortName = hierarcyWindowObject.FindProperty("m_CurrentSortMethod").stringValue;
+var currentSortName = 
+    hierarcyWindowObject.FindProperty("m_CurrentSortMethod").stringValue;
 //}
 
 
@@ -216,15 +218,15 @@ TagSort専用のアイコンに変更します。
 //emlist[][cs]{
 public class TagSort : BaseHierarchySort
 {
-	private GUIContent m_content = EditorGUIUtility.IconContent ("TagSort");
+    private GUIContent m_content = EditorGUIUtility.IconContent ("TagSort");
 
-	public override GUIContent content {
-		get {
-			return m_content;
-		}
-	}
+    public override GUIContent content {
+        get {
+            return m_content;
+        }
+    }
 
-	// 略
+    // 略
 }
 //}
 
@@ -238,66 +240,67 @@ using UnityEditor;
 
 public class TagSort : BaseHierarchySort
 {
-	private SerializedObject hierarcyWindowObject;
+  private SerializedObject hierarcyWindowObject;
 
-	public override int Compare (GameObject lhs, GameObject rhs)
-	{
-		if (lhs == rhs)
-			return 0;
-		if (lhs == null)
-			return -1;
-		if (rhs == null)
-			return 1;
-		return EditorUtility.NaturalCompare (lhs.tag, rhs.tag);
-	}
-	private GUIContent m_content = EditorGUIUtility.IconContent ("TagSort");
+  public override int Compare (GameObject lhs, GameObject rhs)
+  {
+    if (lhs == rhs)
+      return 0;
+    if (lhs == null)
+      return -1;
+    if (rhs == null)
+      return 1;
+    return EditorUtility.NaturalCompare (lhs.tag, rhs.tag);
+  }
+  private GUIContent m_content = EditorGUIUtility.IconContent ("TagSort");
 
-	public override GUIContent content {
-		get {
+  public override GUIContent content {
+    get {
 
-			if (hierarcyWindowObject == null) {
-				var hierarcyType = Types.GetType ("UnityEditor.SceneHierarchyWindow", "UnityEditor.dll");
-				var hierarcyWindows = Resources.FindObjectsOfTypeAll (hierarcyType);
-				if (hierarcyWindows.Length != 0) {
-					hierarcyWindowObject = new SerializedObject (hierarcyWindows[0]);
-					EditorApplication.hierarchyWindowItemOnGUI += HierarchyWindowItemOnGUI;
-				}
-			}
+      if (hierarcyWindowObject == null) {
+        var hierarcyType = 
+          Types.GetType ("UnityEditor.SceneHierarchyWindow", "UnityEditor.dll");
+        var hierarcyWindows = Resources.FindObjectsOfTypeAll (hierarcyType);
+        if (hierarcyWindows.Length != 0) {
+          hierarcyWindowObject = new SerializedObject (hierarcyWindows[0]);
+          EditorApplication.hierarchyWindowItemOnGUI += HierarchyWindowItemOnGUI;
+        }
+      }
 
-			return m_content;
-		}
-	}
+      return m_content;
+    }
+  }
 
-	private void HierarchyWindowItemOnGUI (int instanceID, Rect selectionRect)
-	{
-		hierarcyWindowObject.Update ();
+  private void HierarchyWindowItemOnGUI (int instanceID, Rect selectionRect)
+  {
+    hierarcyWindowObject.Update ();
 
-		var currentSortName =
-			hierarcyWindowObject.FindProperty ("m_CurrentSortMethod").stringValue;
+    var currentSortName =
+      hierarcyWindowObject.FindProperty ("m_CurrentSortMethod").stringValue;
 
-		if (currentSortName != "TagSort") {
-			EditorApplication.hierarchyWindowItemOnGUI -= HierarchyWindowItemOnGUI;
-			hierarcyWindowObject = null;
-			return;
-		}
+    if (currentSortName != "TagSort") {
+      EditorApplication.hierarchyWindowItemOnGUI -= HierarchyWindowItemOnGUI;
+      hierarcyWindowObject = null;
+      return;
+    }
 
-		var go = EditorUtility.InstanceIDToObject (instanceID) as GameObject;
+    var go = EditorUtility.InstanceIDToObject (instanceID) as GameObject;
 
-		selectionRect.x += selectionRect.width - 64;
-		selectionRect.width = 64;
+    selectionRect.x += selectionRect.width - 64;
+    selectionRect.width = 64;
 
-		EditorGUI.LabelField (selectionRect, go.tag, Style.miniBox);
-	}
+    EditorGUI.LabelField (selectionRect, go.tag, Style.miniBox);
+  }
 
-	private class Style
-	{
-		public static GUIStyle miniBox;
+  private class Style
+  {
+    public static GUIStyle miniBox;
 
-		static Style ()
-		{
-			miniBox = new GUIStyle ("box");
-			miniBox.fontSize = 8;
-		}
-	}
+    static Style ()
+    {
+      miniBox = new GUIStyle ("box");
+      miniBox.fontSize = 8;
+    }
+  }
 }
 //}

@@ -60,12 +60,12 @@ using UnityEngine;
 
 public class Example : MonoBehaviour
 {
-	void OnDrawGizmosSelected ()
-	{
-	    // ギズモの色を変更
-		Gizmos.color = new Color32 (145, 244, 139, 210);
-		Gizmos.DrawWireCube (transform.position, transform.lossyScale);
-	}
+    void OnDrawGizmosSelected ()
+    {
+        // ギズモの色を変更
+        Gizmos.color = new Color32 (145, 244, 139, 210);
+        Gizmos.DrawWireCube (transform.position, transform.lossyScale);
+    }
 }
 //}
 
@@ -83,18 +83,18 @@ using UnityEditor;
 
 public class EditorScript
 {
-	[DrawGizmo (GizmoType.NonSelected | GizmoType.Active)]
-	static void DrawExampleGizmos (Example example, GizmoType gizmoType)
-	{
-		var transform = example.transform;
-		Gizmos.color = new Color32 (145, 244, 139, 210);
+    [DrawGizmo (GizmoType.NonSelected | GizmoType.Active)]
+    static void DrawExampleGizmos (Example example, GizmoType gizmoType)
+    {
+        var transform = example.transform;
+        Gizmos.color = new Color32 (145, 244, 139, 210);
 
-		// GizmoType.Active の時は赤色にする
-		if ((gizmoType & GizmoType.Active) == GizmoType.Active)
-			Gizmos.color = Color.red;
+        // GizmoType.Active の時は赤色にする
+        if ((gizmoType & GizmoType.Active) == GizmoType.Active)
+            Gizmos.color = Color.red;
 
-		Gizmos.DrawWireCube (transform.position, transform.lossyScale);
-	}
+        Gizmos.DrawWireCube (transform.position, transform.lossyScale);
+    }
 }
 //}
 
@@ -115,7 +115,11 @@ static void DrawExampleGizmos (Example example, GizmoType gizmoType)
 //image[ss10][子要素である中の小さなキューブを選択した状態]{
 //}
 
+ギズモは単純な機能ですがアイデア次第で、シーン内をより見やすく、理解しやすくすることが可能です。
 
+//image[ss11][Cubeに上部を知らせる半球と軸を表示][scale=0.5]{
+
+//}
 
 #@# * ギズモの表示の仕方
 #@# * ギズモの表示の仕方は様々ある

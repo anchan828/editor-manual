@@ -55,24 +55,24 @@ UnityEditor.DefaultAsset というクラスがあります。これは「@<b>{�
 [CustomEditor (typeof(DefaultAsset))]
 public class SceneInspector : Editor
 {
-	bool isSceneInspector = false;
+    bool isSceneInspector = false;
 
-	void OnEnable ()
-	{
-		var assetPath = AssetDatabase.GetAssetPath (target);
+    void OnEnable ()
+    {
+        var assetPath = AssetDatabase.GetAssetPath (target);
 
-		isSceneInspector = Path.GetExtension (assetPath) == ".unity";
-	}
+        isSceneInspector = Path.GetExtension (assetPath) == ".unity";
+    }
 
-	public override void OnInspectorGUI ()
-	{
-		if (isSceneInspector == false)
-			return;
+    public override void OnInspectorGUI ()
+    {
+        if (isSceneInspector == false)
+            return;
 
-		GUI.enabled = true;
+        GUI.enabled = true;
 
-		EditorGUILayout.LabelField ("シーンアセットのインスペクター！");
-	}
+        EditorGUILayout.LabelField ("シーンアセットのインスペクター！");
+    }
 }
 //}
 
@@ -97,41 +97,47 @@ using System.IO;
 
 public class ScenePrefabUtility
 {
-	const string PREFAB_FOLDER_PATH = "Assets/Editor/ScenePrefabs";
+    const string PREFAB_FOLDER_PATH = "Assets/Editor/ScenePrefabs";
 
-	[InitializeOnLoadMethod]
-	static void CreatePrefabFolder ()
-	{
-		Directory.CreateDirectory (PREFAB_FOLDER_PATH);
-	}
+    [InitializeOnLoadMethod]
+    static void CreatePrefabFolder ()
+    {
+        Directory.CreateDirectory (PREFAB_FOLDER_PATH);
+    }
 
-	public static GameObject CreateScenePrefab (string scenePath, params System.Type[] components)
-	{
-		var guid = ScenePathToGUID (scenePath);
+    public static GameObject CreateScenePrefab (string scenePath, 
+                                        params System.Type[] components)
+    {
+        var guid = ScenePathToGUID (scenePath);
 
-		// HideFlags はコンパイルエラーなどの予想外のエラーによって中断された時の対策として
-		// 非表示 & 保存禁止
-		var go = EditorUtility.CreateGameObjectWithHideFlags (guid, HideFlags.HideAndDontSave, components);
-		var prefab = PrefabUtility.CreatePrefab (string.Format ("{0}/{1}.prefab", PREFAB_FOLDER_PATH, guid), go);
+        // HideFlags はコンパイルエラーなどの予想外のエラーによって中断された時の対策として
+        // 非表示 & 保存禁止
+        var go = EditorUtility.CreateGameObjectWithHideFlags (guid, 
+                                     HideFlags.HideAndDontSave, components);
+        
+        var prefabPath = string.Format ("{0}/{1}.prefab", PREFAB_FOLDER_PATH, guid);
 
-		// プレハブ生成のために作成したゲームオブジェクトは破棄
-		Object.DestroyImmediate (go);
+        var prefab = PrefabUtility.CreatePrefab (prefabPath, go);
 
-		return prefab;
-	}
+        // プレハブ生成のために作成したゲームオブジェクトは破棄
+        Object.DestroyImmediate (go);
 
-	// プレハブ名をシーンアセットの guid にする
-	public static GameObject GetScenePrefab (string scenePath)
-	{
-		// シーン名だと同名がある可能性があるので guid にする
-		var guid = ScenePathToGUID (scenePath);
-		return AssetDatabase.LoadAssetAtPath<GameObject> (string.Format ("{0}/{1}.prefab", PREFAB_FOLDER_PATH, guid));
-	}
+        return prefab;
+    }
 
-	private static string ScenePathToGUID (string scenePath)
-	{
-		return AssetDatabase.AssetPathToGUID (scenePath);
-	}
+    // プレハブ名をシーンアセットの guid にする
+    public static GameObject GetScenePrefab (string scenePath)
+    {
+        // シーン名だと同名がある可能性があるので guid にする
+        var guid = ScenePathToGUID (scenePath);
+        var prefabPath = string.Format ("{0}/{1}.prefab", PREFAB_FOLDER_PATH, guid);
+        return AssetDatabase.LoadAssetAtPath<GameObject> (prefabPath);
+    }
+
+    private static string ScenePathToGUID (string scenePath)
+    {
+        return AssetDatabase.AssetPathToGUID (scenePath);
+    }
 }
 //}
 
@@ -145,27 +151,27 @@ using System.IO;
 [CustomEditor (typeof(DefaultAsset))]
 public class SceneInspector : Editor
 {
-	bool isSceneInspector = false;
+    bool isSceneInspector = false;
 
-	GameObject scenePrefab;
+    GameObject scenePrefab;
 
-	void OnEnable ()
-	{
-		var assetPath = AssetDatabase.GetAssetPath (target);
+    void OnEnable ()
+    {
+        var assetPath = AssetDatabase.GetAssetPath (target);
 
-		isSceneInspector = Path.GetExtension (assetPath) == ".unity";
+        isSceneInspector = Path.GetExtension (assetPath) == ".unity";
 
-		if (isSceneInspector == false)
-			return;
+        if (isSceneInspector == false)
+            return;
 
-		// プレハブ取得
-		scenePrefab = ScenePrefabUtility.GetScenePrefab (assetPath);
+        // プレハブ取得
+        scenePrefab = ScenePrefabUtility.GetScenePrefab (assetPath);
 
-		// なければ生成
-		if (scenePrefab == null)
-			scenePrefab = ScenePrefabUtility.CreateScenePrefab (assetPath);
+        // なければ生成
+        if (scenePrefab == null)
+            scenePrefab = ScenePrefabUtility.CreateScenePrefab (assetPath);
 
-	}
+    }
 }
 //}
 
@@ -215,51 +221,51 @@ Dictionary<Editor,bool> activeEditors = new Dictionary<Editor, bool> ();
 
 void OnEnable ()
 {
-	var assetPath = AssetDatabase.GetAssetPath (target);
+    var assetPath = AssetDatabase.GetAssetPath (target);
 
-	isSceneInspector = Path.GetExtension (assetPath) == ".unity";
+    isSceneInspector = Path.GetExtension (assetPath) == ".unity";
 
-	if (isSceneInspector == false)
-		return;
+    if (isSceneInspector == false)
+        return;
 
 
-	scenePrefab = ScenePrefabUtility.GetScenePrefab (assetPath);
+    scenePrefab = ScenePrefabUtility.GetScenePrefab (assetPath);
 
-	if (scenePrefab == null)
-		scenePrefab = ScenePrefabUtility.CreateScenePrefab (assetPath);
+    if (scenePrefab == null)
+        scenePrefab = ScenePrefabUtility.CreateScenePrefab (assetPath);
 
-	InitActiveEditors ();
+    InitActiveEditors ();
 
 }
 
 void OnDisable ()
 {
-	ClearActiveEditors ();
+    ClearActiveEditors ();
 }
 
 // 生成した Editor オブジェクトの破棄
 void ClearActiveEditors ()
 {
-	foreach (var activeEditor in activeEditors) {
-		Object.DestroyImmediate (activeEditor.Key);
-	}
-	activeEditors.Clear ();
+    foreach (var activeEditor in activeEditors) {
+        Object.DestroyImmediate (activeEditor.Key);
+    }
+    activeEditors.Clear ();
 }
 
 void InitActiveEditors ()
 {
-	ClearActiveEditors ();
+    ClearActiveEditors ();
 
-	// コンポーネントから　Editor オブジェクトを生成
-	foreach (var component in scenePrefab.GetComponents<Component> ()) {
-		
-		// Transform と RectTransform は省く
-		// 本章の目的では必要ないと判断したため
-		if (component is Transform || component is RectTransform)
-			continue;
+    // コンポーネントから　Editor オブジェクトを生成
+    foreach (var component in scenePrefab.GetComponents<Component> ()) {
+        
+        // Transform と RectTransform は省く
+        // 本章の目的では必要ないと判断したため
+        if (component is Transform || component is RectTransform)
+            continue;
 
-		activeEditors.Add (Editor.CreateEditor (component), true);
-	}
+        activeEditors.Add (Editor.CreateEditor (component), true);
+    }
 }
 //}
 
@@ -268,50 +274,59 @@ void InitActiveEditors ()
 //emlist{
 public override void OnInspectorGUI ()
 {
-	if (isSceneInspector == false)
-		return;
+    if (isSceneInspector == false)
+        return;
 
-	GUI.enabled = true;
+    GUI.enabled = true;
 
-	var editors = new List<Editor> (activeEditors.Keys);
+    var editors = new List<Editor> (activeEditors.Keys);
 
-	foreach (var editor in editors) {
+    foreach (var editor in editors) {
 
-		DrawInspectorTitlebar (editor);
+        DrawInspectorTitlebar (editor);
 
-		GUILayout.Space (-5f);
+        GUILayout.Space (-5f);
 
-		if (activeEditors [editor] && editor.target != null)
-			editor.OnInspectorGUI ();
+        if (activeEditors [editor] && editor.target != null)
+            editor.OnInspectorGUI ();
 
-		DrawLine ();
-	}
+        DrawLine ();
+    }
 
-	// コンテキストの Remove Component によって削除された場合、Editor.target は null になる
-	// その時は初期化する
-	if (editors.All (e => e.target != null) == false) {
-		InitActiveEditors ();
-		Repaint ();
-	}
+    // コンテキストの Remove Component によって削除された場合、Editor.target は null になる
+    // その時は初期化する
+    if (editors.All (e => e.target != null) == false) {
+        InitActiveEditors ();
+        Repaint ();
+    }
 }
 
 void DrawInspectorTitlebar (Editor editor)
 {
-	var rect = GUILayoutUtility.GetRect (GUIContent.none, GUIStyle.none, GUILayout.Height (20));
-	rect.x = 0;
-	rect.y -= 5;
-	rect.width += 20;
-	activeEditors [editor] = EditorGUI.InspectorTitlebar (rect, activeEditors [editor], new Object[]{ editor.target });
+    var rect = GUILayoutUtility.GetRect (GUIContent.none, 
+                                         GUIStyle.none, 
+                                         GUILayout.Height (20));
+    rect.x = 0;
+    rect.y -= 5;
+    rect.width += 20;
+    activeEditors [editor] = EditorGUI.InspectorTitlebar (rect, 
+                                                          activeEditors [editor], 
+                                                          new []{ editor.target });
 }
 
 void DrawLine ()
 {
-	EditorGUILayout.Space ();
-	var lineRect = GUILayoutUtility.GetRect (GUIContent.none, GUIStyle.none, GUILayout.Height (2));
-	lineRect.y -= 3;
-	lineRect.width += 20;
-	Handles.color = Color.black;
-	Handles.DrawLine (new Vector2 (0, lineRect.y), new Vector2 (lineRect.width, lineRect.y));
+    EditorGUILayout.Space ();
+    var lineRect = GUILayoutUtility.GetRect (GUIContent.none, 
+                                             GUIStyle.none, 
+                                             GUILayout.Height (2));
+    lineRect.y -= 3;
+    lineRect.width += 20;
+    Handles.color = Color.black;
+
+    var start = new Vector2 (0, lineRect.y);
+    var end = new Vector2 (lineRect.width, lineRect.y);
+    Handles.DrawLine (start, end);
 }
 //}
 
@@ -333,59 +348,62 @@ void DrawLine ()
 //emlist{
 void OnEnable ()
 {
-	// Undo によって変更された状態を初期化
-	Undo.undoRedoPerformed += InitActiveEditors;
+    // Undo によって変更された状態を初期化
+    Undo.undoRedoPerformed += InitActiveEditors;
 }
 
 void OnDisable ()
 {
-	Undo.undoRedoPerformed -= InitActiveEditors;
+    Undo.undoRedoPerformed -= InitActiveEditors;
 }
 
 public override void OnInspectorGUI ()
 {
 
-	// 略
+    // 略
 
-	// OnInspectorGUI の最後に実装
+    // OnInspectorGUI の最後に実装
 
-	// 残りの余った領域を取得
-	Rect dragAndDropRect = GUILayoutUtility.GetRect (GUIContent.none, GUIStyle.none, GUILayout.ExpandHeight (true), GUILayout.MinHeight (200));
+    // 残りの余った領域を取得
+    var dragAndDropRect = GUILayoutUtility.GetRect (GUIContent.none, 
+                                                     GUIStyle.none, 
+                                                     GUILayout.ExpandHeight (true), 
+                                                     GUILayout.MinHeight (200));
 
-	switch (Event.current.type) {
-		// ドラッグ中 or ドロップ実行
-		case EventType.DragUpdated:
-		case EventType.DragPerform:
+    switch (Event.current.type) {
+        // ドラッグ中 or ドロップ実行
+        case EventType.DragUpdated:
+        case EventType.DragPerform:
 
-			// マウス位置が指定の範囲外であれば無視
-			if (dragAndDropRect.Contains (Event.current.mousePosition) == false)
-				break;
+            // マウス位置が指定の範囲外であれば無視
+            if (dragAndDropRect.Contains (Event.current.mousePosition) == false)
+                break;
 
-			// カーソルをコピー表示にする
-			DragAndDrop.visualMode = DragAndDropVisualMode.Copy;
+            // カーソルをコピー表示にする
+            DragAndDrop.visualMode = DragAndDropVisualMode.Copy;
 
-			// ドロップ実行
-			if (Event.current.type == EventType.DragPerform) {
-				DragAndDrop.AcceptDrag ();
+            // ドロップ実行
+            if (Event.current.type == EventType.DragPerform) {
+                DragAndDrop.AcceptDrag ();
 
-				// ドロップしたオブジェクトがスクリプトアセットかどうか
-				var components = DragAndDrop.objectReferences
-					.Where (x => x.GetType () == typeof(MonoScript))
-					.OfType<MonoScript> ()
-					.Select (m => m.GetClass ());
+                // ドロップしたオブジェクトがスクリプトアセットかどうか
+                var components = DragAndDrop.objectReferences
+                    .Where (x => x.GetType () == typeof(MonoScript))
+                    .OfType<MonoScript> ()
+                    .Select (m => m.GetClass ());
 
-				// コンポーネントをプレハブにアタッチ
-				foreach (var component in components) {
-					Undo.AddComponent (scenePrefab, component);
-				}
+                // コンポーネントをプレハブにアタッチ
+                foreach (var component in components) {
+                    Undo.AddComponent (scenePrefab, component);
+                }
 
-				InitActiveEditors ();
-			}
-			break;
-	}
+                InitActiveEditors ();
+            }
+            break;
+    }
 
-	// ドロップできる領域を確保
-	GUI.Label (dragAndDropRect, "");
+    // ドロップできる領域を確保
+    GUI.Label (dragAndDropRect, "");
 }
 //}
 
@@ -396,7 +414,7 @@ public override void OnInspectorGUI ()
 //emlist{
 void OnDisable ()
 {
-	AssetDatabase.SaveAssets ();
+    AssetDatabase.SaveAssets ();
 }
 //}
 
@@ -414,22 +432,22 @@ using UnityEditor.Callbacks;
 
 public class ScenePrefabUtility
 {
-	[PostProcessScene]
-	static void OnPostProcessScene ()
-	{
-		// 現在開いているシーンからシーンパスを取得
-		var scenePath = EditorBuildSettings.scenes [Application.loadedLevel].path;
+    [PostProcessScene]
+    static void OnPostProcessScene ()
+    {
+        // 現在開いているシーンからシーンパスを取得
+        var scenePath = EditorBuildSettings.scenes [Application.loadedLevel].path;
 
-		if (string.IsNullOrEmpty (scenePath))
-			return;
+        if (string.IsNullOrEmpty (scenePath))
+            return;
 
-		// 自動で生成しているプレハブを取得
-		var prefab = GetScenePrefab (scenePath);
+        // 自動で生成しているプレハブを取得
+        var prefab = GetScenePrefab (scenePath);
 
-		// インスタンス化
-		if (prefab) 
-			GameObject.Instantiate (prefab).name = "ScenePrefab";
-	}
+        // インスタンス化
+        if (prefab) 
+            GameObject.Instantiate (prefab).name = "ScenePrefab";
+    }
 }
 //}
 

@@ -6,10 +6,7 @@
 
 ReorderbleList は、インスペクターやEditorWindowで表示されるリストのプロパティを更にビジュアライズしたものです。要素の並び替えや、要素の追加方法のカスタマイズなど幅広いことが行えるようになります。
 
-この機能は公式としてドキュメント化されておらず非推奨扱いとなっていますが、Animator や Tag and Layer の設定画面で長らく使われているのですぐに使えなくなることはないと思います。@<fn>{1}
-
-
-//footnote[1][願望]
+この機能は公式としてドキュメント化されておらず非推奨扱いとなっていますが、Animator や Tag and Layer の設定画面で長い間使われているので、すぐに使えなくなることはないと思います。
 
 
 == ReorderbleList の使い方
@@ -21,8 +18,8 @@ using UnityEngine;
 
 public class Example : MonoBehaviour
 {
-	[SerializeField]
-	string[] texts;
+    [SerializeField]
+    string[] texts;
 }
 //}
 
@@ -34,17 +31,18 @@ using UnityEditorInternal;
 [CustomEditor (typeof(Example))]
 public class ExampleInspector : Editor
 {
-	ReorderableList reorderableList;
+    ReorderableList reorderableList;
 
-	void OnEnable ()
-	{
-        reorderableList = new ReorderableList (serializedObject, serializedObject.FindProperty ("texts"));
-	}
+    void OnEnable ()
+    {
+        reorderableList = new ReorderableList (serializedObject, 
+                                 serializedObject.FindProperty ("texts"));
+    }
 
-	public override void OnInspectorGUI ()
-	{
+    public override void OnInspectorGUI ()
+    {
         reorderableList.DoLayoutList ();
-	}
+    }
 }
 //}
 
@@ -103,10 +101,14 @@ public override void OnInspectorGUI ()
 
 == ヘッダーの描画
 
+ヘッダーは @<code>{drawHeaderCallback} にデリゲートを登録することで実装が可能です。
 
-reorderableList.drawHeaderCallback = (rect) => EditorGUI.LabelField (rect, prop.displayName);
+//emlist{
+reorderableList = new ReorderableList (serializedObject, prop);
 
-
+reorderableList.drawHeaderCallback = (rect) => 
+                     EditorGUI.LabelField (rect, prop.displayName);
+//}
 
 == フッターの描画はカスタマイズしない
 
@@ -206,17 +208,17 @@ reorderableList.onReorderCallback = (list) => {
 [Serializable]
 public class Character
 {
-	[SerializeField]
-	Texture icon;
-	
-	[SerializeField]
-	string name;
+    [SerializeField]
+    Texture icon;
+    
+    [SerializeField]
+    string name;
 
-	[SerializeField]
-	int hp;
+    [SerializeField]
+    int hp;
 
-	[SerializeField]
-	int power;
+    [SerializeField]
+    int power;
 }
 //}
 
@@ -227,7 +229,7 @@ public class Character
 //}
 
 
-そこで @<b>{PropertyDrawer} を使って要素の描画を変更します。PropertyDrawer については @<chapref>{property_drawer} を御覧ください。
+そこで @<b>{PropertyDrawer} を使って要素の描画を変更します。PropertyDrawer については @<chapref>{property_drawer} をご覧ください。
 要素の GUI を drawElementCallback 内でカスタマイズしてもいいのですが、汎用性を考えてできるだけ PropertyDrawer を使用するようにしましょう。
 //image[ss10][PropertyDrawer でカスタマイズした図]{
 

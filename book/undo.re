@@ -1,22 +1,15 @@
 
 = Undoについて
 
-//indepimage[frontispiece]
-
-
 //lead{
 エディター拡張によって変更した状態は「元に戻す」処理を自分で実装しなければいけません。そこでこの章では簡単なサンプルを元にUndoの使い方をマスターしていきます。
 //}
 
-//pagebreak
-
 == Undoの操作を実感してみる
 
-まずはどのような操作がUndoなのか実感してみましょう。
+まずはどのような操作がUndoなのか実感してみましょう。まずは、Cubeを作成します。
 
-最初にCubeを作成します。
-
-//image[ss01][@<code>{Assets/Create/3D Object/Cube}で作成した状態]{
+//image[ss01][@<code>{Assets/Create/3D Object/Cube}で作成した状態][scale=0.6]{
 
 //}
 
@@ -27,6 +20,7 @@
 
 生成されたCubeが削除されましたか？Cubeを生成する前に戻ったことになります。これが「元に戻る = Undo」という操作です。
 
+//pagebreak
 
 == Undoの仕組み
 
@@ -40,6 +34,7 @@ Undoの管理はスタックで行われています。@<fn>{LIFO}
 
 //indepimage[ss05]
 
+//pagebreak
 
 == Undoを実装してみる
 

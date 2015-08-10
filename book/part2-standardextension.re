@@ -41,7 +41,7 @@ public class NewBehaviourScript : MonoBehaviour
 
 === Multiline / TextArea
 
-デフォルトでは一行のTextFieldですが、複数行のTextAreaに変更することができます。MultilineとTextAreaはほぼ機能は同じですが、Multilineは「幅に合わせて自動改行されない」「スクロールバーが表示されない」といった制限があります。特に理由のない限りTextAreaを使うことをオススメします。
+デフォルトでは一行のTextFieldですが、複数行のTextAreaに変更できます。MultilineとTextAreaはほぼ機能は同じですが、Multilineは「幅に合わせて自動改行されない」「スクロールバーが表示されない」といった制限があります。特に理由のない限りTextAreaを使うことをオススメします。
 
 //image[ss02][上がMultiline。下がTextArea。TextAreaはスクロールバーが表示される]{
 
@@ -95,7 +95,7 @@ public class NewBehaviourScript : MonoBehaviour
 
 === ColorUsage
 
-色の変さらにはカラーピッカーを使用します。ColorUsageは、カラーピッカーでアルファの使用を有効/無効にできたり、HDR用のからピッカーに変更することができます。
+色の変さらにはカラーピッカーを使用します。ColorUsageは、カラーピッカーでアルファの使用を有効/無効にできたり、HDR用のからピッカーに変更できます。
 
 //image[ss14][左からデフォルト、アルファなし、HDRカラーピッカー]{
 
@@ -338,7 +338,7 @@ public class NewBehaviourScript : MonoBehaviour
 
 //}
 
-この時に@<b>{AddComponentMenu}を使用すると別メニューとして作成することができます。AddComponentMenuを使用したスクリプトは他の場所にメニューが作成されるので@<b>{Component/Scripts}メニューの中から削除されます。
+この時に@<b>{AddComponentMenu}を使用すると別メニューとして作成できます。AddComponentMenuを使用したスクリプトは他の場所にメニューが作成されるので@<b>{Component/Scripts}メニューの中から削除されます。
 
 //emlist{
 using UnityEngine;
@@ -446,7 +446,7 @@ public class NewBehaviourScript : MonoBehaviour
 //}
 
 そして@<b>{もう一度}ゲームオブジェクトをクリックするとルートのゲームオブジェクトが選択されます。
-このように、SelectionBase 属性の付いたゲームオブジェクトで@<b>{最下層の子要素から順に}選択することができます。順に選択していき、SelectionBase 属性の付いたゲームオブジェクトが存在しない場合はルートを選択するという仕様です。
+このように、SelectionBase 属性の付いたゲームオブジェクトで@<b>{最下層の子要素から順に}選択できます。順に選択していき、SelectionBase 属性の付いたゲームオブジェクトが存在しない場合はルートを選択するという仕様です。
 
 //image[ss19][クリックするごとに下から順に選択されていく]{
 

@@ -58,7 +58,7 @@ public class Character
 
 //}
 
-これを PropertyDrawer によって GUI の描画をカスタマイズし、1行で表示することができます。
+これを PropertyDrawer によって GUI の描画をカスタマイズし、1行で表示できます。
 
 //image[ss14][1行に name と hp のプロパティーが表示されている]{
 
@@ -283,7 +283,7 @@ public class AngleDrawer : PropertyDrawer
 
 === AnimatorParameter
 
-Animatorウィンドウにあるパラメータ名をタイプセーフにフィールドにアタッチすることができます。
+Animatorウィンドウにあるパラメータ名をタイプセーフにフィールドにアタッチできます。
 取得できるパラメーターは同じゲームオブジェクトにアタッチされている Animator Controller のパラメーターになります。
 
 //indepimage[ss07]
@@ -371,7 +371,7 @@ public class DisableExample : MonoBehaviour
 
 BeginDisabledGroup と EndDisabledGroup、または DisabledGroupScope を使って PropertyField を囲むだけで実装できます。
 
-インスペクターで編集できなくなったといっても、インスペクターを Debug モードにすると編集することができますし、スクリプトから値の編集ができるので注意してください。
+インスペクターで編集できなくなったといっても、インスペクターを Debug モードにすると編集できますし、スクリプトから値の編集ができるので注意してください。
 
 //emlist{
 public override void OnGUI(Rect position, 
@@ -504,7 +504,7 @@ void DrawTexture(Rect position, Texture2D texture)
 
 === SceneName
 
-有効なシーン名をPopupで選択することができます。Popupで表示されるものは Build Settings の Scene In Build に含まれているシーン名です。
+有効なシーン名をPopupで選択できます。Popupで表示されるものは Build Settings の Scene In Build に含まれているシーン名です。
 
 //indepimage[ss11]
 

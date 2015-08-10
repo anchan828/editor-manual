@@ -255,7 +255,7 @@ public class NewBehaviourScript : EditorWindow
 
 == EditorGUI.ObjectField
 
-オブジェクトの参照を扱うフィールドです。引数に受け付けるオブジェクトの型を指定することができます。
+オブジェクトの参照を扱うフィールドです。引数に受け付けるオブジェクトの型を指定できます。
 
 また、テクスチャ系（Texture2DやSprite）は特殊なサムネイル形式のフィールドになります。
 
@@ -316,7 +316,7 @@ void OnGUI ()
 
 == EditorGUI.indentLevel
 
-インデントのレベルを管理します。以下のコードのように部分的にインデントを増減させることにより、インスペクターやヒエラルキーで見るような階層構造を構成することができます。
+インデントのレベルを管理します。以下のコードのように部分的にインデントを増減させることにより、インスペクターやヒエラルキーで見るような階層構造を構成できます。
 
 //image[ss13][ヒエラルキーでよく見る親子関係]{
 
@@ -346,7 +346,7 @@ void OnGUI ()
 
 == EditorGUILayout.Knob
 
-角度や、決められた範囲内で値を設定するための「つまみ（ノブ）」を作成します。マウスでドラッグしたり、表示されているラベルをクリックすることで値を直接入力することができます。
+角度や、決められた範囲内で値を設定するための「つまみ（ノブ）」を作成します。マウスでドラッグしたり、表示されているラベルをクリックすることで値を直接入力できます。
 
 //image[ss14][マウスでドラッグすることで値を調整できる]{
 
@@ -366,7 +366,7 @@ void OnGUI ()
 
 EditorGUILayout.BeginHorizontal/EndHorizontal というように Begin/End で始まるGUIグループのヘルパー機能になります。
 標準で@<code>{HorizontalScope}、@<code>{VerticalScope}、@<code>{ScrollViewScope} などのスコープが用意されています。
-スコープ自体は@<b>{IDisposable}オブジェクトで実装されており、usingを使用することができます。
+スコープ自体は@<b>{IDisposable}オブジェクトで実装されており、usingを使用できます。
 
 //emlist{
 #@maprange(unityprojects/part1/editorgui/Assets/Editor/ExampleScope.cs,HorizontalScope)
@@ -440,7 +440,7 @@ CloseScopeメソッドはDispose時に呼び出されるメソッドです。コ
 //}
 
 おそらく、複数のトグルを配置しようとすると上記のようなコードになるかもしれません。ですがこれは悪手です。これだとbool変数がトグルの数だけ増えることになりますし、その管理も面倒です。
-これらは@<code>{GUILayout.Toolbar}を使って解決することができます。
+これらは@<code>{GUILayout.Toolbar}を使って解決できます。
 
 //emlist{
 #@maprange(unityprojects/part1/editorgui/Assets/Editor/ButtonToggle.cs,ButtonToggle_Pattern3)

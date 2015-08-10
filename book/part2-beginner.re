@@ -56,7 +56,7 @@ Editorフォルダーの場所は特に制限はありません。どこにで�
 
 //}
 
-Assembly-CSharp-Editor からは firstpass を参照することができますが、逆に、@<b>{firstpass からは Assembly-CSharp-Editor.dll を参照できないので気をつけてください。}
+Assembly-CSharp-Editor からは firstpass を参照できますが、逆に、@<b>{firstpass からは Assembly-CSharp-Editor.dll を参照できないので気をつけてください。}
 
 ===[column] Editorフォルダーに含めずに動作させる方法
 

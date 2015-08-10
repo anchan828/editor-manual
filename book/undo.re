@@ -46,7 +46,7 @@ Undoの操作を実感してみたところで、次はUndoを実装してみま
 
 === オブジェクトの作成に対するUndo
 
-下記コードはCubeを生成するためのコードです。@<code>{Example/Create Cube}を実行することによってCubeを生成することができます。
+下記コードはCubeを生成するためのコードです。@<code>{Example/Create Cube}を実行することによってCubeを生成できます。
 
 //emlist{
 using UnityEngine;
@@ -105,7 +105,7 @@ public class Example
 
 //indepimage[ss04]
 
-Undoを実行した後はUndoしたものを元に戻すRedo（取り消す）も実行することができます。
+Undoを実行した後はUndoしたものを元に戻すRedo（取り消す）も実行できます。
 
 //indepimage[ss06]
 
@@ -189,7 +189,7 @@ PropertyDiffUndoRecorderは、Unityエディターのライフサイクルの最
 
 //}
 
-@<img>{PropertyDiffUndoRecorder}で示したサイクルを確認してみましょう。以下のコードで確認することができます。
+@<img>{PropertyDiffUndoRecorder}で示したサイクルを確認してみましょう。以下のコードで確認できます。
 
 //emlist{
 using UnityEngine;

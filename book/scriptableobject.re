@@ -68,7 +68,7 @@ static void CreateExampleAsset ()
 
 //indepimage[ss01]
 
-また、@<code>{CreateAssetMenu} 属性を使うことで簡単にアセットを作成することができます。
+また、@<code>{CreateAssetMenu} 属性を使うことで簡単にアセットを作成できます。
 
 //emlist{
 using UnityEngine;

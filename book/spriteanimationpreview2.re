@@ -96,7 +96,7 @@ public class SpriteAnimationClipEditor : Editor
 
 //}
 
-OnPreviewSettingsではGUILayoutを使用することができます。早速再生ボタンを表示してみましょう。再生ボタンは 再生 @<icon>{ss07} と一時停止 @<icon>{ss08} というように「オン/オフ」の状態が存在するので @<code>{GUILayout.Button}ではなく @<code>{GUILayout.Toggle}を使用します。
+OnPreviewSettingsではGUILayoutを使用できます。早速再生ボタンを表示してみましょう。再生ボタンは 再生 @<icon>{ss07} と一時停止 @<icon>{ss08} というように「オン/オフ」の状態が存在するので @<code>{GUILayout.Button}ではなく @<code>{GUILayout.Toggle}を使用します。
 
 //emlist{
 #@maprange(unityprojects/SpriteAnimationClip/Assets/Editor/SpriteAnimationClipEditor.cs,sample_OnPreviewSettings)
@@ -186,7 +186,7 @@ Spriteの保持の仕方などは省いていますが、実際に使用する�
 
 ==== Editor オブジェクトを動的に作成
 
-Editorオブジェクトは、任意のタイミングでユーザーが作成することができます。
+Editorオブジェクトは、任意のタイミングでユーザーが作成できます。
 
 Unity標準で使用されている Sprite オブジェクトのための @<code>{SpriteInspector} を作成します。
 
@@ -210,7 +210,7 @@ private List<Editor> GetSpriteEditors(params Sprite[] sprites)
 
 ==== プレビュー用テクスチャの取得
 
-プレビューのテクスチャは @<b>{RenderStaticPreview} で取得することができます。
+プレビューのテクスチャは @<b>{RenderStaticPreview} で取得できます。
 
 //emlist{
 var editor = spriteEditors[i];

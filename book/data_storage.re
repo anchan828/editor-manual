@@ -206,7 +206,7 @@ public class NewBehaviourScript : ScriptableObject
 
 === ScriptableObjectを保存する場所
 
-Projectの Assets フォルダー以下であればどこにでも保存することができます。エディター拡張専用の ScriptableObject であれば Editor フォルダー以下に作成するのが好ましいです。
+Projectの Assets フォルダー以下であればどこにでも保存できます。エディター拡張専用の ScriptableObject であれば Editor フォルダー以下に作成するのが好ましいです。
 
 === 使い方
 

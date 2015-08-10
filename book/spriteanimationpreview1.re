@@ -29,7 +29,7 @@ AnimationClipに登録されているスプライトの確認方法はいくつ�
 
 //}
 
-すると、@<i>{Pptr Curve Mapping} というプロパティーでスプライトを参照している配列を確認することができます。このスプライトがAnimationClipで使用されているスプライトです。
+すると、@<i>{Pptr Curve Mapping} というプロパティーでスプライトを参照している配列を確認できます。このスプライトがAnimationClipで使用されているスプライトです。
 
 === もっと手軽にスプライトを確認する方法を確立する
 
@@ -180,7 +180,7 @@ public override void OnPreviewGUI(Rect r, GUIStyle background)
 }
 //}
 
-GUI.SelectionGrid はかなり優れもので、@<b>{決められたRect値の範囲内で均等になるようにGUIContentを配置することができます。}
+GUI.SelectionGrid はかなり優れもので、@<b>{決められたRect値の範囲内で均等になるようにGUIContentを配置できます。}
 
 //pagebreak
 

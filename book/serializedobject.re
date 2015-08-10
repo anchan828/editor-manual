@@ -339,7 +339,7 @@ Rigidbody:
 
 また、マテリアルなどの Unity独自のアセットもテキストエディタで見ることができます。
 
-豆知識として、UnityEditorInternal名前空間にある@<b>{InternalEditorUtility.SaveToSerializedFileAndForget}で UnityEngine.Object をアセットとして保存することができます。
+豆知識として、UnityEditorInternal名前空間にある@<b>{InternalEditorUtility.SaveToSerializedFileAndForget}で UnityEngine.Object をアセットとして保存できます。
 
 //emlist{
 using UnityEngine;

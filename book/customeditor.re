@@ -35,7 +35,7 @@ Debug モードでは、GUI 要素がカスタマイズされる前の@<b>{素}�
 
 //}
 
-その時に、全ての要素を見せるのは必要なかったり、追加の GUI 要素を表示したいということもあるので @<b>{CustomEditor（カスタムエディター）}の機能を使い Editor オブジェクトをカスタマイズすることができます。
+その時に、全ての要素を見せるのは必要なかったり、追加の GUI 要素を表示したいということもあるので @<b>{CustomEditor（カスタムエディター）}の機能を使い Editor オブジェクトをカスタマイズできます。
 
 === 普段見ているインスペクターは既にカスタムエディターが使われている
 
@@ -108,7 +108,7 @@ public class CharacterInspector : Editor
 
 === インスペクターの GUI のカスタマイズ
 
-インスペクターの GUI は OnInspectorGUI をオーバーライドすることでカスタマイズすることができます。
+インスペクターの GUI は OnInspectorGUI をオーバーライドすることでカスタマイズできます。
 
 //emlist{
 using UnityEngine;
@@ -139,7 +139,7 @@ public class CharacterInspector : Editor
 
 === シーンビューの GUI のカスタマイズ
 
-シーンビューの GUI は OnSceneGUI を使うことでカスタマイズすることができます。これについては @<chapref>{handles} にて詳しく説明しているので、そちらをご覧ください。
+シーンビューの GUI は OnSceneGUI を使うことでカスタマイズできます。これについては @<chapref>{handles} にて詳しく説明しているので、そちらをご覧ください。
 
 == カスタムエディターでデータのやり取り
 
@@ -162,9 +162,9 @@ public class Character : MonoBehaviour
 
 === Unityのシリアライズ機構を通してアクセスする方法
 
-Unity はデータの持ち方として SerializedObject で、すべてのデータを管理しています。SerializedObject 経由でデータにアクセスすることでデータの操作に柔軟に対応することができます。SerializedObject の詳しい説明は @<chapref>{serializedobject} をご覧ください。
+Unity はデータの持ち方として SerializedObject で、すべてのデータを管理しています。SerializedObject 経由でデータにアクセスすることでデータの操作に柔軟に対応できます。SerializedObject の詳しい説明は @<chapref>{serializedobject} をご覧ください。
 
-Editor オブジェクトが生成されると同時に、コンポーネントがシリアライズされ、serializedObject 変数に格納されます。serializedObject 変数から各プロパティーにアクセスすることができます。
+Editor オブジェクトが生成されると同時に、コンポーネントがシリアライズされ、serializedObject 変数に格納されます。serializedObject 変数から各プロパティーにアクセスできます。
 
 下記のコードのように、「@<b>{SerializedPropertyにアクセスする前}は必ず SerializedObject を最新に更新」します。これは同じコンポーネントの SerializedObject が他の場所で更新された場合に、その変更点を適用するためです。
 
@@ -203,7 +203,7 @@ public class CharacterInspector : Editor
 
 この方法は本章の前半で行っています。コンポーネントに直接アクセスすることで、GUI のカスタマイズを簡単に行うことが可能です。
 
-対象のコンポーネントは Editor オブジェクトの target 変数でアクセスすることができます。 UnityEngine.Object 型なのでキャストする必要があります。
+対象のコンポーネントは Editor オブジェクトの target 変数でアクセスできます。 UnityEngine.Object 型なのでキャストする必要があります。
 
 //emlist{
 using UnityEngine;
@@ -260,7 +260,7 @@ public override void OnInspectorGUI ()
 
 == 複数コンポーネントの同時編集
 
-Unity ではゲームオブジェクトを複数選択し@<b>{同時に}同じプロパティーの値を編集することができます。ただし、同時編集ができるのは同時編集を許可されたコンポーネントのみです。
+Unity ではゲームオブジェクトを複数選択し@<b>{同時に}同じプロパティーの値を編集できます。ただし、同時編集ができるのは同時編集を許可されたコンポーネントのみです。
 
 //image[ss09][同時編集が許可されていないコンポーネント]{
 
@@ -323,7 +323,7 @@ public class CharacterInspector : Editor
 複数選択した時にインスペクターに表示されるものは、最初に選択した（ゲームオブジェクトにアタッチされている）コンポーネントです。これは target に格納されており、また targets の1番目の要素でもあります。
 
 選択したコンポーネントの各プロパティーが全て同じ値ということもあれば、異なる場合もあります。
-同じ値でない場合は Unity は 「@<b>{-} 」を表示して、異なる値が代入されていると表現することができます。
+同じ値でない場合は Unity は 「@<b>{-} 」を表示して、異なる値が代入されていると表現できます。
 
 //image[ss10][複数選択時、左が同じ値の場合。右が異なる値の場合。]{
 
@@ -379,7 +379,7 @@ public class CharacterInspector : Editor
 
 == カスタムエディター内で PropertyDrawer を使用する
 
-カスタムエディター内でも PropertyDrawer を使用することができます。使い方は @<code>{EditorGUILayout.PropertyField} に対象の SerializedProperty を渡すだけです。PropertyDrawer の詳しい説明は @<chapref>{property_drawer} をご覧ください。
+カスタムエディター内でも PropertyDrawer を使用できます。使い方は @<code>{EditorGUILayout.PropertyField} に対象の SerializedProperty を渡すだけです。PropertyDrawer の詳しい説明は @<chapref>{property_drawer} をご覧ください。
 
 @<img>{ss11} のような PropertyDrawer を作成し、カスタムエディター内で表示してみます。
 
@@ -489,7 +489,7 @@ public class CharacterInspector : Editor
 
 == プレビュー
 
-インスペクターではメッシュやテクスチャ、スプライトなどプレビュー可能なアセットがある場合にプレビュー画面で確認することができます。
+インスペクターではメッシュやテクスチャ、スプライトなどプレビュー可能なアセットがある場合にプレビュー画面で確認できます。
 
 //image[ss12][Cubeのプレハブを選択した状態のインスペクターにあるプレビューウィンドウ]{
 
@@ -588,7 +588,7 @@ public override void OnPreviewSettings ()
 
 : OnPreviewGUI
 
-プレビューを表示（つまりテクスチャやレンダリング結果を表示するためのGUIを表示）する場所です。メソッドの引数として描画すべき領域の Rect を取得できるのでプレビューに合わせ Rect をカスタマイズすることができます。
+プレビューを表示（つまりテクスチャやレンダリング結果を表示するためのGUIを表示）する場所です。メソッドの引数として描画すべき領域の Rect を取得できるのでプレビューに合わせ Rect をカスタマイズできます。
 
 //image[ss17][プレビュー領域全体に Box が描画されている]{
 

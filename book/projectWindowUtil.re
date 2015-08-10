@@ -77,7 +77,7 @@ public class DoCreateScriptAsset : EndNameEditAction
 
 === StartNameEditingIfProjectWindowExists
 
-@<code>{ProjectWindowUtil.StartNameEditingIfProjectWindowExists} を使ってアセットを作成します。この関数は @<code>{ProjectWindowUtil.CreateAsset} の内部でも使われており、正しく使うことができれば同じ動作を実装することができます。
+@<code>{ProjectWindowUtil.StartNameEditingIfProjectWindowExists} を使ってアセットを作成します。この関数は @<code>{ProjectWindowUtil.CreateAsset} の内部でも使われており、正しく使うことができれば同じ動作を実装できます。
 
 StartNameEditingIfProjectWindowExists は 2 つの生成パターンをサポートしています。
 
@@ -85,7 +85,7 @@ StartNameEditingIfProjectWindowExists は 2 つの生成パターンをサポー
 
 これはスクリプトファイルの生成のような場合に使用します。第5引数が外部ファイル（=リソース）のパスを指定するようになっています。この時、インスタンスIDは必要ないので 0 にします。
 
-例としては以下のコードになります。このコードと先ほど作成した @<code>{DoCreateScriptAsset} クラスを使用することによってスクリプトファイルを作成することができます。
+例としては以下のコードになります。このコードと先ほど作成した @<code>{DoCreateScriptAsset} クラスを使用することによってスクリプトファイルを作成できます。
 
 //emlist{
 [MenuItem ("Assets/Create ExampleAssets")]

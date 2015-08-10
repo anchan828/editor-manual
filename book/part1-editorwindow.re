@@ -37,7 +37,7 @@ DockArea は「Webブラウザのタブ」と同じ機能を提供します。
 
 //}
 
-このように、DockArea には1つ以上の EditorWidow を描画するための機能が備わっています。例えば、2つ以上の EditorWindow が DockArea にある場合、タブ機能を使って各 EditorWindow を表示するか、 @<b>{SplitWindow} で DockArea の領域を分割して表示することができます。
+このように、DockArea には1つ以上の EditorWidow を描画するための機能が備わっています。例えば、2つ以上の EditorWindow が DockArea にある場合、タブ機能を使って各 EditorWindow を表示するか、 @<b>{SplitWindow} で DockArea の領域を分割して表示できます。
 
 
 //image[ss22][1つの DockArea にシーンビューとヒエラルキービューを分割して表示]{
@@ -458,7 +458,7 @@ public class Example : ScriptableWizard
 
 ==== OnWizardOtherButton
 
-@<b>{Create}ボタンの他にもう1つボタンを追加することができます。作成に関して2つのパターンを作りたい場合に使用してください。
+@<b>{Create}ボタンの他にもう1つボタンを追加できます。作成に関して2つのパターンを作りたい場合に使用してください。
 ボタンを追加するには@<code>{ScriptableWizard.DisplayWizard}の第3引数でボタン名を指定する必要があります。
 
 //emlist{
@@ -519,7 +519,7 @@ public class Example : ScriptableWizard
 
 ==== DrawWizardGUI
 
-ウィザート内のGUIを描画するためのメソッドです。このメソッドをオーバーライドすることによりGUIをカスタマイズすることができます。
+ウィザート内のGUIを描画するためのメソッドです。このメソッドをオーバーライドすることによりGUIをカスタマイズできます。
 
 ただし、戻り値として @<code>{true} を返すようにしてください。trueを返さなければ @<code>{OnWizardUpdate} が呼び出されなくなってしまいます。
 
@@ -674,7 +674,7 @@ public class Example : EditorWindow
 
 == GetWindowを使わずに既にあるEditorWindowを取得するには？
 
-自前でシングルトンを実装するか、GetWindowによって内部にキャッシュしておく方法でEditorWindowへとアクセスすることができます。しかし、先ほど上げた2つの方法が使えない状況も出てきます。その時は@<b>{Resources}クラスにある@<b>{Resources.FindObjectsOfTypeAll}を使用します。
+自前でシングルトンを実装するか、GetWindowによって内部にキャッシュしておく方法でEditorWindowへとアクセスできます。しかし、先ほど上げた2つの方法が使えない状況も出てきます。その時は@<b>{Resources}クラスにある@<b>{Resources.FindObjectsOfTypeAll}を使用します。
 
 @<code>{FindObjectsOfTypeAll}は@<b>{現在ロードされている全てのオブジェクトから特定のオブジェクトを検索し、取得}します。これはランタイムで使用するオブジェクトだけではなく、エディターで使用するオブジェクトも検索対象となります。
 

@@ -159,7 +159,7 @@ InitializeOnLoad のメソッド版です。静的メソッドにこの属性を
 
 == DidReloadScripts
 
-機能的には @<code>{InitializeOnLoadMethod} とほぼ同じです。ただ1点だけ違うところは@<b>{実行順を選べる}点です。引数として @<code>{callbackOrder} があり、昇順で実行することができます。
+機能的には @<code>{InitializeOnLoadMethod} とほぼ同じです。ただ1点だけ違うところは@<b>{実行順を選べる}点です。引数として @<code>{callbackOrder} があり、昇順で実行できます。
 
 //emlist{
 using UnityEditor;
@@ -284,7 +284,7 @@ public class NewBehaviourScript
 
 == EditorApplication.hierarchyWindowItemOnGUI と projectWindowItemOnGUI
 
-ヒエラルキーやプロジェクトウィンドウで、各ゲームオブジェクトやアセットの@<b>{ラベルが描画されている範囲}をコールバックとして取得することができます。
+ヒエラルキーやプロジェクトウィンドウで、各ゲームオブジェクトやアセットの@<b>{ラベルが描画されている範囲}をコールバックとして取得できます。
 
 これらは、小さな範囲の中でゲームオブジェクトの情報を表示してもいいですし、ボタンなどを配置して何らかのトリガーとするのもいいかもしれません。
 
@@ -456,7 +456,7 @@ public class NewBehaviourScript : EditorWindow
 
 Unity エディターの更新タイミングで呼び出されるコールバックです。エディターにも MonoBehaviour の Update のような一定の更新タイミングがあります。呼び出されるのは約 200回/秒 となり、描画系処理の前に実行されます。@<fn>{2}
 
-例えば WWW の通信でも使用することができます。
+例えば WWW の通信でも使用できます。
 
 //emlist{
 using UnityEditor;

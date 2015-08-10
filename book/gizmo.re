@@ -71,7 +71,7 @@ public class Example : MonoBehaviour
 
 === DrawGizmoAttribute
 
-手軽に使用できる OnDrawGizmos と OnDrawGizmosSelected を紹介しましたが、元々ギズモはエディター側の機能です。ランタイムのスクリプトにエディターのコードを書くのは気持ちの良いものではないかもしれません。@<fn>{1}
+手軽に使用できる OnDrawGizmos と OnDrawGizmosSelected を紹介しましたが、もともとギズモはエディター側の機能です。ランタイムのスクリプトにエディターのコードを書くのは気持ちの良いものではないかもしれません。@<fn>{1}
 
 ギズモを描画する方法として @<code>{DrawGizmoAttribute} が提供されています。この属性は、@<b>{特定のコンポーネント}に対してギズモを適用するためのものです。つまり、OnDrawGizmos と同じ機能を扱えるということです。
 

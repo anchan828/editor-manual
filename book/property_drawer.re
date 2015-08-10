@@ -52,7 +52,7 @@ public class Character
 }
 //}
 
-これをインスペクターに表示しようとすると コンパクトではありますがとても見難い表示となります。
+これをインスペクターに表示しようとすると コンパクトではありますがとても見にくい表示となります。
 
 //image[ss13][いつもの見た目]{
 
@@ -524,7 +524,7 @@ public class SceneNameExample : MonoBehaviour
 
 ==== EditorBuildSettings.scenes でシーンの一覧を取得
 
-シーンは @<code>{EditorBuildSettings.scenes} 変数で管理されています。ただし Build Settings の Scene In Build にシーンを登録してないと一覧に含まれないので注意してください。
+シーンは @<code>{EditorBuildSettings.scenes} 変数で管理されています。ただし Build Settings の Scene In Build にシーンを登録していないと一覧に含まれないので注意してください。
 
 //footnote[1][ushort や uint 使えばいいじゃんというツッコミはなしで...!!]
 //footnote[2][実際は OnGUI を使う場所だとどこでも Unity が自動判断して適切な GUI を表示します。]

@@ -156,7 +156,7 @@ if (GUI.Button(buttonRect, "select", EditorStyles.objectFieldThumb.name + "Overl
 == DragAndDrop
 
 ObjectFieldのようにドラッグ＆ドロップしてオブジェクトの参照を格納したい場合があります。その時にはDragAndDropを使用します。
-DragAndDropではオブジェクトをドラッグする処理と、ドロップする処理の2つにわかれます。ObjectFieldのようなGUIを作成するときは、プロジェクトプラウザからドラッグする処理は既にUnity側で実装されているのでドロップする処理のみを実装すれば良いです。
+DragAndDropではオブジェクトをドラッグする処理と、ドロップする処理の2つにわかれます。ObjectFieldのようなGUIを作成するときは、プロジェクトブラウザーからドラッグする処理は既にUnity側で実装されているのでドロップする処理のみを実装すれば良いです。
 
 
 //emlist{

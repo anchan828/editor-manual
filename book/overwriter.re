@@ -224,7 +224,7 @@ public void Delete ()
 
 //}
 
-//image[ss11][Finderで見ると片方の画像しか無いことがわかる]{
+//image[ss11][Finderで見ると片方の画像しかないことがわかる]{
 
 //}
 

@@ -24,9 +24,9 @@ EditorWindow は単体で描画されているわけではなく、親として 
 
 //}
 
-DockArea は「Webブラウザのタブ」と同じ機能を提供します。
+DockArea は「Webブラウザーのタブ」と同じ機能を提供します。
 
-例えば、ウィンドウはそれぞれ独立した3つのウィンドウにすることもできますし、3つのタブにして1つのウィンドウにまとめることもできます。
+例えば、ウィンドウはそれぞれ独立した3つのウィンドウにもできますし、3つのタブにして1つのウィンドウにまとめることもできます。
 
 //image[ss20][Chromeのタブ機能]{
 //}
@@ -47,7 +47,7 @@ DockArea は「Webブラウザのタブ」と同じ機能を提供します。
 
 さらに DockArea は @<b>{HostView} の役割も持っています。HostView は、さまざまなオブジェクト・イベントとのやり取りを行うための View です。ウィンドウの「Update関数」や「OnSelectionChange関数」などを実行するための機能が含まれています。
 
-3つのウィンドウ「HostView」「SplitView」「DockArea」を紹介しました。これらの領域（クラス）には残念ながらアクセスすることができません。ですが、覚えておくと EditorWindow の仕組みがより早く理解できるかもしれません。
+3つのウィンドウ「HostView」「SplitView」「DockArea」を紹介しました。これらの領域（クラス）には残念ながらアクセスできません。ですが、覚えておくと EditorWindow の仕組みがより早く理解できるかもしれません。
 
 == EditorWindowの作成
 
@@ -211,9 +211,9 @@ public class Example : EditorWindow
 
 === ShowPopup
 
-ウィンドウタイトルと閉じるボタンが無いウィンドウです。
+ウィンドウタイトルと閉じるボタンがないウィンドウです。
 たとえ他のWindowにフォーカスを当ててもそのWindow自体が裏側に回り込むことがありません。
-閉じるボタンが無いため、ウィンドウを閉じる処理は自前で実装する必要があります。
+閉じるボタンがないため、ウィンドウを閉じる処理は自前で実装する必要があります。
 
 //image[ss06][シーンウィンドウの上に表示されている]{
 
@@ -324,7 +324,7 @@ public class ExamplePupupContent : PopupWindowContent
 
 === ShowAsDropDown
 
-Popupと同じで、「ウィンドウのタイトル」「閉じるボタン」が無いウィンドウです。
+Popupと同じで、「ウィンドウのタイトル」「閉じるボタン」がないウィンドウです。
 ただし、PCの画面サイズを考慮して、ウィンドウを表示する位置で@<b>{十分な広さを確保できなかった場合}、ウィンドウの表示領域を画面内に収めるために X/Y 軸の位置が自動的に補正されるようになります。言い換えると、画面の隅っこでウィンドウを出したとしても必ずPCの表示領域にすべて表示されます。
 
 //image[ss10][黒いのがShowAsDropDownで表示したウィンドウだとする]{
@@ -409,7 +409,7 @@ public class Example : ScriptableWizard
 
 ==== ScriptableWizardにはクラスのフィールドが表示される
 
-他のEditorWindowではGUIの表示にEditorGUIクラスを使用しますがScriptableWizardでは使用することができません。ScriptableWizardではインスペクターで表示されるような「publicなフィールド」「シリアライズ可能なフィールド」がウィンドウに表示されます。
+他のEditorWindowではGUIの表示にEditorGUIクラスを使用しますがScriptableWizardでは使用できません。ScriptableWizardではインスペクターで表示されるような「publicなフィールド」「シリアライズ可能なフィールド」がウィンドウに表示されます。
 
 //image[ss12][インスペクターで表示されるようなものがそのまま表示されるイメージ]{
 
@@ -696,7 +696,7 @@ public class Example : EditorWindow
 
 == EditorWindowもScriptableObjectであることを知る
 
-//image[ss17][アセンブリブラウザで見るとScriptableObjectが継承されていることが分かる]{
+//image[ss17][アセンブリブラウザーで見るとScriptableObjectが継承されていることが分かる]{
 
 //}
 

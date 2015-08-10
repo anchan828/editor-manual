@@ -13,7 +13,7 @@ Unity 内部のアセット（マテリアルやアニメーションクリッ�
 
 ScriptableObject は Unity エディターのいたる所で使われています。例えば、シーンビューやゲームビューなどの エディターウィンドウ は、ScriptableObject の派生クラスから生成されており、また、インスペクターに GUI を表示するための Editor オブジェクトも ScriptableObject の派生クラスから生成されています。Unity エディターは ScriptableObject で作成されているといっても過言ではありません。
 
-//image[ss02][アセンブリブラウザで見ると ScriptableObject が継承されているのが分かる]{
+//image[ss02][アセンブリブラウザーで見ると ScriptableObject が継承されているのが分かる]{
 
 //}
 

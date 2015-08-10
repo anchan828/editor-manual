@@ -130,7 +130,7 @@ while (prop.NextVisible (true)) {
 
 === 編集した値を保存
 
-必要な情報は全て揃ったので、あとは編集して値を適用させるだけです。GUIを実装すると説明が長くなってしまうため、今回は duration に 10 をハードコートして代入させてみます。値を代入したら最後に必ず @<code>{ApplyModifiedProperties} を呼び出して更新を行います。
+必要な情報は全てそろったので、あとは編集して値を適用させるだけです。GUIを実装すると説明が長くなってしまうため、今回は duration に 10 をハードコートして代入させてみます。値を代入したら最後に必ず @<code>{ApplyModifiedProperties} を呼び出して更新を行います。
 
 //emlist{
 var so = new SerializedObject (particleSystem);

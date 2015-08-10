@@ -18,7 +18,7 @@
 
 Debugを選択するとインスペクターに変化が現れます。@<img>{ss03}のように普段見ているインスペクターとは少し違う見た目になりました。
 
-//image[ss03][普段見ない Instance ID や File ID のプロパティが見える]{
+//image[ss03][普段見ない Instance ID や File ID のプロパティーが見える]{
 
 //}
 
@@ -28,24 +28,24 @@ Debug モードでは、GUI 要素がカスタマイズされる前の@<b>{素}�
 
 == オブジェクトと Editor クラス
 
-@<href>{http://docs.unity3d.com/ScriptReference/Editor.html, Editor}クラスは、オブジェクトの情報をインスペクターやシーンビューに表示するための機能です。各オブジェクトに対応した Editor オブジェクトが生成され、Editor オブジェクトを介して必要な情報を GUI で表示することが出来るようになります。
+@<href>{http://docs.unity3d.com/ScriptReference/Editor.html, Editor}クラスは、オブジェクトの情報をインスペクターやシーンビューに表示するための機能です。各オブジェクトに対応した Editor オブジェクトが生成され、Editor オブジェクトを介して必要な情報を GUI で表示できるようになります。
 
 
 //image[ss06][ボックスコライダーを Editor オブジェクトを介して GUI を表示するイメージ]{
 
 //}
 
-その時に、全ての要素を見せるのは必要なかったり、追加の GUI 要素を表示したいということもあるので @<b>{CustomEditor（カスタムエディター）}の機能を使い Editor オブジェクトをカスタマイズすることが出来ます。
+その時に、全ての要素を見せるのは必要なかったり、追加の GUI 要素を表示したいということもあるので @<b>{CustomEditor（カスタムエディター）}の機能を使い Editor オブジェクトをカスタマイズすることができます。
 
 === 普段見ているインスペクターは既にカスタムエディターが使われている
 
 普段インスペクターで触れているコンポーネントは、既にカスタムエディターによってカスタマイズされています。
 
-//image[ss05][語尾がInspectorとEditor分かれているが違いはない]{
+//image[ss05][語尾がInspectorとEditorで表記にゆれがあるが違いはない]{
 
 //}
 
-これからカスタムエディターを作成するときには「何が出来るか」の参考になります。
+これからカスタムエディターを作成するときには「何ができるか」の参考になります。
 
 
 == カスタムエディターを使う
@@ -61,7 +61,7 @@ Debug モードでは、GUI 要素がカスタマイズされる前の@<b>{素}�
 ソースコードは計算式がちょっとだけ分かりやすいように日本語変数にしてみました。
 //}
 
-//emlist[][cs]{
+//emlist{
 using UnityEngine;
 
 public class Character : MonoBehaviour
@@ -73,7 +73,7 @@ public class Character : MonoBehaviour
   [Range (0, 99)]
   public int ちから;
 
-  // プレイヤーの能力と、剣の強さから攻撃力を求めるプロパティ
+  // プレイヤーの能力と、剣の強さから攻撃力を求めるプロパティー
   public int 攻撃力 {
       get {
         return 基本攻撃力 + 
@@ -86,7 +86,7 @@ public class Character : MonoBehaviour
 
 
 
-今回は、@<img>{ss02}のようにプロパティである攻撃力をインスペクター上に表示して、確認しながらパラメーターを調整していきます。
+今回は、@<img>{ss02}のようにプロパティーである攻撃力をインスペクター上に表示して、確認しながらパラメーターを調整していきます。
 
 //image[ss02][]{
 
@@ -108,7 +108,7 @@ public class CharacterInspector : Editor
 
 === インスペクターの GUI のカスタマイズ
 
-インスペクターの GUI は OnInspectorGUI をオーバーライドすることでカスタマイズすることが出来ます。
+インスペクターの GUI は OnInspectorGUI をオーバーライドすることでカスタマイズすることができます。
 
 //emlist{
 using UnityEngine;
@@ -135,11 +135,11 @@ public class CharacterInspector : Editor
 }
 //}
 
-これで @<img>{ss02} と同じ表示を行うことが出来ました。
+これで @<img>{ss02} と同じ表示を行うことができました。
 
 === シーンビューの GUI のカスタマイズ
 
-シーンビューの GUI は OnSceneGUI を使うことでカスタマイズすることが出来ます。これについては @<chapref>{handles} にて詳しく説明しているので、そちらをご覧ください。
+シーンビューの GUI は OnSceneGUI を使うことでカスタマイズすることができます。これについては @<chapref>{handles} にて詳しく説明しているので、そちらをご覧ください。
 
 == カスタムエディターでデータのやり取り
 
@@ -162,9 +162,9 @@ public class Character : MonoBehaviour
 
 === Unityのシリアライズ機構を通してアクセスする方法
 
-Unity はデータの持ち方として SerializedObject で、すべてのデータを管理しています。SerializedObject 経由でデータにアクセスすることでデータの操作に柔軟に対応することが出来ます。SerializedObject の詳しい説明は @<chapref>{serializedobject} をご覧ください。
+Unity はデータの持ち方として SerializedObject で、すべてのデータを管理しています。SerializedObject 経由でデータにアクセスすることでデータの操作に柔軟に対応することができます。SerializedObject の詳しい説明は @<chapref>{serializedobject} をご覧ください。
 
-Editor オブジェクトが生成されると同時に、コンポーネントがシリアライズされ、serializedObject 変数に格納されます。serializedObject 変数から各プロパティーにアクセスすることが出来ます。
+Editor オブジェクトが生成されると同時に、コンポーネントがシリアライズされ、serializedObject 変数に格納されます。serializedObject 変数から各プロパティーにアクセスすることができます。
 
 下記のコードのように、「@<b>{SerializedPropertyにアクセスする前}は必ず SerializedObject を最新に更新」します。これは同じコンポーネントの SerializedObject が他の場所で更新された場合に、その変更点を適用するためです。
 
@@ -203,7 +203,7 @@ public class CharacterInspector : Editor
 
 この方法は本章の前半で行っています。コンポーネントに直接アクセスすることで、GUI のカスタマイズを簡単に行うことが可能です。
 
-対象のコンポーネントは Editor オブジェクトの target 変数でアクセスすることが出来ます。 UnityEngine.Object 型なのでキャストする必要があります。
+対象のコンポーネントは Editor オブジェクトの target 変数でアクセスすることができます。 UnityEngine.Object 型なのでキャストする必要があります。
 
 //emlist{
 using UnityEngine;
@@ -260,7 +260,7 @@ public override void OnInspectorGUI ()
 
 == 複数コンポーネントの同時編集
 
-Unity ではゲームオブジェクトを複数選択し@<b>{同時に}同じプロパティーの値を編集することが出来ます。ただし、同時編集が出来るのは同時編集を許可されたコンポーネントのみです。
+Unity ではゲームオブジェクトを複数選択し@<b>{同時に}同じプロパティーの値を編集することができます。ただし、同時編集ができるのは同時編集を許可されたコンポーネントのみです。
 
 //image[ss09][同時編集が許可されていないコンポーネント]{
 
@@ -283,7 +283,7 @@ public class CharacterInspector : Editor
 }
 //}
 
-CanEditMultipleObjects 属性をつけることで同時編集が可能になる準備が出来ました。
+CanEditMultipleObjects 属性をつけることで同時編集が可能になる準備ができました。
 
 ==== Unityのシリアライズ機構を通しての同時編集
 
@@ -323,7 +323,7 @@ public class CharacterInspector : Editor
 複数選択した時にインスペクターに表示されるものは、最初に選択した（ゲームオブジェクトにアタッチされている）コンポーネントです。これは target に格納されており、また targets の1番目の要素でもあります。
 
 選択したコンポーネントの各プロパティーが全て同じ値ということもあれば、異なる場合もあります。
-同じ値でない場合は Unity は 「@<b>{-} 」を表示して、異なる値が代入されていると表現することが出来ます。
+同じ値でない場合は Unity は 「@<b>{-} 」を表示して、異なる値が代入されていると表現することができます。
 
 //image[ss10][複数選択時、左が同じ値の場合。右が異なる値の場合。]{
 
@@ -379,7 +379,7 @@ public class CharacterInspector : Editor
 
 == カスタムエディター内で PropertyDrawer を使用する
 
-カスタムエディター内でも PropertyDrawer を使用することが出来ます。使い方は @<code>{EditorGUILayout.PropertyField} に対象の SerializedProperty を渡すだけです。PropertyDrawer の詳しい説明は @<chapref>{property_drawer} をご覧ください。
+カスタムエディター内でも PropertyDrawer を使用することができます。使い方は @<code>{EditorGUILayout.PropertyField} に対象の SerializedProperty を渡すだけです。PropertyDrawer の詳しい説明は @<chapref>{property_drawer} をご覧ください。
 
 @<img>{ss11} のような PropertyDrawer を作成し、カスタムエディター内で表示してみます。
 
@@ -484,26 +484,26 @@ public class CharacterInspector : Editor
 }
 //}
 
-このように、細かく部品とすることができるものは PropertyDrawer として実装すると、複雑なスパゲティーコード@<fn>{2}にならずに済むかもしれません。これは冗談ではなく、GUI の描画のためのコードは冗長になりがちなのでオススメです。
+このように、細かく部品にできるものは PropertyDrawer として実装すると、複雑なスパゲティーコード@<fn>{2}にならずに済むかもしれません。これは冗談ではなく、GUI の描画のためのコードは冗長になりがちなのでオススメです。
 
 
 == プレビュー
 
-インスペクターではメッシュやテクスチャ、スプライトなどプレビュー可能なアセットがある場合にプレビュー画面で確認することが出来ます。
+インスペクターではメッシュやテクスチャ、スプライトなどプレビュー可能なアセットがある場合にプレビュー画面で確認することができます。
 
-//image[ss12][Cubeのプレハブを選択した状態のインスペクターにあるプレビューウインドウ]{
+//image[ss12][Cubeのプレハブを選択した状態のインスペクターにあるプレビューウィンドウ]{
 
 //}
 
 === プレビュー画面の表示
 
-プレビューの表示はデフォルトでは無効となっており、「プレビュー出来る状態である」とインスペクターに判断させるには@<code>{HasPreviewGUI} メソッドをオーバーライドし、戻り値として true を返す必要があります。
+プレビューの表示はデフォルトでは無効となっており、「プレビューできる状態である」とインスペクターに判断させるには@<code>{HasPreviewGUI} メソッドをオーバーライドし、戻り値として true を返す必要があります。
 
 
 //emlist{
 public override bool HasPreviewGUI ()
 {
-    //プレビュー表示出来るものがあれば true を返す
+    //プレビュー表示できるものがあれば true を返す
     return true;
 }
 //}
@@ -550,7 +550,7 @@ public class PreviewExampleInspector : Editor
 
 === プレビューの最低限の実装
 
-プレビューのウインドウが表示する最低限の実装のために3つのメソッドを知っておかなくてはいけません。
+プレビューのウィンドウが表示する最低限の実装のために3つのメソッドを知っておかなくてはいけません。
 
 : GetPreviewTitle
   プレビュー名です。同じゲームオブジェクトにアタッチされているコンポーネントが異なるプレビューを持っている場合の識別子にもなります。
@@ -588,7 +588,7 @@ public override void OnPreviewSettings ()
 
 : OnPreviewGUI
 
-プレビューを表示（つまりテクスチャやレンダリング結果を表示するためのGUIを表示）する場所です。メソッドの引数として描画すべき領域の Rect を取得できるのでプレビューに合わせ Rect をカスタマイズすることが出来ます。
+プレビューを表示（つまりテクスチャやレンダリング結果を表示するためのGUIを表示）する場所です。メソッドの引数として描画すべき領域の Rect を取得できるのでプレビューに合わせ Rect をカスタマイズすることができます。
 
 //image[ss17][プレビュー領域全体に Box が描画されている]{
 
@@ -605,7 +605,7 @@ public override void OnPreviewGUI (Rect r, GUIStyle background)
 
 モデルデータやアニメーション編集時にプレビュー画面で、マウスドラッグによって対象オブジェクトを回転させ隅々まで見渡せる機能があります。
 
-//image[ss18][AnimationClip のプレビュー。マウスでグリグリ動かすことが出来る]{
+//image[ss18][AnimationClip のプレビュー。マウスでグリグリ動かすことができる]{
 
 //}
 
@@ -619,7 +619,7 @@ public override void OnPreviewGUI (Rect r, GUIStyle background)
 
 例として「対象のゲームオブジェクトをカメラで LookAt し続けるプレビュー」を作成してみましょう。
 
-//image[ss19][完成図、プレビュー画面で特定の位置からゲームオブジェクトを見ることが出来る]{
+//image[ss19][完成図、プレビュー画面で特定の位置からゲームオブジェクトを見ることができる]{
 
 //}
 
@@ -679,7 +679,7 @@ public override void OnPreviewGUI (Rect r, GUIStyle background)
 }
 //}
 
-これで、@<img>{ss19}のようなプレビュー画面が出来ました。
+これで、@<img>{ss19}のようなプレビュー画面ができました。
 
 //emlist{
 using UnityEngine;

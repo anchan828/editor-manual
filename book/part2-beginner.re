@@ -8,12 +8,12 @@
 == Editorフォルダー
 
 EditorフォルダーはエディターAPIを使用するための特別なフォルダーです。
-通常エディターAPIは、ランタイム@<fn>{runtime}で動作することは出来ません。
+通常エディターAPIは、ランタイム@<fn>{runtime}で動作することはできません。
 
 試しに以下のコードをAssetsフォルダー直下に作成しビルドをしてみましょう。
 
 
-//emlist[][cs]{
+//emlist{
 using UnityEngine;
 using UnityEditor;
 
@@ -34,7 +34,7 @@ public class NewBehaviourScript : MonoBehaviour
 
 //}
 
-さて、このままではエディターAPIを使用することが出来ません。ビルドごとにエディターAPIを使用しているスクリプトファイルを除去するということも考えられますがそれは手間です。
+さて、このままではエディターAPIを使用することができません。ビルドごとにエディターAPIを使用しているスクリプトファイルを除去するということも考えられますがそれは手間です。
 
 UnityEditorでは@<b>{Assembly-CSharp-Editor.dll}を生成し、エディターAPIとランタイムAPIの住み分けを行うことで解決しています。このAssembly-CSharp-Editor.dllはビルド時には含まれないのでビルドエラーも発生しません。
 
@@ -56,14 +56,14 @@ Editorフォルダーの場所は特に制限はありません。どこにで�
 
 //}
 
-Assembly-CSharp-Editor からは firstpass を参照することが出来ますが、逆に、@<b>{firstpass からは Assembly-CSharp-Editor.dll を参照できないので気をつけてください。}
+Assembly-CSharp-Editor からは firstpass を参照することができますが、逆に、@<b>{firstpass からは Assembly-CSharp-Editor.dll を参照できないので気をつけてください。}
 
 ===[column] Editorフォルダーに含めずに動作させる方法
 
 ランタイムで動作するスクリプトと一緒にエディターAPIを記述することはよくあります。
 その場合は@<b>{#define}を利用します。UnityEditor上のみで@<b>{UNITY_EDITOR}シンボルが定義されています。これにより、ビルド時のスクリプトコンパイルではUNITY_EDITORが定義されていないので@<b>{#if UNITY_EDITOR}で囲ったコードは除去されます。
 
-//emlist[][cs]{
+//emlist{
 using UnityEngine;
 
 #if UNITY_EDITOR
@@ -91,7 +91,7 @@ public class NewBehaviourScript : MonoBehaviour
 
 //}
 
-//emlist[][cs]{
+//emlist{
 var tex = EditorGUIUtility.Load ("logo.png") as Texture;
 //}
 

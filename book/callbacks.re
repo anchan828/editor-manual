@@ -1,13 +1,13 @@
-= 様々なイベントのコールバック
+= さまざまなイベントのコールバック
 
-Unityでは、「ビルド後」「コンパイル後」「プラットフォームの変更後」など様々なコールバックが存在します。
+Unityでは、「ビルド後」「コンパイル後」「プラットフォームの変更後」などさまざまなコールバックが存在します。
 
 
 == PostProcessBuildAttribute
 
-Build Settings ウインドウなどによって、アプリのビルド後に呼び出されるコールバックです。
+Build Settings ウィンドウなどによって、アプリのビルド後に呼び出されるコールバックです。
 
-ビルドで生成された、 Xcode プロジェクトや Android Project など、成果物を更に加工する時に使用します。
+ビルドで生成された、 Xcode プロジェクトや Android Project など、成果物をさらに加工する時に使用します。
 
 
 //emlist{
@@ -40,7 +40,7 @@ public class NewBehaviourScript
 
 == PostProcessSceneAttribute
 
-シーンの再生時やビルド時のシーン構築時などの「シーンをロードした後」に呼び出されるコールバックです。この属性を付けたメソッド内でゲームオブジェクトなどを作成することで、「マニュアルで Prefab をシーンに含める」以上の強制力を持たせることが出来ます。
+シーンの再生時やビルド時のシーン構築時などの「シーンをロードした後」に呼び出されるコールバックです。この属性を付けたメソッド内でゲームオブジェクトなどを作成することで、「マニュアルで Prefab をシーンに含める」以上の強制力を持たせることができます。
 
 //image[ss01][ゲームを再生すると自動的にゲームオブジェクトが生成される]{
 
@@ -155,11 +155,11 @@ public class NewBehaviourScript
 
 == InitializeOnLoadMethod
 
-InitializeOnLoad のメソッド版です。静的メソッドにこの属性を付加することで @<code>{InitializeOnLoad} と同じタイミングで呼び出すことが出来ます。
+InitializeOnLoad のメソッド版です。静的メソッドにこの属性を付加することで @<code>{InitializeOnLoad} と同じタイミングで呼び出すことができます。
 
 == DidReloadScripts
 
-機能的には @<code>{InitializeOnLoadMethod} とほぼ同じです。ただ1点だけ違うところは@<b>{実行順を選べる}点です。引数として @<code>{callbackOrder} があり、昇順で実行することが出来ます。
+機能的には @<code>{InitializeOnLoadMethod} とほぼ同じです。ただ1点だけ違うところは@<b>{実行順を選べる}点です。引数として @<code>{callbackOrder} があり、昇順で実行することができます。
 
 //emlist{
 using UnityEditor;
@@ -185,7 +185,7 @@ public class NewBehaviourScript
 
 == EditorUserBuildSettings.activeBuildTargetChanged
 
-Build Settings ウインドウや @<code>{EditorUserBuildSettings.SwitchActiveBuildTarget} によって、@<b>{プラットフォームが変更された時}に呼び出されるコールバックです。プラットフォームごとに異なる設定、例えば BundleIdentifier の変更や、StreamingAssets や Resources フォルダの中身の変更などで活用できます。
+Build Settings ウィンドウや @<code>{EditorUserBuildSettings.SwitchActiveBuildTarget} によって、@<b>{プラットフォームが変更された時}に呼び出されるコールバックです。プラットフォームごとに異なる設定、例えば BundleIdentifier の変更や、StreamingAssets や Resources フォルダーの中身の変更などで活用できます。
 
 //emlist{
 using UnityEditor;
@@ -227,7 +227,7 @@ public class NewBehaviourScript
 
 == EditorApplication.hierarchyWindowChanged と projectWindowChanged
 
-選択しているオブジェクトを変更、新規でゲームオブジェクトを作成、等、様々な要素でヒエラルキーやプロジェクトの構造が変化した時に呼び出されます。
+選択しているオブジェクトを変更、新規でゲームオブジェクトを作成するなど、さまざまな要素でヒエラルキーやプロジェクトの構造が変化した時に呼び出されます。
 
 シーン内の全ゲームオブジェクトを対象に処理をしている場合に使用すると便利です。
 
@@ -284,7 +284,7 @@ public class NewBehaviourScript
 
 == EditorApplication.hierarchyWindowItemOnGUI と projectWindowItemOnGUI
 
-ヒエラルキーやプロジェクトウインドウで、各ゲームオブジェクトやアセットの@<b>{ラベルが描画されている範囲}をコールバックとして取得することが出来ます。
+ヒエラルキーやプロジェクトウィンドウで、各ゲームオブジェクトやアセットの@<b>{ラベルが描画されている範囲}をコールバックとして取得することができます。
 
 これらは、小さな範囲の中でゲームオブジェクトの情報を表示してもいいですし、ボタンなどを配置して何らかのトリガーとするのもいいかもしれません。
 
@@ -352,7 +352,7 @@ static void CheckPlaymodeState ()
 
         if (EditorApplication.isPlayingOrWillChangePlaymode) {
             // 再生中または再生ボタンを押した直後
-            // コンパイルや様々な処理が走っている状態
+            // コンパイルやさまざまな処理が走っている状態
         }
     };
 }
@@ -456,7 +456,7 @@ public class NewBehaviourScript : EditorWindow
 
 Unity エディターの更新タイミングで呼び出されるコールバックです。エディターにも MonoBehaviour の Update のような一定の更新タイミングがあります。呼び出されるのは約 200回/秒 となり、描画系処理の前に実行されます。@<fn>{2}
 
-例えば WWW の通信でも使用することが出来ます。
+例えば WWW の通信でも使用することができます。
 
 //emlist{
 using UnityEditor;
@@ -553,13 +553,13 @@ public class Test
 //}
 
 使いドコロとしては、エディターのライフサイクルにどうしても逆らわなければいけない場合に使います。
-例えば、MonoBehaviour の OnValidate メソッド内ではオブジェクトの破棄は出来ません。 OnValidate はインスペクターの更新中に実行されるため、オブジェクトの破棄が禁止されています。
+例えば、MonoBehaviour の OnValidate メソッド内ではオブジェクトの破棄はできません。 OnValidate はインスペクターの更新中に実行されるため、オブジェクトの破棄が禁止されています。
 
 //image[ss07][エラーが出る]{
 
 //}
 
-どうしてもオブジェクトの破棄を行いたい時に @<b>{EditorApplication.delayCall} を使用して、一番最後に処理を@<b>{後回し}させることで様々な問題を回避します。
+どうしてもオブジェクトの破棄を行いたい時に @<b>{EditorApplication.delayCall} を使用して、一番最後に処理を@<b>{後回し}させることでさまざまな問題を回避します。
 
 //emlist{
 using UnityEngine;

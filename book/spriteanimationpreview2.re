@@ -9,7 +9,7 @@
 
 === デフォルトのAnimationClipのプレビュー
 
-AnimationClipのインスペクターは3Dモデルのためのアニメーションが基準となっており、プレビュー画面も3Dアニメーションしか再生できず、2Dアニメーションでは使用することが出来ません。
+AnimationClipのインスペクターは3Dモデルのためのアニメーションが基準となっており、プレビュー画面も3Dアニメーションしか再生できず、2Dアニメーションでは使用することができません。
 
 //image[ss01][3Dアニメーションのプレビューがデフォルト][]{
 
@@ -24,7 +24,7 @@ AnimationClipのインスペクターは3Dモデルのためのアニメーシ�
 
 まずは以下のようなクラスを作成します。複数選択した場合でも動作するように@<code>{CanEditMultipleObjects}属性をつけましょう。
 
-//emlist[][cs]{
+//emlist{
 using UnityEngine;
 using UnityEditor;
 
@@ -47,7 +47,7 @@ public class SpriteAnimationClipEditor : Editor
 
 今回はプレビュー画面のみを変更したいのでOnInspectorGUIの部分が変更されてしまうのは不本意です。なので、メソッドをオーバーライドしない限りはベースとなるEditorオブジェクト（カスタムエディターで使用するもの）を流用するための@<b>{OverrideEditor}クラスを作成してみましょう。
 
-//emlist[][cs]{
+//emlist{
 #@warn(ココもうちょっと説明した方がいい気がする)
 #@maprange(unityprojects/SpriteAnimationClip/Assets/Editor/OverrideEditor.cs,OverrideEditor)
 #@end
@@ -56,7 +56,7 @@ public class SpriteAnimationClipEditor : Editor
 
 先ほど作成したSpriteAnimationClipEditorの派生クラスをEditorからOverrideEditorに変更します。
 
-//emlist[][cs]{
+//emlist{
 #@maprange(unityprojects/SpriteAnimationClip/Assets/Editor/SpriteAnimationClipEditor.cs,first)
 #@end
 }
@@ -70,7 +70,7 @@ public class SpriteAnimationClipEditor : Editor
 
 @<chap>{spriteanimationpreview1}の@<hd>{spriteanimationpreview1|get_sprite}と同じ実装でスプライトを取得します。
 
-//emlist[][cs]{
+//emlist{
 #@maprange(unityprojects/SpriteAnimationClip/Assets/Editor/SpriteAnimationClipEditor.cs,getSprites)
 #@end
 //}
@@ -79,7 +79,7 @@ public class SpriteAnimationClipEditor : Editor
 
 まずは1つのスプライトをプレビュー画面に表示してみましょう。
 
-//emlist[][cs]{
+//emlist{
 #@maprange(unityprojects/SpriteAnimationClip/Assets/Editor/SpriteAnimationClipEditor.cs,draw_sample_preview)
 #@end
 //}
@@ -96,14 +96,14 @@ public class SpriteAnimationClipEditor : Editor
 
 //}
 
-OnPreviewSettingsではGUILayoutを使用することが出来ます。早速再生ボタンを表示してみましょう。再生ボタンは 再生 @<icon>{ss07} と一時停止 @<icon>{ss08} というように「オン/オフ」の状態が存在するので @<code>{GUILayout.Button}ではなく @<code>{GUILayout.Toggle}を使用します。
+OnPreviewSettingsではGUILayoutを使用することができます。早速再生ボタンを表示してみましょう。再生ボタンは 再生 @<icon>{ss07} と一時停止 @<icon>{ss08} というように「オン/オフ」の状態が存在するので @<code>{GUILayout.Button}ではなく @<code>{GUILayout.Toggle}を使用します。
 
-//emlist[][cs]{
+//emlist{
 #@maprange(unityprojects/SpriteAnimationClip/Assets/Editor/SpriteAnimationClipEditor.cs,sample_OnPreviewSettings)
 #@end
 //}
 
-//image[ss06][右端に再生ボタンが出来た][]{
+//image[ss06][右端に再生ボタンができた][]{
 
 //}
 
@@ -113,7 +113,7 @@ OnPreviewSettingsではGUILayoutを使用することが出来ます。早速再
 
 今回の用途にあった時間を管理するクラスを作成します。時間の更新処理は@<code>{EditorApplication.update}を使って行います。
 
-//emlist[][cs]{
+//emlist{
 #@maprange(unityprojects/SpriteAnimationClip/Assets/Editor/SpriteAnimationClipEditor.cs,TimeControl)
 #@end
 //}
@@ -122,7 +122,7 @@ OnPreviewSettingsではGUILayoutを使用することが出来ます。早速再
 
 TimeControlを使用して再生を行うためのトリガーは以下のように実装します。
 
-//emlist[][cs]{
+//emlist{
 #@maprange(unityprojects/SpriteAnimationClip/Assets/Editor/SpriteAnimationClipEditor.cs,DrawPlayButton)
 #@end
 //}
@@ -132,14 +132,14 @@ TimeControlを使用して再生を行うためのトリガーは以下のよう
 
 現在どのスプライトを再生すべきかはAnimationClipの @<kw>{frameRate,フレームレート} とAnimationClipSettingsにあるstopTimeを使って導きます。
 
-//emlist[][cs]{
+//emlist{
 #@maprange(unityprojects/SpriteAnimationClip/Assets/Editor/SpriteAnimationClipEditor.cs,currentSpriteNum)
 #@end
 //}
 
 Spriteの保持の仕方などは省いていますが、実際に使用すると以下のようになります。
 
-//emlist[][cs]{
+//emlist{
 #@maprange(unityprojects/SpriteAnimationClip/Assets/Editor/SpriteAnimationClipEditor.cs,OnInteractivePreviewGUI)
 #@end
 //}
@@ -148,7 +148,7 @@ Spriteの保持の仕方などは省いていますが、実際に使用する�
 
 再生ボタンと同じ所に時間をn倍速させるスライダーを作成します。
 
-//emlist[][cs]{
+//emlist{
 #@maprange(unityprojects/SpriteAnimationClip/Assets/Editor/SpriteAnimationClipEditor.cs,DrawSpeedSlider)
 #@end
 //}
@@ -160,7 +160,7 @@ Spriteの保持の仕方などは省いていますが、実際に使用する�
 
 === 完成
 
-プレビュー画面でスプライトアニメーションの再生を確認することができるようになりました。
+プレビュー画面でスプライトアニメーションの再生を確認できるようになりました。
 
 //image[ss10][再生ボタンを押すとスプライトアニメーションが再生される][]{
 
@@ -186,7 +186,7 @@ Spriteの保持の仕方などは省いていますが、実際に使用する�
 
 ==== Editor オブジェクトを動的に作成
 
-Editorオブジェクトは、任意のタイミングでユーザーが作成することが出来ます。
+Editorオブジェクトは、任意のタイミングでユーザーが作成することができます。
 
 Unity標準で使用されている Sprite オブジェクトのための @<code>{SpriteInspector} を作成します。
 
@@ -210,7 +210,7 @@ private List<Editor> GetSpriteEditors(params Sprite[] sprites)
 
 ==== プレビュー用テクスチャの取得
 
-プレビューのテクスチャは @<b>{RenderStaticPreview} で取得することが出来ます。
+プレビューのテクスチャは @<b>{RenderStaticPreview} で取得することができます。
 
 //emlist{
 var editor = spriteEditors[i];

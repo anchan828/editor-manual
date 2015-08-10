@@ -2,7 +2,7 @@
 
 
 //lead{
-知らないとエディター拡張では何も出来ないと言っても過言ではないほど重要なMenuItemについて解説します。この章ではMenuItemで出来ることを紹介していきます。「実際にどう使っていくか」というのはこの章でも軽く説明はしますがこの章以外でも@<b>{嫌というほど}扱っていきますので自然と理解していくでしょう。
+知らないとエディター拡張では何もできないと言っても過言ではないほど重要なMenuItemについて解説します。この章ではMenuItemでできることを紹介していきます。「実際にどう使っていくか」というのはこの章でも軽く説明はしますがこの章以外でも「@<b>{嫌というほど}」扱っていきますので自然と理解していくでしょう。
 //}
 
 == MenuItemとは
@@ -24,13 +24,13 @@ MenuItemは「Unityエディターの上側にあるメニューバーやコン�
 
  * ゲームオブジェクトの生成 ( @<i>{GameObject/Create Empty} )
  * シーンの作成 ( @<i>{File/New Scene} )
- * ウインドウの表示 ( @<i>{Window/Inspector} )
+ * ウィンドウの表示 ( @<i>{Window/Inspector} )
  
 などがメニューとして既に登録されています。
 
 ユーザーがMenuItemを使用して独自のメニューを追加する目的としては、任意のタイミングで@<b>{Editorスクリプトを実行する時}です。目的別に取り上げるなら
 
- * 独自ウインドウの表示
+ * 独自ウィンドウの表示
  * AssetBundleの作成
  * アセットの作成
  * 選択したアセット何らかのアクションを行う
@@ -42,7 +42,7 @@ MenuItemは「Unityエディターの上側にあるメニューバーやコン�
 まずは簡単にメニューを追加してみます。
 MenuItemはAttributeとして提供されており、@<b>{static}メソッドに付加することで機能します。
 
-//emlist[][cs]{
+//emlist{
 using UnityEditor;
 
 public class NewBehaviourScript
@@ -59,9 +59,9 @@ public class NewBehaviourScript
 //}
 
 
-もちろん既存のメニューに子メニューを追加することも出来ます。
+もちろん既存のメニューに子メニューを追加することもできます。
 
-//emlist[][cs]{
+//emlist{
 using UnityEditor;
 
 public class NewBehaviourScript
@@ -77,9 +77,9 @@ public class NewBehaviourScript
 
 //}
 
-子メニューから更に子メニューを作成することも可能です。
+子メニューからさらに子メニューを作成することも可能です。
 
-//emlist[][cs]{
+//emlist{
 using UnityEditor;
 
 public class NewBehaviourScript
@@ -114,7 +114,7 @@ MenuItemの第2引数に@<code>{isValidateFunction}が存在し、これは@<b>{
 
 また、Validateメソッドは単独では動作しません。必ず@<code>{isValidateFunction}がfalseのメソッドを用意する必要があります。@<code>{isValidateFunction}のデフォルトがfalseなので引数を省略しても問題ありません。
 
-//emlist[][cs]{
+//emlist{
 using UnityEditor;
 
 public class NewBehaviourScript
@@ -148,7 +148,7 @@ public class NewBehaviourScript
 
 //}
 
-//emlist[][cs]{
+//emlist{
 using UnityEditor;
 
 public class NewBehaviourScript
@@ -168,13 +168,13 @@ priorityの数値を小さく設定するほど上部に表示されるように
 
 //}
 
-またpriorityの値を@<b>{11飛ばし}にするとメニュー項目の間にセパレート（区切り線）を設けることが出来ます。
+またpriorityの値を@<b>{11飛ばし}にするとメニュー項目の間にセパレート（区切り線）を設けることができます。
 
 //image[ss09][Example2とExample3の間に区切り線ができている]{
 
 //}
 
-//emlist[][cs]{
+//emlist{
 using UnityEditor;
 
 public class NewBehaviourScript
@@ -201,13 +201,13 @@ public class NewBehaviourScript
 
 == MenuItemにチェックを入れる
 
-@<code>{Menu.GetChecked}と@<code>{Menu.SetChecked}を使用することで子メニューにチェックを入れることが出来ます。
+@<code>{Menu.GetChecked}と@<code>{Menu.SetChecked}を使用することで子メニューにチェックを入れることができます。
 
 //image[ss10][チェックをつけることで@<b>{有効中}であることがわかる]{
 
 //}
 
-//emlist[][cs]{
+//emlist{
 using UnityEditor;
 
 public class NewBehaviourScript
@@ -227,7 +227,7 @@ public class NewBehaviourScript
 MenuItemで追加したメニューはホットキーで実行することが可能です。
 第1引数のメニューパスの最後に「半角スペース + 修飾子キー + 任意の文字」の文字列をつけることにより実装できます。
 
-//emlist[][cs]{
+//emlist{
 using UnityEditor;
 using UnityEngine;
 
@@ -267,11 +267,11 @@ KP=					=
 
 === ファンクションキーのみのショートカットは作成できない
 
-ファンクションキーのみ（ "_F1" など）の作成することは出来ません。
+ファンクションキーのみ（ "_F1" など）の作成することはできません。
 
 == CONTEXT
 
-各コンポーネントの歯車で表示されるコンテキストメニューにメニュー項目を追加することが出来ます。
+各コンポーネントの歯車で表示されるコンテキストメニューにメニュー項目を追加することができます。
 
 //image[ss11][歯車をクリックすると表示されるコンテキストメニュー]{
 
@@ -280,7 +280,7 @@ KP=					=
 表示するには決まりがあり、メニューパスの冒頭に「@<b>{CONTEXT/}」を追加します。
 そして「@<b>{CONTEXT/コンポーネント名/メニュー名}」とすることでコンテキストメニューに表示されるようになります。
 
-//emlist[][cs]{
+//emlist{
 using UnityEditor;
 
 public class NewBehaviourScript
@@ -303,9 +303,9 @@ public class NewBehaviourScript
 
 === MenuCommand
 
-コンテキストメニューのみ@<code>{MenuCommand}を引数としてコンポーネント情報を取得することが出来ます。
+コンテキストメニューのみ@<code>{MenuCommand}を引数としてコンポーネント情報を取得することができます。
 
-//emlist[][cs]{
+//emlist{
 using UnityEditor;
 using UnityEngine;
 

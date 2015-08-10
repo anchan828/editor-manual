@@ -13,23 +13,23 @@
 
 AnimationClipに登録されているスプライトの確認方法はいくつかあります。
 
-==== Animationウインドウで確認する
+==== Animationウィンドウで確認する
 
 正規で行える唯一の確認方法です。
 
-//image[ss01][Window → Animationからウインドウを表示することができる]{
+//image[ss01][Window → Animationからウィンドウを表示できる]{
 
 //}
 
-ですが、この方法だとアニメーションを行うゲームオブジェクトを選択しないとAnimationウインドウでは確認することが出来ません。
+ですが、この方法だとアニメーションを行うゲームオブジェクトを選択しないとAnimationウィンドウでは確認することができません。
 
 ==== AnimationClipをインスペクターのDebugモードで確認する
 
-//image[ss02][Inspectorウインドウ右上の ≡ ボタンを押してDebugを選択する]{
+//image[ss02][Inspectorウィンドウ右上の ≡ ボタンを押してDebugを選択する]{
 
 //}
 
-すると、@<i>{Pptr Curve Mapping} というプロパティでスプライトを参照している配列を確認することが出来ます。このスプライトがAnimationClipで使用されているスプライトです。
+すると、@<i>{Pptr Curve Mapping} というプロパティーでスプライトを参照している配列を確認することができます。このスプライトがAnimationClipで使用されているスプライトです。
 
 === もっと手軽にスプライトを確認する方法を確立する
 
@@ -39,7 +39,7 @@ AnimationClipに登録されているスプライトの確認方法はいくつ�
 
 カスタムプレビューを作成するのは簡単です。作り方は、カスタムエディターを作成する方法と同じで、@<b>{ObjectPreview}を継承したクラスを作成し、@<b>{CustomPreview}の属性を付加します。
 
-//emlist[][cs]{
+//emlist{
 [CustomPreview(typeof(AnimationClip))]
 public class SpritePreview : ObjectPreview
 {
@@ -48,7 +48,7 @@ public class SpritePreview : ObjectPreview
 
 次に、インスペクターにプレビューを追加するには @<b>{HasPreviewGUI} と @<b>{GetPreviewTitle} を設定する必要があります。
 
-//emlist[][cs]{
+//emlist{
 [CustomPreview(typeof(AnimationClip))]
 public class SpritePreview : ObjectPreview
 {
@@ -72,7 +72,7 @@ public class SpritePreview : ObjectPreview
 
 === カスタムプレビューは複数持つことができる
 
-カスタムエディターとは違い、1つのオブジェクトに対して複数のプレビューを持つことが出来ます。
+カスタムエディターとは違い、1つのオブジェクトに対して複数のプレビューを持つことができます。
 
 イメージとしては、インスペクターに表示されているエディターオブジェクトには必ず「@<b>{デフォルトプレビュー}」というものが存在します。それらに付属するものとしてカスタムエディターは実装されます。その状態が「fireball」と「Sprites」が表示されている@<img>{ss03}です。
 
@@ -86,7 +86,7 @@ public class SpritePreview : ObjectPreview
 
 プレビューを行うには  @<code>{OnPreviewGUI} を使用します。試しに下記のコードを追加してプレビューとして使用可能な範囲を確かめてみます。
 
-//emlist[][cs]{
+//emlist{
 public override void OnPreviewGUI(Rect r, GUIStyle background)
 {
     GUI.Box(r, "表示領域");
@@ -97,7 +97,7 @@ public override void OnPreviewGUI(Rect r, GUIStyle background)
 
 //}
 
-さて、簡単にではありますが、カスタムプレビューの基礎となる機能を触ることが出来ました。次はAnimationClipに登録されているスプライトを表示していきます。
+さて、簡単にではありますが、カスタムプレビューの基礎となる機能を触ることができました。次はAnimationClipに登録されているスプライトを表示していきます。
 
 =={get_sprite} AnimationClipが参照しているスプライトを取得する
 
@@ -119,23 +119,23 @@ ObjectReferenceKeyframe は @<b>{オブジェクトの参照を保持するキ�
 
 === ObjectReferenceKeyframe の参照を取得するには
 
-例えば、@<b>{SpriteRenderer} の Sprite プロパティで「アニメーション設定されているスプライトの一覧を取得する」ためには、AnimationClip に設定されている幾つものアニメーションカーブのプロパティから、スプライトをアニメーションさせる特定のプロパティを得なければいけません。そのための機能として @<b>{EditorCurveBinding} があります。
+例えば、@<b>{SpriteRenderer} の Sprite プロパティーで「アニメーション設定されているスプライトの一覧を取得する」ためには、AnimationClip に設定されている幾つものアニメーションカーブのプロパティーから、スプライトをアニメーションさせる特定のプロパティーを得なければいけません。そのための機能として @<b>{EditorCurveBinding} があります。
 
 === EditorCurveBinding
 
 EditorCurveBinding は特定のアニメーションカーブを取得するためのキーとなるものです。例えば、本章のようにSpriteRendererのSpriteをアニメーションさせたい場合は、以下になります。
 
-//emlist[][cs]{
+//emlist{
 EditorCurveBinding.PPtrCurve("", typeof(SpriteRenderer), "m_Sprite");
 //}
 
-これは、ルートのゲームオブジェクトにアタッチされているSpriteRendererコンポーネントの m_Sprite(Sprite)プロパティ、のことを指しています。
+これは、ルートのゲームオブジェクトにアタッチされているSpriteRendererコンポーネントの m_Sprite(Sprite)プロパティー、のことを指しています。
 
 ===  AnimationUtility.GetObjectReferenceCurve
 
 AnimationClip と EditorCurveBinding を使用して Sprite の参照が格納されている ObjectReferenceKeyframe を取得するために AnimationUtility.GetObjectReferenceCurve を使用します。
 
-//emlist[][cs]{
+//emlist{
 private Sprite[] GetSprites(AnimationClip animationClip)
 {
   var sprites = new Sprite[0];
@@ -167,7 +167,7 @@ private Sprite[] GetSprites(AnimationClip animationClip)
 スプライトを表示していきます。
 限られた範囲の中で複数のスプライトを表示するには、1つのGUI要素に使用できる大きさ（Rect）を求めなければいけません。ですがそれは面倒なので @<b>{GUI.SelectionGrid} を使用しましょう。
 
-//emlist[][cs]{
+//emlist{
 public override void OnPreviewGUI(Rect r, GUIStyle background)
 {
     var sprites = GetSprites(target as AnimationClip);
@@ -180,7 +180,7 @@ public override void OnPreviewGUI(Rect r, GUIStyle background)
 }
 //}
 
-GUI.SelectionGrid はかなり優れもので、@<b>{決められたRect値の範囲内で均等になるようにGUIContentを配置することが出来ます。}
+GUI.SelectionGrid はかなり優れもので、@<b>{決められたRect値の範囲内で均等になるようにGUIContentを配置することができます。}
 
 //pagebreak
 
@@ -202,7 +202,7 @@ GUI.SelectionGrid はかなり優れもので、@<b>{決められたRect値の�
 
 CustomPreviewクラスには初期化を行うInitializeメソッドが存在します。オーバーライドが可能な作りになっているので少し手を加えます。
 
-//emlist[][cs]{
+//emlist{
 public override void Initialize(Object[] targets)
 {
     base.Initialize(targets);
@@ -229,7 +229,7 @@ public override void Initialize(Object[] targets)
 次にスプライトを描画しますが、GUIクラスにスプライトを描画する機能は存在しません。
 そこで、オブジェクトに対してプレビュー用のテクスチャを生成＆取得できる@<b>{AssetPreview.GetAssetPreview}を使用します。
 
-//emlist[][cs]{
+//emlist{
 public override void OnPreviewGUI(Rect r, GUIStyle background)
 {
     var previewTexture = AssetPreview.GetAssetPreview(target);
@@ -255,9 +255,9 @@ if (AssetPreview.IsLoadingAssetPreview (target.GetInstanceID ())) {
 }
 //}
 
-ですが、この問題を回避するにはもう1つ簡単な方法で回避することも出来ます。プレビュー前にプレビュー用のテクスチャをキャッシュさせればいいので適当なところで @<code>{AssetPreview.GetAssetPreview} を実行します。
+ですが、この問題を回避するにはもう1つ簡単な方法で回避することもできます。プレビュー前にプレビュー用のテクスチャをキャッシュさせればいいので適当なところで @<code>{AssetPreview.GetAssetPreview} を実行します。
 
-//emlist[][cs]{
+//emlist{
 public override void Initialize(Object[] targets)
 {
     base.Initialize(targets);

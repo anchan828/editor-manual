@@ -8,7 +8,7 @@ EditorWindowを生成するスクリプトを作成する時、みなさんは�
 
  * NewBehaviourScript.csを作成
 
-//emlist[][cs]{
+//emlist{
 using UnityEngine;
 using System.Collections;
 
@@ -28,7 +28,7 @@ public class NewBehaviourScript : MonoBehaviour {
 
  * StartとUpdateメソッド、System.Collectionsを消して...
 
-//emlist[][cs]{
+//emlist{
 using UnityEngine;
 
 public class NewBehaviourScript : MonoBehaviour {
@@ -38,7 +38,7 @@ public class NewBehaviourScript : MonoBehaviour {
 
  * @<code>{using UnityEditor;}を付けて...
 
-//emlist[][cs]{
+//emlist{
 using UnityEngine;
 using UnityEditor;
 
@@ -48,7 +48,7 @@ public class NewBehaviourScript : MonoBehaviour {
 
  * @<code>{EditorWindow}を継承するようにして...
 
-//emlist[][cs]{
+//emlist{
 using UnityEngine;
 using UnityEditor;
 
@@ -58,7 +58,7 @@ public class NewBehaviourScript : EditorWindow {
 
  * EditorWindowを開くためにMenuItemを追加して...
 
-//emlist[][cs]{
+//emlist{
 using UnityEngine;
 using UnityEditor;
 
@@ -74,7 +74,7 @@ public class NewBehaviourScript : EditorWindow
 
  * GetWindowとOnGUIを追加する
 
-//emlist[][cs]{
+//emlist{
 using UnityEngine;
 using UnityEditor;
 
@@ -127,7 +127,7 @@ Windows	C:\Program Files\Unity\Editor\Data\Resources\ScriptTemplates
 
 @<code>{81-C# Script-NewBehaviourScript.cs.txt}の中身を見てみましょう。
 
-//emlist[][cs]{
+//emlist{
 using UnityEngine;
 using System.Collections;
 
@@ -176,7 +176,7 @@ priority	メニューの表示順。値が高いほどメニューの下側に�
 作成するファイル:@<br>{}
 @<code>{121-C# EditorWindow Script-NewEditorWindow.cs.txt}
 
-//emlist[][cs]{
+//emlist{
 using UnityEngine;
 using UnityEditor;
 
@@ -232,7 +232,7 @@ Windows	C:\Program Files\Unity\Editor\Data\Resources\ScriptTemplates
 
 デフォルト名「NewEditorWindow」で作成するとスクリプトの中身は以下になります。
 
-//emlist[][cs]{
+//emlist{
 using UnityEngine;
 using UnityEditor;
 

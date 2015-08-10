@@ -5,7 +5,7 @@ Unity上では、ファイル（Unity上ではアセット）を少し特殊な�
 
 == SerializedObjectとは
 
-SerializedObject は、シリアライズされたデータを Unity が扱いやすいように加工したものです。これにより、様々なデータにアクセスが可能になったり、Undo 処理やゲームオブジェクトからプレハブが容易に作成できるようになっています。
+SerializedObject は、シリアライズされたデータを Unity が扱いやすいように加工したものです。これにより、さまざまなデータにアクセスが可能になったり、Undo 処理やゲームオブジェクトからプレハブが容易に作成できるようになっています。
 
 SerializedObject は、Unity上で扱う全てのオブジェクトに関係しています。普段扱っているアセット（マテリアルやテクスチャ、アニメーションクリップ等）も SerializedObject がなくては作成できません。
 
@@ -25,7 +25,7 @@ Unityエディター上、つまりエディター拡張では@<b>{できるだ�
   SerializedObject で値を編集する時、Undo処理は意識せずとも登録されます。UnityEngine.Object のインスタンスを直接編集した場合は、Undo 処理を独自で実装しなければいけません。Undo について詳しくは @<chapref>{undo} をご覧ください。
 
 : Selection のハンドリング
- プロジェクトウインドウでアセットを選択した時、即座にデシリアライズして UnityEngine.Object のインスタンスを取得し、インスペクターに値を表示します。このハンドリングで主に役立つのが、複数のオブジェクトを選択した時に、シリアライズされたプロパティの同時編集を可能にする仕組みです。
+ プロジェクトウィンドウでアセットを選択した時、即座にデシリアライズして UnityEngine.Object のインスタンスを取得し、インスペクターに値を表示します。このハンドリングで主に役立つのが、複数のオブジェクトを選択した時に、シリアライズされたプロパティーの同時編集を可能にする仕組みです。
 
 このように Unity でオブジェクトを扱う上で便利な機能を包括しています。もし、SerializedObject 経由でオブジェクトを扱わない場合、 Undo や Selection のハンドリングを自分で実装しなければいけません。この2つのハンドリングについては @<chapref>{customeditor} にて説明しています。また、この章の後半でも軽く説明します。
 
@@ -90,7 +90,7 @@ UnityEngine.Object の派生クラス（ユーザーがよく触るのは MonoBe
  * シリアライズ可能な Unity がサポートしているタイプであること （sbyte、short、int、long、byte、ushort、uint、ulong、float、double、bool、char、string、UnityEngine.Object、Serializable 属性を付加したクラスと構造体、等）
 
 
-更に細かく上げると以下の2つも挙げられます。
+さらに細かく上げると以下の2つも挙げられます。
 
  * 変数が、static、const、readonly ではないこと
  * abstract クラスではないこと
@@ -125,7 +125,7 @@ public string str {
 
 シリアライズされたデータは SerializedPeoperty として取得することが可能です。
 
-イテレーターとして取得することが可能で、本章の前半で記載したコードはイテレーターを使って操作可能な全プロパティを扱っています。
+イテレーターとして取得することが可能で、本章の前半で記載したコードはイテレーターを使って操作可能な全プロパティーを扱っています。
 
 //emlist{
 [InitializeOnLoadMethod]
@@ -154,8 +154,8 @@ public class Hoge : MonoBehaviour
 
 
 #@# lang: cs
-//emlist[][cs]{
-var hoge = /* 様々な方法で Hoge コンポーネントを取得 */;
+//emlist{
+var hoge = /* さまざまな方法で Hoge コンポーネントを取得 */;
 
 var serializedObject = new SerializedObject(hoge);
 serializedObject.FindProperty ("position").vector3Value;
@@ -180,8 +180,8 @@ public class Hoge : MonoBehaviour
 //}
 
 #@# lang: cs
-//emlist[][cs]{
-var hoge = /* 様々な方法で Hoge コンポーネントを取得 */;
+//emlist{
+var hoge = /* さまざまな方法で Hoge コンポーネントを取得 */;
 
 var serializedObject = new SerializedObject(hoge);
 serializedObject.FindProperty ("fuga.bar").stringValue;
@@ -198,8 +198,8 @@ public class Hoge : MonoBehaviour
 //}
 
 #@# lang: cs
-//emlist[][cs]{
-var hoge = /* 様々な方法で Hoge コンポーネントを取得 */;
+//emlist{
+var hoge = /* さまざまな方法で Hoge コンポーネントを取得 */;
 
 var serializedObject = new SerializedObject(hoge);
 serializedObject.FindProperty ("names").GetArrayElementAtIndex(1);
@@ -212,7 +212,7 @@ SerializedObject は内部でキャッシュされており、インスタンス
 
 
 
-例えば、エディターウインドウとインスペクター内部でそれぞれ1つのオブジェクトに対する SerializedObject を生成した場合、2つの SerializedObject を同期しなければ、どちらかが古いままの情報で更新してしまうことがあるかもしれません。
+例えば、エディターウィンドウとインスペクター内部でそれぞれ1つのオブジェクトに対する SerializedObject を生成した場合、2つの SerializedObject を同期しなければ、どちらかが古いままの情報で更新してしまうことがあるかもしれません。
 
 //image[ss04][同じ UnityEngine.Object を SerializedObject に変換したもの]{
 
@@ -265,7 +265,7 @@ public class NewBehaviourScript : Editor
 
 		EditorGUILayout.PropertyField (serializedObject.FindProperty ("name"));
 
-		// 他、様々な処理
+		// 他、さまざまな処理
 
 		serializedObject.ApplyModifiedProperties ();
 	}
@@ -273,37 +273,37 @@ public class NewBehaviourScript : Editor
 //}
 
 
-逆に言えば、Update を行わない限りは外部からの変更でプロパティの反映はされませんし、また ApplyModifiedProperties を行わない限りは外部に適用しません。
+逆に言えば、Update を行わない限りは外部からの変更でプロパティーの反映はされませんし、また ApplyModifiedProperties を行わない限りは外部に適用しません。
 
 == 複数の UnityEngine.Object を1つの SerializedObject で扱う
 
-SerializedObject のコンストラクタで配列を渡すだけで複数の UnityEngine.Object を扱うことが出来ます。@<b>{ただし、同じ型である必要があります。}
+SerializedObject のコンストラクタで配列を渡すだけで複数の UnityEngine.Object を扱うことができます。@<b>{ただし、同じ型である必要があります。}
 
 //emlist{
 // 複数のリジッドボディ
-Rigidbody[] rigidbodies = /* 様々な方法で Rigidbody コンポーネントを取得 */;
+Rigidbody[] rigidbodies = /* さまざまな方法で Rigidbody コンポーネントを取得 */;
 
 var serializedObject = new SerializedObject(rigidbodies);
 
 serializedObject.FindProperty ("m_UseGravity").boolValue = true;
 //}
 
-== プロパティ名を知るには
+== プロパティー名を知るには
 
-SerializedProperty にアクセスするにはプロパティのパスを知らなければいけません。自分で作成したコンポーネントにアクセスする場合は@<b>{プロパティのパス}がすぐ分かるのですが、Unityが実装している UnityEngine.Object はプロパティ名に @<b>{m_} が付いている場合があります。@<b>{m_} はインスペクター上では省かれてプロパティ名として表示されるため、なかなか把握することが難しいです。
+SerializedProperty にアクセスするにはプロパティーのパスを知らなければいけません。自分で作成したコンポーネントにアクセスする場合は@<b>{プロパティーのパス}がすぐ分かるのですが、Unityが実装している UnityEngine.Object はプロパティー名に @<b>{m_} が付いている場合があります。@<b>{m_} はインスペクター上では省かれてプロパティー名として表示されるため、なかなか把握することが難しいです。
 
-プロパティを知る方法は大きく分けて 2 パターンあります。
+プロパティーを知る方法は大きく分けて 2 パターンあります。
 
 === SerializedObject.GetIterator
 
-イテレーターを使ってプロパティ名を総なめする方法です。これは本章の最初で紹介しています。
+イテレーターを使ってプロパティー名を総なめする方法です。これは本章の最初で紹介しています。
 
 
 === アセットをテキストエディタで見る
 
 対象がコンポーネントであれば、@<b>{Asset Serialization を Force Text} に設定した上でプレハブにし、テキストエディターでプレハブを開きます。
 
-YAML 形式のデータを見ることができ、そこにプロパティ名が記載されています。
+YAML 形式のデータを見ることができ、そこにプロパティー名が記載されています。
 
 //emlist{
 %YAML 1.1
@@ -337,9 +337,9 @@ Rigidbody:
   m_CollisionDetection: 0
 //}
 
-また、マテリアルなどの Unity独自のアセットもテキストエディタで見ることが出来ます。
+また、マテリアルなどの Unity独自のアセットもテキストエディタで見ることができます。
 
-豆知識として、UnityEditorInternal名前空間にある@<b>{InternalEditorUtility.SaveToSerializedFileAndForget}で UnityEngine.Object をアセットとして保存することが出来ます。
+豆知識として、UnityEditorInternal名前空間にある@<b>{InternalEditorUtility.SaveToSerializedFileAndForget}で UnityEngine.Object をアセットとして保存することができます。
 
 //emlist{
 using UnityEngine;

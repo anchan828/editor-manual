@@ -46,9 +46,9 @@ Undoの操作を実感してみたところで、次はUndoを実装してみま
 
 === オブジェクトの作成に対するUndo
 
-下記コードはCubeを生成するためのコードです。@<code>{Example/Create Cube}を実行することによってCubeを生成することが出来ます。
+下記コードはCubeを生成するためのコードです。@<code>{Example/Create Cube}を実行することによってCubeを生成することができます。
 
-//emlist[][cs]{
+//emlist{
 using UnityEngine;
 using UnityEditor;
 
@@ -62,7 +62,7 @@ public class Example
 }
 //}
 
-Cubeを生成してもUndoを行うことは出来ません。これはUndoの実装が行われていないためです。
+Cubeを生成してもUndoを行うことはできません。これはUndoの実装が行われていないためです。
 
 //image[ss03][Undoという文字が灰色になって選択できないことがわかる]{
 
@@ -86,7 +86,7 @@ Undo 操作の1例として @<code>{Undo.RegisterCreatedObjectUndo} 関数を使
 またUndo履歴をリセットするために@<code>{File/New Scene}で新規シーンにしましょう。
 //}
 
-//emlist[][cs]{
+//emlist{
 using UnityEngine;
 using UnityEditor;
 
@@ -105,15 +105,15 @@ public class Example
 
 //indepimage[ss04]
 
-Undoを実行した後はUndoしたものを元に戻すRedo（取り消す）も実行することが出来ます。
+Undoを実行した後はUndoしたものを元に戻すRedo（取り消す）も実行することができます。
 
 //indepimage[ss06]
 
-=== プロパティの変更に対するUndo
+=== プロパティーの変さらに対するUndo
 
-下記コードはオブジェクトの回転をランダムに設定するコードです。@<code>{Example/Random Rotate}を実行することによって選択しているオブジェクトをランダムに回転させることが出来ます。
+下記コードはオブジェクトの回転をランダムに設定するコードです。@<code>{Example/Random Rotate}を実行することによって選択しているオブジェクトをランダムに回転させることができます。
 
-//emlist[][cs]{
+//emlist{
 using UnityEngine;
 using UnityEditor;
 
@@ -137,7 +137,7 @@ public class Example
 
 これに@<code>{Undo.RecordObject}関数を使用することによってUndoを実装します。
 
-//emlist[][cs]{
+//emlist{
 using UnityEngine;
 using UnityEditor;
 
@@ -156,23 +156,23 @@ public class Example
 }
 //}
 
-ランダムな回転が設定される前に@<code>{Undo.RecordObject}関数を実行します。これにより「変更前」のTransformのプロパティをUndoスタックに保存することが出来るようになります。
+ランダムな回転が設定される前に@<code>{Undo.RecordObject}関数を実行します。これにより「変更前」のTransformのプロパティーをUndoスタックに保存できるようになります。
 
 //image[ss11][Undoが登録されているとメニューに表示され正しく回転を]{
 
 //}
 
-== どのプロパティが変更されたかを知るPropertyDiffUndoRecorder
+== どのプロパティーが変更されたかを知るPropertyDiffUndoRecorder
 
 Undoのスタックに保存されるのは「値の変更前と変更後の差分」です。
 
-なので「どのプロパティが変更されたか」を知る必要があります。その役割を担うのが PropertyDiffUndoRecorder です。
+なので「どのプロパティーが変更されたか」を知る必要があります。その役割を担うのが PropertyDiffUndoRecorder です。
 
-//image[ss07][PropertyDiffUndoRecorderはプロファイラで確認することが出来る]{
+//image[ss07][PropertyDiffUndoRecorderはプロファイラで確認できる]{
 
 //}
 
-PropertyDiffUndoRecorderは、Unityエディターのライフサイクルの最後に Undo の Flush を呼びだします。その時に RecordObject で登録されたオブジェクトの各プロパティと、Flush が呼び出された時の各プロパティを使用して差分を求めます。
+PropertyDiffUndoRecorderは、Unityエディターのライフサイクルの最後に Undo の Flush を呼びだします。その時に RecordObject で登録されたオブジェクトの各プロパティーと、Flush が呼び出された時の各プロパティーを使用して差分を求めます。
 
 以下の順に実行され、図にしたものが@<img>{PropertyDiffUndoRecorder}です。
 
@@ -189,9 +189,9 @@ PropertyDiffUndoRecorderは、Unityエディターのライフサイクルの最
 
 //}
 
-@<img>{PropertyDiffUndoRecorder}で示したサイクルを確認してみましょう。以下のコードで確認することが出来ます。
+@<img>{PropertyDiffUndoRecorder}で示したサイクルを確認してみましょう。以下のコードで確認することができます。
 
-//emlist[][cs]{
+//emlist{
 using UnityEngine;
 using UnityEditor;
 
@@ -264,7 +264,7 @@ Undoの対象となるものは@<b>{UnityEngine.Object}を継承した、@<stron
 === よくUndoの実装で対象となるもの
 
 よくUndoの実装で対象となるものは以下の3つです。
-これらのオブジェクトを生成したり、オブジェクトのプロパティの値を変更する場合はUndoの実装を行うべきと考えましょう。
+これらのオブジェクトを生成したり、オブジェクトのプロパティーの値を変更する場合はUndoの実装を行うべきと考えましょう。
 
  * GameObject
  * Component (MonoBehaviourも含む)
@@ -272,9 +272,9 @@ Undoの対象となるものは@<b>{UnityEngine.Object}を継承した、@<stron
 
 === System.Serializable属性を付けたクラスをUndo対象にするには
 
-System.Serializable属性を付けたクラスをUndo対象にする場合は、ComponentやScriptableObjectのプロパティとしてもつことでUndo対象とさせることができます。
+System.Serializable属性を付けたクラスをUndo対象にする場合は、ComponentやScriptableObjectのプロパティーとしてもつことでUndo対象とさせることができます。
 
-//emlist[][cs]{
+//emlist{
 [System.Serializable]
 public class PlayerInfo
 {
@@ -285,7 +285,7 @@ public class PlayerInfo
 
 例としてPlayerコンポーネントに変数として持たせます。
 
-//emlist[][cs]{
+//emlist{
 using UnityEngine;
 
 public class Player : MonoBehaviour
@@ -297,7 +297,7 @@ public class Player : MonoBehaviour
 
 そしてPlayerコンポーネントをUndo対象として登録します。
 
-//emlist[][cs]{
+//emlist{
 using UnityEngine;
 using UnityEditor;
 
@@ -324,10 +324,10 @@ public class Example
 
 Undoの種類は大きく分けて2種類になります。
 
- * オブジェクトのプロパティ（値）変更に対するUndo
+ * オブジェクトのプロパティー（値）変さらに対するUndo
  * オブジェクトへのアクションに対するUndo
 
-=== プロパティ（値）に対するUndo
+=== プロパティー（値）に対するUndo
 
 ==== Undo.RecordObject(s)
 
@@ -336,7 +336,7 @@ Undoの実装は大抵Undo.RecordObjectで済みます。まずはこのAPIを�
 
 
 #@# lang: cs
-//emlist[][cs]{
+//emlist{
 using UnityEngine;
 using UnityEditor;
 
@@ -348,7 +348,7 @@ public class NewBehaviourScript
         // 選択状態のTransformを取得する
         Transform transform = Selection.activeTransform;
 
-        // これから変更するプロパティのオブジェクトの指定とUndo名
+        // これから変更するプロパティーのオブジェクトの指定とUndo名
         Undo.RecordObject (transform, "positionをVector3(0,0,0)に変更");
         transform.position = new Vector3 (0, 0, 0);
     }
@@ -364,7 +364,7 @@ public class NewBehaviourScript
 
 
 #@# lang: cs
-//emlist[][cs]{
+//emlist{
 using UnityEngine;
 using UnityEditor;
 
@@ -391,7 +391,7 @@ public class NewBehaviourScript
 
 
 #@# lang: cs
-//emlist[][cs]{
+//emlist{
 using UnityEngine;
 using UnityEditor;
 
@@ -421,7 +421,7 @@ RegisterCreatedObjectUndoとは逆に、破棄したものをUndoで元に戻す
 
 
 #@# lang: cs
-//emlist[][cs]{
+//emlist{
 using UnityEngine;
 using UnityEditor;
 
@@ -444,7 +444,7 @@ public class NewBehaviourScript
 
 
 #@# lang: cs
-//emlist[][cs]{
+//emlist{
 using UnityEngine;
 using UnityEditor;
 
@@ -483,7 +483,7 @@ Undo登録して値を変更している中で「Esc」ボタンなどで、そ�
 
 
 #@# lang: cs
-//emlist[][cs]{
+//emlist{
 using UnityEngine;
 using UnityEditor;
 
@@ -527,14 +527,14 @@ public class NewBehaviourScript
 
 
 #@# lang: cs
-//emlist[][cs]{
+//emlist{
 using UnityEngine;
 using UnityEditor;
 
 public class ExampleWindow : EditorWindow
 {
 
-    // ウインドウ作成
+    // ウィンドウ作成
     [MenuItem("Window/ExampleWindow")]
     static void Open ()
     {
@@ -602,7 +602,7 @@ Undoにはグループという概念が存在します。
 
 
 #@# lang: cs
-//emlist[][cs]{
+//emlist{
 GameObject enemy = new GameObject ("Enemy");
 Undo.RegisterCreatedObjectUndo (enemy, "Enemyを作成");
 
@@ -645,7 +645,7 @@ Undo 時には 1グループまとめて処理が走ります。
 
 
 #@# lang: cs
-//emlist[][cs]{
+//emlist{
 GameObject enemy = new GameObject ("Enemy");
 Undo.RegisterCreatedObjectUndo (enemy, "Enemyを作成");
 
@@ -662,7 +662,7 @@ Undo.RegisterCreatedObjectUndo (effect, "Effectを作成");
 
 最初は個別で独立した Undo 処理でしたが、最後には Undo を1つにまとめてしまう事が可能です。
 
-カラーピッカーでこの例を見ることが出来ます。
+カラーピッカーでこの例を見ることができます。
 
 カラーピッカーの表示中は、各RGBA成分に対しての Undo が適用されます。しかし、カラーピッカーで色を決定した後は、カラーピッカーを開く前の色へと Undo しなくてはいけません。これはからピッカーを閉じた時に、各RGBA成分で分かれていた Undo を 1 つにまとめることで実現が可能になります。
 

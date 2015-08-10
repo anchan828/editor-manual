@@ -2,7 +2,7 @@
 
 
 //lead{
-Unityエディターは、既に内部でエディター拡張の機能を使い、様々な拡張を行っています。ユーザーは属性（Attribute）を付けるだけで、それらの拡張にアクセスすることができ、自由にカスタマイズを行えます。この章では既に用意されているものを使ってみて「エディター拡張ではこういうことが出来る」ということを知りましょう。
+Unityエディターは、既に内部でエディター拡張の機能を使い、さまざまな拡張を行っています。ユーザーは属性（Attribute）を付けるだけで、それらの拡張にアクセスすることができ、自由にカスタマイズを行えます。この章では既に用意されているものを使ってみて「エディター拡張ではこういうことができる」ということを知りましょう。
 //}
 
 == インスペクターの見た目を変える
@@ -17,7 +17,7 @@ Unityエディターは、既に内部でエディター拡張の機能を使い
 
 //}
 
-//emlist[][cs]{
+//emlist{
 using UnityEngine;
 using System.Collections;
 
@@ -41,13 +41,13 @@ public class NewBehaviourScript : MonoBehaviour
 
 === Multiline / TextArea
 
-デフォルトでは一行のTextFieldですが、複数行のTextAreaに変更することが出来ます。MultilineとTextAreaはほぼ機能は同じですが、Multilineは「幅に合わせて自動改行されない」「スクロールバーが表示されない」といった制限があります。特に理由のない限りTextAreaを使うことをオススメします。
+デフォルトでは一行のTextFieldですが、複数行のTextAreaに変更することができます。MultilineとTextAreaはほぼ機能は同じですが、Multilineは「幅に合わせて自動改行されない」「スクロールバーが表示されない」といった制限があります。特に理由のない限りTextAreaを使うことをオススメします。
 
 //image[ss02][上がMultiline。下がTextArea。TextAreaはスクロールバーが表示される]{
 
 //}
 
-//emlist[][cs]{
+//emlist{
 using UnityEngine;
 using System.Collections;
 
@@ -68,7 +68,7 @@ public class NewBehaviourScript : MonoBehaviour
 
 インスペクターに表示されている変数にコンテキストメニューを追加します。少し手順が必要な要素を自動化したり、他の変数も一緒に値を変更しなければいけない時に使用してみるといいかもしれません。また、コンポーネント単位で値をリセットできる「Reset」機能はありますが、各変数に対してのリセット機能がないので ContextMenuItem で実装してみるのもいいかもしれません。
 
-//image[ss15][プロパティ名を右クリックするとコンテキストメニューが表示できる]{
+//image[ss15][プロパティー名を右クリックするとコンテキストメニューが表示できる]{
 
 //}
 
@@ -95,13 +95,13 @@ public class NewBehaviourScript : MonoBehaviour
 
 === ColorUsage
 
-色の変更にはカラーピッカーを使用します。ColorUsageは、カラーピッカーでアルファの使用を有効/無効に出来たり、HDR用のからピッカーに変更することが出来ます。
+色の変さらにはカラーピッカーを使用します。ColorUsageは、カラーピッカーでアルファの使用を有効/無効にできたり、HDR用のからピッカーに変更することができます。
 
 //image[ss14][左からデフォルト、アルファなし、HDRカラーピッカー]{
 
 //}
 
-//emlist[][cs]{
+//emlist{
 using UnityEngine;
 
 public class NewBehaviourScript : MonoBehaviour
@@ -118,18 +118,18 @@ public class NewBehaviourScript : MonoBehaviour
 
 == インスペクターの見た目を整える
 
-プロパティに直接作用しませんが、見た目を見やすくしたり装飾を行うことが可能です。
+プロパティーに直接作用しませんが、見た目を見やすくしたり装飾を行うことが可能です。
 
 === Header
 
-プロパティをある程度にまとめてヘッダーを付けることにより、わかりやすくすることが可能です。
+プロパティーをある程度にまとめてヘッダーを付けることにより、わかりやすくすることが可能です。
 
 
 //image[ss03][ヘッダーを付けることによって区切りがつき、見やすくなる]{
 
 //}
 
-//emlist[][cs]{
+//emlist{
 using UnityEngine;
 using System;
 
@@ -154,13 +154,13 @@ public class NewBehaviourScript : MonoBehaviour
 
 === Space
 
-縦に余白を設けることが出来ます。プロパティとの間に余白を設けることで、見やすくしたいときに便利です。
+縦に余白を設けることができます。プロパティーとの間に余白を設けることで、見やすくしたいときに便利です。
 
 //image[ss04][]{
 
 //}
 
-//emlist[][cs]{
+//emlist{
 using UnityEngine;
 
 public class NewBehaviourScript : MonoBehaviour
@@ -175,13 +175,13 @@ public class NewBehaviourScript : MonoBehaviour
 
 === Tooltip
 
-プロパティに対する説明をインスペクター上で確認したいときに使用します。
+プロパティーに対する説明をインスペクター上で確認したいときに使用します。
 
 //image[ss05][「Tooltip」にマウスカーソルを乗せるとツールチップが表示される]{
 
 //}
 
-//emlist[][cs]{
+//emlist{
 using UnityEngine;
 
 public class NewBehaviourScript : MonoBehaviour
@@ -199,7 +199,7 @@ public class NewBehaviourScript : MonoBehaviour
 
 //}
 
-//emlist[][cs]{
+//emlist{
 using UnityEngine;
 
 public class NewBehaviourScript : MonoBehaviour
@@ -227,7 +227,7 @@ RequireComponentが付いたスクリプトをアタッチすると、自動的�
 
 //}
 
-//emlist[][cs]{
+//emlist{
 using UnityEngine;
 
 [RequireComponent(typeof(Animator))]
@@ -254,7 +254,7 @@ public class NewBehaviourScript : MonoBehaviour
 
 継承クラスでもDisallowMultipleComponentは効果を発揮します。
 
-//emlist[][cs]{
+//emlist{
 using UnityEngine;
 
 public class NewBehaviourScript : Base
@@ -262,7 +262,7 @@ public class NewBehaviourScript : Base
 }
 //}
 
-//emlist[][cs]{
+//emlist{
 using UnityEngine;
 
 [DisallowMultipleComponent]
@@ -278,7 +278,7 @@ public class Base : MonoBehaviour
 インスペクターに表示されるような、シリアライズされているデータは変数名をパスとして保存されています。ここで変数名の変更を行うとシリアライズされていたデータが引き継げずに初期化されてしまいます。これはパスから値を参照できなくなったためです。変数名が変更されたという検知をするのは不可能でこれはどうしようもない問題です。この問題を回避するためにRenamedSerializedDataを使用します。
 
 
-//emlist[][cs]{
+//emlist{
 using UnityEngine;
 
 public class NewBehaviourScript : MonoBehaviour
@@ -294,7 +294,7 @@ public class NewBehaviourScript : MonoBehaviour
 
 hogeからfugaへと変数名を変更します。
 
-//emlist[][cs]{
+//emlist{
 sing UnityEngine;
 
 public class NewBehaviourScript : MonoBehaviour
@@ -310,7 +310,7 @@ public class NewBehaviourScript : MonoBehaviour
 
 そこでRenamedSerializedDataを使用することで引き継がれるようになります。
 
-//emlist[][cs]{
+//emlist{
 using UnityEngine;
 
 public class NewBehaviourScript : MonoBehaviour
@@ -338,9 +338,9 @@ public class NewBehaviourScript : MonoBehaviour
 
 //}
 
-この時に@<b>{AddComponentMenu}を使用すると別メニューとして作成することが出来ます。AddComponentMenuを使用したスクリプトは他の場所にメニューが作成されるので@<b>{Component/Scripts}メニューの中から削除されます。
+この時に@<b>{AddComponentMenu}を使用すると別メニューとして作成することができます。AddComponentMenuを使用したスクリプトは他の場所にメニューが作成されるので@<b>{Component/Scripts}メニューの中から削除されます。
 
-//emlist[][cs]{
+//emlist{
 using UnityEngine;
 
 [AddComponentMenu("MyUI/Tween Color")]
@@ -349,7 +349,7 @@ public class TweenColor : MonoBehaviour
 }
 //}
 
-//image[ss13][My UI下に移動し、カテゴライズ出来た]{
+//image[ss13][My UI下に移動し、カテゴライズできた]{
 
 //}
 
@@ -360,7 +360,7 @@ public class TweenColor : MonoBehaviour
 ゲーム再生中でなくても MonoBehaviour を継承したコンポーネントの 主要な関数が呼び出されるようになります。呼び出されるタイミングはゲームオブジェクトが更新された時です。シーアセットをダブルクリックして、シーンをロードした時には Awake と Start 関数が、インスペクターなどでコンポーネントの変数などを変更したら Update 関数が呼び出されます。また、OnGUI で実装した GUI がエディターのGUI描画サイクルに則って常に表示されるようになります。
 
 
-//emlist[][cs]{
+//emlist{
 using UnityEngine;
 
 [ExecuteInEditMode]
@@ -446,7 +446,7 @@ public class NewBehaviourScript : MonoBehaviour
 //}
 
 そして@<b>{もう一度}ゲームオブジェクトをクリックするとルートのゲームオブジェクトが選択されます。
-このように、SelectionBase 属性の付いたゲームオブジェクトで@<b>{最下層の子要素から順に}選択することが出来ます。順に選択していき、SelectionBase 属性の付いたゲームオブジェクトが存在しない場合はルートを選択するという仕様です。
+このように、SelectionBase 属性の付いたゲームオブジェクトで@<b>{最下層の子要素から順に}選択することができます。順に選択していき、SelectionBase 属性の付いたゲームオブジェクトが存在しない場合はルートを選択するという仕様です。
 
 //image[ss19][クリックするごとに下から順に選択されていく]{
 

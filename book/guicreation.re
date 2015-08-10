@@ -10,7 +10,7 @@
 
 //}
 
-//emlist[][cs]{
+//emlist{
 void OnGUI ()
 {
     GUILayoutOption[] options = new [] {
@@ -44,7 +44,7 @@ GUIStyleはGUIのスタイルを設定するもので皆さんは大抵最初の
 これはGUISkinを作成し、既存スタイルを変更したりカスタムスタイルとして作成することができます。
 そして、スクリプト側で@<code>{GUI.skin}に自分で作成したGUISkinを代入すると一度にスタイルが適用されます。
 
-//image[ss02][自分で画像を用意すればボタンやトグルの画像を変更することができる][scale=0.5]{
+//image[ss02][自分で画像を用意すればボタンやトグルの画像を変更できる][scale=0.5]{
 
 //}
 
@@ -52,7 +52,7 @@ GUIStyleはGUIのスタイルを設定するもので皆さんは大抵最初の
 
 これは、GUIを描画するときに既存のスタイルを使用せず引数として渡されたGUIStyleを使用します。
 
-//emlist[][cs]{
+//emlist{
 // GUIStyleはスタイル名で指定することも可能
 GUILayout.Label ("ラベル", "box");
 //}
@@ -79,7 +79,7 @@ GUIに関するイベントではボタンをマウスでクリックすると�
 
 Eventを使用するとき、例えば「ボタンを押した」というイベントをコードにすると以下のようになります。
 
-//emlist[][cs]{
+//emlist{
 if (Event.current.type == EventType.MouseDown) {
 
     ...ボタンを押した時の処理...
@@ -101,7 +101,7 @@ Event.Useを呼び出した後はEvent.typeは@<b>{used}となります。こう
 
 === コントロールIDの生成/取得
 
-//emlist[][cs]{
+//emlist{
 int id = GUIUtility.GetControlID(FocusType.Passive, rect);
 //}
 
@@ -109,7 +109,7 @@ int id = GUIUtility.GetControlID(FocusType.Passive, rect);
 
 === コントロールIDと描画部分の紐付け
 
-//emlist[][cs]{
+//emlist{
 EditorStyles.objectFieldThumb.Draw(rect, content, id);
 //}
 
@@ -125,13 +125,13 @@ GUIStyle.DrawにコントロールIDを渡すことによって、スタイル�
 //indepimage[ss03][][scale=0.5]
 
 
-オブジェクトピッカーは特定のオブジェクトやアセットを選択するためのウインドウです。ObjectFieldのようなオブジェクトの参照を持つGUIの場合はこのオブジェクトピッカーがあるとユーザーが操作を行うときに便利になります。
+オブジェクトピッカーは特定のオブジェクトやアセットを選択するためのウィンドウです。ObjectFieldのようなオブジェクトの参照を持つGUIの場合はこのオブジェクトピッカーがあるとユーザーが操作を行うときに便利になります。
 
 オブジェクトピッカーの表示は@<code>{EditorGUIUtility.ShowObjectPicker}で行うことが可能です。
 
 そして、オブジェクトピッカーで選択中のオブジェクト・選択されたオブジェクトを取得するにはEventのコマンド名(Event.commandname)が@<b>{ObjectSelectorUpdated}と@<code>{EditorGUIUtility.GetObjectPickerObject}を組み合わせて使用することになります。
 
-//emlist[][cs]{
+//emlist{
 // コマンド名がObjectSelectorUpdatedでオブジェクトピッカーが
 // 現在コントロール中のGUIによるものであった場合
 if (evt.commandName == "ObjectSelectorUpdated" 
@@ -159,7 +159,7 @@ ObjectFieldのようにドラッグ＆ドロップしてオブジェクトの参
 DragAndDropではオブジェクトをドラッグする処理と、ドロップする処理の2つにわかれます。ObjectFieldのようなGUIを作成するときは、プロジェクトプラウザからドラッグする処理は既にUnity側で実装されているのでドロップする処理のみを実装すれば良いです。
 
 
-//emlist[][cs]{
+//emlist{
 // マウス位置がGUIの範囲内であれば
 if (rect.Contains(evt.mousePosition))
 {
@@ -204,7 +204,7 @@ if (rect.Contains(evt.mousePosition))
 
 @<code>{HandleUtility.Repaint}は現在のビューを再描画するものです。
 
-現在の「ビュー」を少し言い換えると、「EditorWindowやScriptableWizardなどGUIを描画するウインドウ」となり、それらの再描画になります。
+現在の「ビュー」を少し言い換えると、「EditorWindowやScriptableWizardなどGUIを描画するウィンドウ」となり、それらの再描画になります。
 
 もっと詳しく言い換えると「GUIViewを継承しているビュー」を再描画します。
 
@@ -236,7 +236,7 @@ GUILayoutの仕組みは@<code>{GUILayoutUtility.GetRect}でRect情報を取得�
 
 ですが一番手っ取り早い方法があります。
 
-//emlist[][cs]{
+//emlist{
 public static Sprite SpriteField(Sprite sprite, params GUILayoutOption[] options)
 {
     EditorGUILayout.LabelField("", "", options);

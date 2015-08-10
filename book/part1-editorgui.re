@@ -1,12 +1,12 @@
 = EditorGUI (EdirotGUILayout)
 
 
-//image[frontispiece][頑張ればこのような GUI を作ることも出来る]{
+//image[frontispiece][頑張ればこのような GUI を作ることもできる]{
 
 //}
 
 //lead{
-この機能を知らなくてはエディター拡張では何も出来ないと言っても過言ではありません。この章では全てを紹介することは出来ませんが、知っておくと EditorGUI や EditorGUILayout で出来ることの幅が広がるものを中心に説明していきます。サンプルコードは簡略化の関係でEditorGUILayoutを使用することが多くなります。
+この機能を知らなくてはエディター拡張では何もできないと言っても過言ではありません。この章では全てを紹介することはできませんが、知っておくと EditorGUI や EditorGUILayout でできることの幅が広がるものを中心に説明していきます。サンプルコードは簡略化の関係でEditorGUILayoutを使用することが多くなります。
 //}
 
 //pagebreak
@@ -22,7 +22,7 @@
 
 //}
 
-//emlist[][cs]{
+//emlist{
 using UnityEngine;
 using UnityEditor;
 
@@ -48,7 +48,7 @@ public class NewBehaviourScript : EditorWindow
 
 BeginChangeCheckとEndChangeCheckでの間でGUIが使用されている時、GUIに何らかの変更が生じた場合にEndChangeCheckがtrueを返します。
 
-//emlist[][cs]{
+//emlist{
 using UnityEngine;
 using UnityEditor;
 
@@ -87,7 +87,7 @@ public class NewBehaviourScript : EditorWindow
 ChangeCheckの中身はGUI.changedで実装されています。
 GUI.changedのみで実装すると階層のことを考え以下のような実装になります。
 
-//emlist[][cs]{
+//emlist{
 bool toggleValue;
 
 Stack<bool> stack = new Stack<bool> ();
@@ -122,11 +122,11 @@ void OnGUI ()
 
 == DisabledGroup
 
-//image[ss02][下側のGUIが薄くなっていて操作することが出来ない]{
+//image[ss02][下側のGUIが薄くなっていて操作することができない]{
 
 //}
 
-//emlist[][cs]{
+//emlist{
 using UnityEngine;
 using UnityEditor;
 
@@ -165,7 +165,7 @@ public class NewBehaviourScript : EditorWindow
 DisabledGroupの中身はGUI.enabledで実装されています。
 GUI.enabledのみで実装すると以下のような実装になります。
 
-//emlist[][cs]{
+//emlist{
 void OnGUI ()
 {
     Display ();
@@ -196,9 +196,9 @@ void Display ()
 GUIのグループをフェードイン・フェードアウトさせる場合に使用します。
 何かのトリガー、今回はボタンを押したらフェードでGUIが表示されるようにしてみました。
 
-フェード中はGUIを操作することが出来ません。フェードのスピードはある程度早めにしてユーザーを待たせることのないようにしましょう。
+フェード中はGUIを操作することができません。フェードのスピードはある程度早めにしてユーザーを待たせることのないようにしましょう。
 
-//emlist[][cs]{
+//emlist{
 using UnityEngine;
 using UnityEditor;
 using UnityEditor.AnimatedValues;
@@ -255,7 +255,7 @@ public class NewBehaviourScript : EditorWindow
 
 == EditorGUI.ObjectField
 
-オブジェクトの参照を扱うフィールドです。引数に受け付けるオブジェクトの型を指定することが出来ます。
+オブジェクトの参照を扱うフィールドです。引数に受け付けるオブジェクトの型を指定することができます。
 
 また、テクスチャ系（Texture2DやSprite）は特殊なサムネイル形式のフィールドになります。
 
@@ -316,7 +316,7 @@ void OnGUI ()
 
 == EditorGUI.indentLevel
 
-インデントのレベルを管理します。以下のコードのように部分的にインデントを増減させることにより、インスペクターやヒエラルキーで見るような階層構造を構成することが出来ます。
+インデントのレベルを管理します。以下のコードのように部分的にインデントを増減させることにより、インスペクターやヒエラルキーで見るような階層構造を構成することができます。
 
 //image[ss13][ヒエラルキーでよく見る親子関係]{
 
@@ -346,7 +346,7 @@ void OnGUI ()
 
 == EditorGUILayout.Knob
 
-角度や、決められた範囲内で値を設定するための「つまみ（ノブ）」を作成します。マウスでドラッグしたり、表示されているラベルをクリックすることで値を直接入力することが出来ます。
+角度や、決められた範囲内で値を設定するための「つまみ（ノブ）」を作成します。マウスでドラッグしたり、表示されているラベルをクリックすることで値を直接入力することができます。
 
 //image[ss14][マウスでドラッグすることで値を調整できる]{
 
@@ -366,9 +366,9 @@ void OnGUI ()
 
 EditorGUILayout.BeginHorizontal/EndHorizontal というように Begin/End で始まるGUIグループのヘルパー機能になります。
 標準で@<code>{HorizontalScope}、@<code>{VerticalScope}、@<code>{ScrollViewScope} などのスコープが用意されています。
-スコープ自体は@<b>{IDisposable}オブジェクトで実装されており、usingを使用することが出来ます。
+スコープ自体は@<b>{IDisposable}オブジェクトで実装されており、usingを使用することができます。
 
-//emlist[][cs]{
+//emlist{
 #@maprange(unityprojects/part1/editorgui/Assets/Editor/ExampleScope.cs,HorizontalScope)
 #@end
 //}
@@ -380,7 +380,7 @@ EditorGUILayout.BeginHorizontal/EndHorizontal というように Begin/End で�
 
 HorizontalScopeのように、スコープはGUI.Scopeクラスを継承して作成されています。
 
-//emlist[][cs]{
+//emlist{
 #@maprange(unityprojects/part1/editorgui/Assets/Editor/ExampleScope.cs,HorizontalScopeCode)
 #@end
 //}
@@ -393,7 +393,7 @@ CloseScopeメソッドはDispose時に呼び出されるメソッドです。コ
 
 //}
 
-//emlist[][cs]{
+//emlist{
 #@maprange(unityprojects/part1/editorgui/Assets/Editor/ExampleScope.cs,BackgroundColorScope)
 #@end
 //}
@@ -402,7 +402,7 @@ CloseScopeメソッドはDispose時に呼び出されるメソッドです。コ
 このように@<code>{GUI.backgroundColor}にColor情報を渡す前に変数として保持し、CloseScopeで元の色に戻します。
 
 
-//emlist[][cs]{
+//emlist{
 #@maprange(unityprojects/part1/editorgui/Assets/Editor/ExampleScope.cs,BackgroundColorScope_Example)
 #@end
 //}
@@ -422,7 +422,7 @@ CloseScopeメソッドはDispose時に呼び出されるメソッドです。コ
 
 //indepimage[ss08][]
 
-//emlist[][cs]{
+//emlist{
 #@maprange(unityprojects/part1/editorgui/Assets/Editor/ButtonToggle.cs,ButtonToggle_Pattern1)
 #@end
 //}
@@ -434,37 +434,37 @@ CloseScopeメソッドはDispose時に呼び出されるメソッドです。コ
 //indepimage[ss06][]
 
 
-//emlist[][cs]{
+//emlist{
 #@maprange(unityprojects/part1/editorgui/Assets/Editor/ButtonToggle.cs,ButtonToggle_Pattern2)
 #@end
 //}
 
 おそらく、複数のトグルを配置しようとすると上記のようなコードになるかもしれません。ですがこれは悪手です。これだとbool変数がトグルの数だけ増えることになりますし、その管理も面倒です。
-これらは@<code>{GUILayout.Toolbar}を使って解決することが出来ます。
+これらは@<code>{GUILayout.Toolbar}を使って解決することができます。
 
-//emlist[][cs]{
+//emlist{
 #@maprange(unityprojects/part1/editorgui/Assets/Editor/ButtonToggle.cs,ButtonToggle_Pattern3)
 #@end
 //}
 
 何が選択されているかをint変数で管理し、表示するトグル（の文字列）はstring配列で管理します。
 
-また、GUIStyleを変更することで様々な表現が可能になります。
+また、GUIStyleを変更することでさまざまな表現が可能になります。
 
 @<code>{EditorStyles.toolbarButton} を使用することでツールバーや、PlayerSettingsのプラットフォーム別設定にあるようなトグル群を表現できます。
 
 //indepimage[ss09][]
 
-//emlist[][cs]{
+//emlist{
 #@maprange(unityprojects/part1/editorgui/Assets/Editor/ButtonToggle.cs,ButtonToggle_Pattern4)
 #@end
 //}
 
-1列に表示した@<code>{GUILayout.SelectionGrid}で、スタイルを@<b>{PreferencesKeysElement}（Unity内部で実装されているGUIStyle）にするとPreferenceｓウインドウで表現されている選択メニューとなります。
+1列に表示した@<code>{GUILayout.SelectionGrid}で、スタイルを@<b>{PreferencesKeysElement}（Unity内部で実装されているGUIStyle）にするとPreferenceｓウィンドウで表現されている選択メニューとなります。
 
 //indepimage[ss10][]
 
-//emlist[][cs]{
+//emlist{
 #@maprange(unityprojects/part1/editorgui/Assets/Editor/ButtonToggle.cs,ButtonToggle_Pattern5)
 #@end
 //}

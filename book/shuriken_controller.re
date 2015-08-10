@@ -14,21 +14,21 @@
 
 //}
 
-エフェクトは様々ですが、@<b>{Duration（継続時間）} や @<b>{Start Lifetime（存続時間）} は統一したり、複数のエフェクトに対して @<b>{Color Over Lifetime} を使って最後は透明にして消えるようにしたりします。
+エフェクトはさまざまですが、@<b>{Duration（継続時間）} や @<b>{Start Lifetime（存続時間）} は統一したり、複数のエフェクトに対して @<b>{Color Over Lifetime} を使って最後は透明にして消えるようにしたりします。
 
 既に複数のエフェクトを作成済みで、それらのパラメータを全て変更していかなくてはならない場合、１つ１つ編集していかなければいけません。とても手間な作業となってしまいます。
 
 == 複数同時編集を行うには
 
-通常で出来ないとなれば、エディター拡張を使って拡張できる方法を模索することになります。
+通常でできないとなれば、エディター拡張を使って拡張できる方法を模索することになります。
 
 === パーティクルを制御する Editor API は（まだ）存在しない
 
 残念ながらエディター拡張用の API は用意されていません。ランタイム用の API を駆使して編集していくことになります。
 
-=== API で（まだ）全てのプロパティを触れるわけではない
+=== API で（まだ）全てのプロパティーを触れるわけではない
 
-ランタイム用の API は、ランタイムで編集可能なプロパティのみ編集することが出来ます。なので ParticleSystem.duration は getter のみで操作はできませんし、圧倒的に触りたいプロパティが足りません。
+ランタイム用の API は、ランタイムで編集可能なプロパティーのみ編集することができます。なので ParticleSystem.duration は getter のみで操作はできませんし、圧倒的に触りたいプロパティーが足りません。
 
 @<b>{Unityが公開しているロードマップによれば Unity 5.3 に API が公開される模様です。} 
 
@@ -41,7 +41,7 @@
 
 SerializedObjectに変換する方法は簡単です。まずは確認のために MenuItem から SerializedObject を作成してみましょう。
 
-下記のコードを試してみてコンソールウインドウに SerializedObject のログが表示されるか確認してください。
+下記のコードを試してみてコンソールウィンドウに SerializedObject のログが表示されるか確認してください。
 
 //emlist{
 using UnityEngine;
@@ -71,15 +71,15 @@ public class NewBehaviourScript
 }
 //}
 
-== ParticleSystem のプロパティ名を知る
+== ParticleSystem のプロパティー名を知る
 
-SerializedObject を取得できたので次は SerializedProperty を取得します。SerializedProperty を取得するにはプロパティ名を知らなけでばいけません。
+SerializedObject を取得できたので次は SerializedProperty を取得します。SerializedProperty を取得するにはプロパティー名を知らなけでばいけません。
 
 === Prefabを作成して、テキストエディターで見る
 
-プロパティを知るうえで最も簡単な方法は、テキストベースで保存されたアセットをテキストエディターで見ることです。ParticleSystem のプロパティを知りたい場合は、ParticleSystem をアタッチしたゲームオブジェクトをプレハブにしましょう。
+プロパティーを知るうえで最も簡単な方法は、テキストベースで保存されたアセットをテキストエディターで見ることです。ParticleSystem のプロパティーを知りたい場合は、ParticleSystem をアタッチしたゲームオブジェクトをプレハブにしましょう。
 
-ここで、@<b>{必ずしもインスペクターで表示されているプロパティ名と同じわけではない}ということに注意してください。以下はプレハブの YAML 形式のデータです。そこに、@<code>{lengthInSec} がありますが、このプロパティは @<code>{duration} のことを指しています。
+ここで、@<b>{必ずしもインスペクターで表示されているプロパティー名と同じわけではない}ということに注意してください。以下はプレハブの YAML 形式のデータです。そこに、@<code>{lengthInSec} がありますが、このプロパティーは @<code>{duration} のことを指しています。
 
 //emlist{
 --- !u!198 &19810290
@@ -103,7 +103,7 @@ ParticleSystem:
 
 === SaveToSerializedFileAndForget を使う
 
-Prefab やアセットに出来ない（アセットにする手法が提供されていない）ものである場合は、@<code>{UnityEditorInternal} にある @<code>{InternalEditorUtility.SaveToSerializedFileAndForget} を使用します。SaveToSerializedFileAndForget は、UnityEngine.Object をシリアライズを行いアセットとして保存するための API です。
+Prefab やアセットにできない（アセットにする手法が提供されていない）ものである場合は、@<code>{UnityEditorInternal} にある @<code>{InternalEditorUtility.SaveToSerializedFileAndForget} を使用します。SaveToSerializedFileAndForget は、UnityEngine.Object をシリアライズを行いアセットとして保存するための API です。
 
 //emlist{
 InternalEditorUtility.SaveToSerializedFileAndForget (
@@ -112,11 +112,11 @@ InternalEditorUtility.SaveToSerializedFileAndForget (
   true);
 //}
 
-上記のようにAPIを呼び出すことでプロジェクトフォルダ以下に @<code>{particleSystem.txt} が生成され YAML 形式のデータを見ることが出来ます。
+上記のようにAPIを呼び出すことでプロジェクトフォルダー以下に @<code>{particleSystem.txt} が生成され YAML 形式のデータを見ることができます。
 
 === SerializedObject.GetIterator を使う
 
-Iterator により、全ての SerializedProperty を取得します。Uity上のみで完結させたいのであればこの方法を使いますが、プロパティ名のみを把握したい時にとっては手間となることが多いので、この方法はおすすめしません。
+Iterator により、全ての SerializedProperty を取得します。Uity上のみで完結させたいのであればこの方法を使いますが、プロパティー名のみを把握したい時にとっては手間となることが多いので、この方法はおすすめしません。
 
 //emlist{
 var so = new SerializedObject (particleSystem);
@@ -147,7 +147,7 @@ so.ApplyModifiedProperties ();
 //}
 
 
-通常は、ParticleSystem コンポーネントをアタッチしたゲームオブジェクトを選択することで、シーンビューでパーティクルアニメーションの@<b>{シミュレーション}を行うことが出来ます。
+通常は、ParticleSystem コンポーネントをアタッチしたゲームオブジェクトを選択することで、シーンビューでパーティクルアニメーションの@<b>{シミュレーション}を行うことができます。
 
 //image[ss05][]{
 
@@ -256,7 +256,7 @@ for (int i = 1; i < gridline; i++) {
 
 目盛（ライン）は @<code>{Handles} クラスを使用して描画します。また、@<code>{Handles.Label} というラベルを描画する API があり、これを使うと Vector2 の座標のみでラベルを描画します。このように、@<code>{Handles} は普段 Sceneビューで描画するために用意されたものですが、EditorWindowやインスペクターのGUI描画としても扱うことが可能です。
 
-//image[ss09][下側にあるものは別途実装したもの。真ん中が FloatField なので値を入力することが出来る。]{
+//image[ss09][下側にあるものは別途実装したもの。真ん中が FloatField なので値を入力できる。]{
 
 //}
 
@@ -282,14 +282,14 @@ if (Event.current.type == EventType.KeyDown) {
 }
 //}
 
-時間が変化したことによって GUI が変化する（しなければならない）ので、@<code>{GUI.changed} を true にして通知します。そうすることで、@<code>{EditorGUI.BeginChangeCheck} で監視しているイベントを発火することが出来ます。
+時間が変化したことによって GUI が変化する（しなければならない）ので、@<code>{GUI.changed} を true にして通知します。そうすることで、@<code>{EditorGUI.BeginChangeCheck} で監視しているイベントを発火することができます。
 
 そして@<b>{必ず} @<code>{Event.current.Use ();} を呼び出してください。矢印キーで時間移動をさせ、GUIを更新したのでイベントを1つ消費したことになります。既に消費したイベントでその後のイベント処理を行おうとすると何かしらの不具合が生じてきます。なので「既にイベントを消費した（Used）。なので今後のイベント処理は無視するようにする」ようにしなければいけません。
 
 
 == 再生リスト
 
-あまり説明することでもありませんが、再生リストには各パーティクルのトグル（見た目はボタン）があり、オン/オフをすることで再生するか否かを選択することが出来ます。
+あまり説明することでもありませんが、再生リストには各パーティクルのトグル（見た目はボタン）があり、オン/オフをすることで再生するか否かを選択することができます。
 
 //emlist{
 playlist [key] = GUILayout.Toggle (

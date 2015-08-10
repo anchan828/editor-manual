@@ -58,9 +58,9 @@ public class Character
 
 //}
 
-これを PropertyDrawer によって GUI の描画をカスタマイズし、1行で表示することが出来ます。
+これを PropertyDrawer によって GUI の描画をカスタマイズし、1行で表示することができます。
 
-//image[ss14][1行に name と hp のプロパティが表示されている]{
+//image[ss14][1行に name と hp のプロパティーが表示されている]{
 
 //}
 
@@ -137,7 +137,7 @@ public class Example : MonoBehaviour
 }
 //}
 
-属性として @<code>{Range (0, 10)} を追加するだけで 0 から 10 までスライドできるSliderを作成することが出来ました。
+属性として @<code>{Range (0, 10)} を追加するだけで 0 から 10 までスライドできるSliderを作成することができました。
 
 //image[ss03][]{
 
@@ -215,7 +215,7 @@ public class Example : MonoBehaviour
 }
 //}
 
-== 様々な PropertyDrawer
+== さまざまな PropertyDrawer
 
 Unity に標準実装されているものは@<chapref>{part2-standardextension}で紹介しています。ここからは私が今までに作成した PropertyDrawer を紹介していきます。
 
@@ -226,7 +226,7 @@ Unity に標準実装されているものは@<chapref>{part2-standardextension}
 //}
 
 
-API として @<img>{ss06} のようにノブ（取って）を表示する @<code>{EditorGUILayout.Knob} があります。ですが、 PropertyDrawer では EditorGUILayout の使用は禁止されているので使うことが出来ません。
+API として @<img>{ss06} のようにノブ（取って）を表示する @<code>{EditorGUILayout.Knob} があります。ですが、 PropertyDrawer では EditorGUILayout の使用は禁止されているので使うことができません。
 内部的には EditorGUI.Knob が実装されており、リフレクションを使って呼び出すことによって使用が可能になります。
 
 //emlist{
@@ -283,7 +283,7 @@ public class AngleDrawer : PropertyDrawer
 
 === AnimatorParameter
 
-Animatorウインドウにあるパラメータ名をタイプセーフにフィールドにアタッチすることができます。
+Animatorウィンドウにあるパラメータ名をタイプセーフにフィールドにアタッチすることができます。
 取得できるパラメーターは同じゲームオブジェクトにアタッチされている Animator Controller のパラメーターになります。
 
 //indepimage[ss07]
@@ -371,7 +371,7 @@ public class DisableExample : MonoBehaviour
 
 BeginDisabledGroup と EndDisabledGroup、または DisabledGroupScope を使って PropertyField を囲むだけで実装できます。
 
-インスペクターで編集できなくなったといっても、インスペクターを Debug モードにすると編集することが出来ますし、スクリプトから値の編集ができるので注意してください。
+インスペクターで編集できなくなったといっても、インスペクターを Debug モードにすると編集することができますし、スクリプトから値の編集ができるので注意してください。
 
 //emlist{
 public override void OnGUI(Rect position, 

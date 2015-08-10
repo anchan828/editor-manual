@@ -77,7 +77,7 @@ TextureImporter:
 まず、上書きするアセットがインポートされるかの監視をしなければいけません。Unityエディターに何のアセットがインポートされようとしているか、インポートされたかを知るには@<b>{AssetPostprocessor}クラスを使います。
 
 
-//emlist[][cs]{
+//emlist{
 using UnityEditor;
 
 public class Overwriter : AssetPostprocessor
@@ -142,7 +142,7 @@ static void OnPostprocessAllAssets (
 Unity上でアセットのインポートが行われた時に、再インポートが行われるため、実装したOnPostprocessAllAssetsが呼び出されてしまいます。
 そこでマウスでドラッグしてインポートした時のみ処理を行うようにします。
 
-//emlist[][cs]{
+//emlist{
 static void OnPostprocessAllAssets ( 
     string[] importedAssets,                                      
     string[] deletedAssets, 
@@ -176,7 +176,7 @@ static void OnPostprocessAllAssets (
 //}
 
 
-//emlist[][cs]{
+//emlist{
 var result = EditorUtility.DisplayDialogComplex (
     asset.originalAssetPath, 
     overwriteMessage, 
@@ -198,7 +198,7 @@ AssetDatabaseクラスにはCopyAsset関数がありますが、上書きする�
 
 @<b>{重要:} 最後に、@<b>{System.IO.File}によって外部からのデータ変更されたものをUnityが把握するために@<b>{AssetDatabase.ImportAsset}を実行します。
 
-//emlist[][cs]{
+//emlist{
 public void Overwrite ()
 {
     FileUtil.ReplaceFile (assetPath, originalAssetPath);
@@ -232,7 +232,7 @@ public void Delete ()
 
 ===[/column]
 
-//emlist[][cs]{
+//emlist{
 using System.IO;
 using System.Text.RegularExpressions;
 using UnityEditor;
@@ -283,7 +283,7 @@ public class OverwriteAsset
 }
 //}
 
-//emlist[][cs]{
+//emlist{
 using UnityEditor;
 using UnityEngine;
 

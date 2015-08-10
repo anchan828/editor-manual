@@ -12,13 +12,13 @@
 
 == ゲームオブジェクトにギズモを追加
 
-また、ギズモは@<b>{アイコン}も表示することが出来ます。これは標準機能として実装されており、インスペクターにあるゲームオブジェクトのアイコンをクリックすることでアイコン選択画面が表示されます。
+また、ギズモは@<b>{アイコン}も表示することができます。これは標準機能として実装されており、インスペクターにあるゲームオブジェクトのアイコンをクリックすることでアイコン選択画面が表示されます。
 
 //image[ss05][インスペクターの左上にあるアイコンをクリック]{
 
 //}
 
-デフォルトで3つの形状と様々な色が用意されています。
+デフォルトで3つの形状とさまざまな色が用意されています。
 
 //indepimage[ss07]
 
@@ -44,7 +44,7 @@
 
 === OnDrawGizmos と OnDrawGizmosSelected
 
-最も簡単にギズモを表示する方法として、2つのメソッドが用意されています。そのメソッドは MonoBehaviour の派生クラスで、 Update 関数のようなコールバックとして使用することが出来ます。@<b>{ゲームオブジェクトまたは親を選択中の時のみ表示する} @<code>{OnDrawGizmosSelected}、@<b>{ゲームオブジェクトがアクティブの時に常に表示する} @<code>{OnDrawGizmos} というように 2 つは動作が異なります。
+最も簡単にギズモを表示する方法として、2つのメソッドが用意されています。そのメソッドは MonoBehaviour の派生クラスで、 Update 関数のようなコールバックとして使用することができます。@<b>{ゲームオブジェクトまたは親を選択中の時のみ表示する} @<code>{OnDrawGizmosSelected}、@<b>{ゲームオブジェクトがアクティブの時に常に表示する} @<code>{OnDrawGizmos} というように 2 つは動作が異なります。
 
 
 //image[ss03][OnDrawGizmosSelected を使ってオブジェクトを選択中にギズモを表示]{
@@ -122,7 +122,7 @@ static void DrawExampleGizmos (Example example, GizmoType gizmoType)
 //}
 
 #@# * ギズモの表示の仕方
-#@# * ギズモの表示の仕方は様々ある
+#@# * ギズモの表示の仕方はさまざまある
 #@# ** OnDrawGizmos
 #@# ** OnDrawGizmosSelected
 #@# ** DrawGizmoAttribute
@@ -130,7 +130,7 @@ static void DrawExampleGizmos (Example example, GizmoType gizmoType)
 #@# ** BoxColliderでギズモ
 #@# ** スクリプト貼り付けてギズモ
 #@# * アイコンの表示
-#@# * Gizmosフォルダについて
+#@# * Gizmosフォルダーについて
 
 //footnote[1][#if UNITY_EDITOR で囲めばコンパイルは問題ありません]
 //footnote[2][「ギズモが」アクティブと判断されるのは「ゲームオブジェクトが」アクティブかつゲームオブジェクトを選択した時]

@@ -1,13 +1,13 @@
 = ProjectWindowUtil
 
 
-普段 「Assets/Create/」メニューからスクリプトファイルやマテリアルなど様々なアセットを作成します。作成時に、「NewBehaviourScript」を初期名から変更するテキストフィールドが表示されたりと、ユーザーにアセットを作成するために便利な機能が揃っています。
+普段 「Assets/Create/」メニューからスクリプトファイルやマテリアルなどさまざまなアセットを作成します。作成時に、「NewBehaviourScript」を初期名から変更するテキストフィールドが表示されたりと、ユーザーにアセットを作成するために便利な機能が揃っています。
 
 //image[ss01][左から、フォルダーを選択、Create/Materialを選択、フォルダー以下にNew Material生成]{
 
 //}
 
-これらの機能は @<code>{ProjectWindowUtil} クラスとして提供されており、@<code>{AssetDatabase.CreateAsset} よりもユーザーとの対話に優れたインタラクティブな実装を行うことが出来ます。
+これらの機能は @<code>{ProjectWindowUtil} クラスとして提供されており、@<code>{AssetDatabase.CreateAsset} よりもユーザーとの対話に優れたインタラクティブな実装を行うことができます。
 
 
 == アセットの生成
@@ -77,7 +77,7 @@ public class DoCreateScriptAsset : EndNameEditAction
 
 === StartNameEditingIfProjectWindowExists
 
-@<code>{ProjectWindowUtil.StartNameEditingIfProjectWindowExists} を使ってアセットを作成します。この関数は @<code>{ProjectWindowUtil.CreateAsset} の内部でも使われており、正しく使うことができれば同じ動作を実装することが出来ます。
+@<code>{ProjectWindowUtil.StartNameEditingIfProjectWindowExists} を使ってアセットを作成します。この関数は @<code>{ProjectWindowUtil.CreateAsset} の内部でも使われており、正しく使うことができれば同じ動作を実装することができます。
 
 StartNameEditingIfProjectWindowExists は 2 つの生成パターンをサポートしています。
 
@@ -85,7 +85,7 @@ StartNameEditingIfProjectWindowExists は 2 つの生成パターンをサポー
 
 これはスクリプトファイルの生成のような場合に使用します。第5引数が外部ファイル（=リソース）のパスを指定するようになっています。この時、インスタンスIDは必要ないので 0 にします。
 
-例としては以下のコードになります。このコードと先ほど作成した @<code>{DoCreateScriptAsset} クラスを使用することによってスクリプトファイルを作成することが出来ます。
+例としては以下のコードになります。このコードと先ほど作成した @<code>{DoCreateScriptAsset} クラスを使用することによってスクリプトファイルを作成することができます。
 
 //emlist{
 [MenuItem ("Assets/Create ExampleAssets")]
@@ -162,6 +162,6 @@ public class NewBehaviourScript
 }
 //}
 
-これでマテリアルを作成することが出来ました。
+これでマテリアルを作成することができました。
 
 //indepimage[ss02]

@@ -1,7 +1,7 @@
 = HierarchySort
 
 
-Hierarchyウインドウでは、ゲームオブジェクトの順番を任意に並び替えることが可能です。デフォルトでは uGUI の描画順を決定する @<b>{Transform Sort} となります。また、Preferencesウインドウにある「Enable Alpha Numeric Sorting」を有効にすると、ゲームオブジェクトをアルファベット順に並び替える @<b>{Alphabetical Sort} を選択できるようになります。
+Hierarchyウィンドウでは、ゲームオブジェクトの順番を任意に並び替えることが可能です。デフォルトでは uGUI の描画順を決定する @<b>{Transform Sort} となります。また、Preferencesウィンドウにある「Enable Alpha Numeric Sorting」を有効にすると、ゲームオブジェクトをアルファベット順に並び替える @<b>{Alphabetical Sort} を選択できるようになります。
 
 //image[ss01][Alphabetical Sort は、Unity4.5までデフォルトだったソート方法]{
 
@@ -17,7 +17,7 @@ Hierarchyウインドウでは、ゲームオブジェクトの順番を任意�
 
 HierarchySortを自作するには、@<b>{BaseHierarchySort}を継承したクラスを用意して@<code>{Compare}メソッドをオーバーライドします。
 
-//emlist[][cs]{
+//emlist{
 public class AlphaNumericSort : BaseHierarchySort
 {
     public override int Compare(GameObject lhs, GameObject rhs)
@@ -39,7 +39,7 @@ public class AlphaNumericSort : BaseHierarchySort
 
 先ほど AlphaNumericSort のサンプルで見たように BaseHierarchySort クラスを継承した TagSort クラスを作成します。
 
-//emlist[][cs]{
+//emlist{
 using UnityEngine;
 using UnityEditor;
 public class TagSort : BaseHierarchySort
@@ -51,7 +51,7 @@ public class TagSort : BaseHierarchySort
 
 次に、ゲームオブジェクトの@<href>{http://docs.unity3d.com/jp/current/ScriptReference/GameObject-tag.html,タグ}で比較するように実装します。
 
-//emlist[][cs]{
+//emlist{
 using UnityEngine;
 using UnityEditor;
 public class TagSort : BaseHierarchySort
@@ -70,7 +70,7 @@ public class TagSort : BaseHierarchySort
 
 //}
 
-これ自体で Tag を使ってのソートが出来るようになりました。インスペクターを見てみると確かに並び替わっていることがわかりますが、GameObject がどの Tag を持っているのかHierarchyウインドウを見た限りではわかりません。
+これ自体で Tag を使ってのソートができるようになりました。インスペクターを見てみると確かに並び替わっていることがわかりますが、GameObject がどの Tag を持っているのかHierarchyウィンドウを見た限りではわかりません。
 
 === Hierarchyのゲームオブジェクト名の横にタグ名を表示する
 
@@ -78,7 +78,7 @@ public class TagSort : BaseHierarchySort
 そこで@<href>{http://docs.unity3d.com/ScriptReference/EditorApplication-hierarchyWindowItemOnGUI.html,EditorApplication.hierarchyWindowItemOnGUI}を使用してタグ名を表示したいと思います。
 
 
-//emlist[][cs]{
+//emlist{
 using UnityEngine;
 using UnityEditor;
 
@@ -130,32 +130,32 @@ public class TagSort : BaseHierarchySort
 
 なので今回は「TagSortを選択している時だけタグ名を表示する」という手法を取りたいと思います。
 現在何でソートされているかを知るには、APIとして正式に提供されていないため少し面倒くさいことをしなければいけません。
-面倒くさいことをするためにまず、Hierarchyウインドウの@<tt>{Type}を取得しなければいけません。
+面倒くさいことをするためにまず、Hierarchyウィンドウの@<tt>{Type}を取得しなければいけません。
 その際にはUnityEngine.Types.GetTypeを使用すると便利です。Types.GetTypeはAssemblyから特定のTypeを取得するためのAPIとなっています。
 
 
-//emlist[][cs]{
+//emlist{
 Type hierarcyType = 
     Types.GetType("UnityEditor.SceneHierarchyWindow", "UnityEditor.dll");
 //}
 
 
-次に、先ほど取得した@<tt>{hierarcyType}を使用してHierarchyウインドウを取得します。
+次に、先ほど取得した@<tt>{hierarcyType}を使用してHierarchyウィンドウを取得します。
 
 
-//emlist[][cs]{
+//emlist{
 EditorWindow hierarcyWindow = EditorWindow.GetWindow(hierarcyType, false);
 //}
 
 
-複数対応する場合は@<tt>{Resources.FindObjectsOfTypeAll(Type);}を使用して全てのHierarchyウインドウを取得しますが複雑になってしまうので今回は単体ウインドウのみ対応で実装を行います。Hierarchyウインドウのオブジェクトの中に、Serializeされた@<tt>{m_CurrentSortMethod}という文字列データが存在します。これが現在選択されているソート名となります。
+複数対応する場合は@<tt>{Resources.FindObjectsOfTypeAll(Type);}を使用して全てのHierarchyウィンドウを取得しますが複雑になってしまうので今回は単体ウィンドウのみ対応で実装を行います。Hierarchyウィンドウのオブジェクトの中に、Serializeされた@<tt>{m_CurrentSortMethod}という文字列データが存在します。これが現在選択されているソート名となります。
 
 
 
-m_CurrentSortMethodはSerializeされているデータなのでSerializedObject#FindPropertyで取得するようにしましょう。そのためにはまずHierarchyウインドウの@<tt>{SerializedObject}を取得しなければいけません。今回はSerializedObjectを取得ではなく作成します。SerializedObjectを使用する場面は普段はCustomEditorなどで、すでに作成されたSerializedObjectを使ってアクセスしている方が多いと思います。なので、自分で作成するのは初めての方も多いのではないでしょうか。
+m_CurrentSortMethodはSerializeされているデータなのでSerializedObject#FindPropertyで取得するようにしましょう。そのためにはまずHierarchyウィンドウの@<tt>{SerializedObject}を取得しなければいけません。今回はSerializedObjectを取得ではなく作成します。SerializedObjectを使用する場面は普段はCustomEditorなどで、すでに作成されたSerializedObjectを使ってアクセスしている方が多いと思います。なので、自分で作成するのは初めての方も多いのではないでしょうか。
 
 
-//emlist[][cs]{
+//emlist{
 SerializedObject hierarcyWindowObject = new SerializedObject(hierarcyWindow);
 //}
 
@@ -163,7 +163,7 @@ SerializedObject hierarcyWindowObject = new SerializedObject(hierarcyWindow);
 こうして現在のソート名を取得することが可能になりました。
 
 
-//emlist[][cs]{
+//emlist{
 var currentSortName = 
     hierarcyWindowObject.FindProperty("m_CurrentSortMethod").stringValue;
 //}
@@ -179,7 +179,7 @@ var currentSortName =
 ここまでくれば残りの実装は簡単です。
 
 
-//emlist[][cs]{
+//emlist{
 
 EditorApplication.hierarchyWindowItemOnGUI += HierarchyWindowItemOnGUI;
 
@@ -208,14 +208,14 @@ TagSort専用のアイコンに変更します。
 
 //}
 
-用意したアイコンを「Editor Default Resources/Icons」フォルダに格納します。
+用意したアイコンを「Editor Default Resources/Icons」フォルダーに格納します。
 
 //image[ss04][]{
 
 //}
 
 これにより、@<code>{EditorGUIUtility.IconContent ("TagSort");}でアイコンをロードすることが可能になりました。このアイコンを適用するために、@<code>{content}変数をオーバーライドします。
-//emlist[][cs]{
+//emlist{
 public class TagSort : BaseHierarchySort
 {
     private GUIContent m_content = EditorGUIUtility.IconContent ("TagSort");
@@ -234,7 +234,7 @@ public class TagSort : BaseHierarchySort
 実際のコードがこちらになります。
 
 
-//emlist[][cs]{
+//emlist{
 using UnityEngine;
 using UnityEditor;
 

@@ -4,7 +4,7 @@
 //indepimage[ss01]
 
 
-ReorderbleList は、インスペクターやEditorWindowで表示されるリストのプロパティを更にビジュアライズしたものです。要素の並び替えや、要素の追加方法のカスタマイズなど幅広いことが行えるようになります。
+ReorderbleList は、インスペクターやEditorWindowで表示されるリストのプロパティーをさらにビジュアライズしたものです。要素の並び替えや、要素の追加方法のカスタマイズなど幅広いことが行えるようになります。
 
 この機能は公式としてドキュメント化されておらず非推奨扱いとなっていますが、Animator や Tag and Layer の設定画面で長い間使われているので、すぐに使えなくなることはないと思います。
 
@@ -64,7 +64,7 @@ public class ExampleInspector : Editor
 === 要素の描画
 
 要素を変更するには drawElementCallback を使います。
-描画する rect、何番目の要素かの index、状態を表す isActive と isFocused を扱うことが出来ます。
+描画する rect、何番目の要素かの index、状態を表す isActive と isFocused を扱うことができます。
 
 rect が描画の最大範囲なので、少し小さくします。
 
@@ -83,9 +83,9 @@ reorderableList.drawElementCallback = (rect, index, isActive, isFocused) => {
 
 //indepimage[ss04]
 
-=== プロパティの保存
+=== プロパティーの保存
 
-最後にプロパティの変更されたプロパティの適用・保存をします。
+最後にプロパティーの変更されたプロパティーの適用・保存をします。
 
 //emlist{
 public override void OnInspectorGUI ()
@@ -142,7 +142,7 @@ drawElementBackgroundCallback は使い方が難しく、カスタマイズは�
 
 == 要素の追加
 
-onAddCallback を使用することで、「+」ボタンなどを押した時に要素を追加する流れを自分で実装することが出来ます。
+onAddCallback を使用することで、「+」ボタンなどを押した時に要素を追加する流れを自分で実装することができます。
 
 //indepimage[ss07]
 

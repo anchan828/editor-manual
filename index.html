@@ -563,6 +563,38 @@
                 <a class="play-pause"></a>
                 <ol class="indicator"></ol>
             </div>
+
+
+            <div id="links" class="container text-center">
+                <a href="img/gallery/ss01.png" data-gallery>
+                    <img src="img/gallery/ss01.png" height="100px">
+                </a>
+                <a href="img/gallery/ss02.png" data-gallery>
+                    <img src="img/gallery/ss02.png" height="100px">
+                </a>
+                <a href="img/gallery/ss03.png" data-gallery>
+                    <img src="img/gallery/ss03.png" height="100px">
+                </a>
+                <a href="img/gallery/ss04.png" data-gallery>
+                    <img src="img/gallery/ss04.png" height="100px">
+                </a>
+                <a href="img/gallery/ss05.png" data-gallery>
+                    <img src="img/gallery/ss05.png" height="100px">
+                </a>
+                <a href="img/gallery/ss06.png" data-gallery>
+                    <img src="img/gallery/ss06.png" height="100px">
+                </a>
+                <a href="img/gallery/ss07.png" data-gallery>
+                    <img src="img/gallery/ss07.png" height="100px">
+                </a>
+                <a href="img/gallery/ss08.png" data-gallery>
+                    <img src="img/gallery/ss08.png" height="100px">
+                </a>
+                <a href="img/gallery/ss09.png" data-gallery>
+                    <img src="img/gallery/ss09.png" height="100px">
+                </a>
+            </div>
+
             <div id="blueimp-gallery-carousel" class="blueimp-gallery blueimp-gallery-carousel">
                 <div class="slides"></div>
                 <h3 class="title"></h3>
@@ -572,35 +604,8 @@
                 <ol class="indicator"></ol>
             </div>
 
-            <div id="links" class="container text-center">
-                    <a href="img/gallery/ss01.png" data-gallery>
-                        <img src="img/gallery/ss01.png" height="100px">
-                    </a>
-                    <a href="img/gallery/ss02.png" data-gallery>
-                        <img src="img/gallery/ss02.png" height="100px">
-                    </a>
-                    <a href="img/gallery/ss03.png" data-gallery>
-                        <img src="img/gallery/ss03.png" height="100px">
-                    </a>
-                    <a href="img/gallery/ss04.png" data-gallery>
-                        <img src="img/gallery/ss04.png" height="100px">
-                    </a>
-                    <a href="img/gallery/ss05.png" data-gallery>
-                        <img src="img/gallery/ss05.png" height="100px">
-                    </a>
-                    <a href="img/gallery/ss06.png" data-gallery>
-                        <img src="img/gallery/ss06.png" height="100px">
-                    </a>
-                    <a href="img/gallery/ss07.png" data-gallery>
-                        <img src="img/gallery/ss07.png" height="100px">
-                    </a>
-                    <a href="img/gallery/ss08.png" data-gallery>
-                        <img src="img/gallery/ss08.png" height="100px">
-                    </a>
-                    <a href="img/gallery/ss09.png" data-gallery>
-                        <img src="img/gallery/ss09.png" height="100px">
-                    </a>
-            </div>
+
+
         </div>
     </div>
 </section>
@@ -646,13 +651,18 @@
 <script src="js/blueimp-gallery.min.js"></script>
 <script src="js/jquery.blueimp-gallery.min.js"></script>
 <script>
-    blueimp.Gallery(
-            document.getElementById('links').getElementsByTagName('a'),
-            {
-                container: '#blueimp-gallery-carousel',
-                carousel: true
-            }
-    );
+
+    $(function(){
+        blueimp.Gallery(
+                $('#links').find('a'),
+                {
+                    container: '#blueimp-gallery-carousel',
+                    carousel: true
+                }
+        );
+    })
+
+
 </script>
 <script>
     (function (i, s, o, g, r, a, m) {

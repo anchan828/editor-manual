@@ -25,7 +25,7 @@
 }
 
 #___plusone_0 {
-    width:60px !important;
+    width: 60px !important;
 }
 
 .shadow {
@@ -34,6 +34,12 @@
     box-shadow: 0px 5px 15px -5px rgba(0, 0, 0, 0.8); /*横方向　下方向　ぼかし　広がり　色 */
 }
 
+#links img{
+    margin: 5px 0;
+    border: solid;
+    border-width: 1px;
+    border-color: black;
+}
 dl {
     word-wrap: break-word;
 }

@@ -1,7 +1,7 @@
 = SerializedObjectについて
 
 
-Unity上では、ファイル（Unity上ではアセット）を少し特殊な形式へと変換して使用します。本章ではオブジェクトの基盤である SerializedObject について解説していきます。また、「シリアライズについて@<b>{すべてを網羅した}情報」は、Unity公式のマニュアルにて説明されています。本章では入門として知っておいて欲しい情報を抜粋して解説します。@<href>{http://docs.unity3d.com/Manual/script-Serialization.html}
+Unity上では、ファイル（Unity上ではアセット）を少し特殊な形式へと変換して使用します。本章では、Unityでオブジェクトを扱う時に基盤となる SerializedObject について解説していきます。また、「シリアライズについて@<b>{すべてを網羅した}情報」は、Unity公式のマニュアルにて説明されています。本章では入門として知っておいて欲しい情報を抜粋して解説します。@<href>{http://docs.unity3d.com/Manual/script-Serialization.html}
 
 == SerializedObjectとは
 

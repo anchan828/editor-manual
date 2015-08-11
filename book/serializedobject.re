@@ -1,7 +1,7 @@
 = SerializedObjectについて
 
 
-Unity上では、ファイル（Unity上ではアセット）を少し特殊な形式へと変換して使用します。本章ではオブジェクトの基板である SerializedObject について解説していきます。また、「シリアライズについて@<b>{すべてを網羅した}情報」は、Unity公式のマニュアルにて説明されています。本章では入門として知っておいて欲しい情報を抜粋して解説します。@<href>{http://docs.unity3d.com/Manual/script-Serialization.html}
+Unity上では、ファイル（Unity上ではアセット）を少し特殊な形式へと変換して使用します。本章ではオブジェクトの基盤である SerializedObject について解説していきます。また、「シリアライズについて@<b>{すべてを網羅した}情報」は、Unity公式のマニュアルにて説明されています。本章では入門として知っておいて欲しい情報を抜粋して解説します。@<href>{http://docs.unity3d.com/Manual/script-Serialization.html}
 
 == SerializedObjectとは
 
@@ -58,7 +58,7 @@ static void CheckPropertyPaths ()
 
 	while (pop.NextVisible (true))
 		Debug.Log (pop.propertyPath);
-		
+
 }
 //}
 
@@ -107,13 +107,13 @@ public string str {
 	get {
 		return m_str;
 	}
-	set { 
+	set {
 		m_str = value;
 	}
 }
 //}
 
-外部から SerializeField 属性の付いたフィールドにアクセスするときは @<b>{SerializedObject} 経由でアクセスします。 
+外部から SerializeField 属性の付いたフィールドにアクセスするときは @<b>{SerializedObject} 経由でアクセスします。
 
 == SerializedObjectの使い方
 
@@ -137,7 +137,7 @@ static void CheckPropertyPaths ()
 
 	while (pop.NextVisible (true))
 		Debug.Log (pop.propertyPath);
-		
+
 }
 //}
 
@@ -351,12 +351,11 @@ public class NewBehaviourScript : MonoBehaviour
 	void Start ()
 	{
 		var rigidbody = GetComponent<Rigidbody> ();
-		
+
 		InternalEditorUtility.SaveToSerializedFileAndForget (
 		    new Object[]{ rigidbody },
 		    "Rigidbody.yml",
 		    true);
 	}
-}	
-//}	
-
+}
+//}

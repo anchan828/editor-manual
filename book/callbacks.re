@@ -49,10 +49,9 @@ public class NewBehaviourScript
 
 == PostProcessSceneAttribute
 
-シーンの再生時やビルド時のシーン構築時などの「シーンをロードした後」に呼び出されるコールバックです。この属性を付けたメソッド内でゲームオブジェクトなどを作成することで、「マニュアルで Prefab をシーンに含める」以上の強制力を持たせることができます。
+シーンの再生時やビルド時のシーン構築時などの「シーンをロードした後」に呼び出されるコールバックです。この属性を付けたメソッド内でゲームオブジェクトやプレハブから生成をすることで、「手動で Prefab をシーンに含める作業」以上の強制力を持たせることができます。
 
 //image[ss01][ゲームを再生すると自動的にゲームオブジェクトが生成される]{
-
 //}
 
 //emlist{
@@ -70,9 +69,9 @@ public class NewBehaviourScript
 }
 //}
 
-ただし、ゲーム再生時とビルド時でシーンアセットのパスを取得する方法に差異があることに気をつけてください。
+ただし、ゲーム再生時とビルド時でシーンアセットのパスを取得する方法に問題が発生してしまいます。
 通常、現在開いているシーンのパスを取得するには @<code>{EditorApplication.currentScene} を使用します。
-エディター上でゲームを再生するときは大丈夫なのですが、問題なのはビルド時です。ビルド時は @<b>{Editor API の一部が動作しません。}EditorApplication.currentScene もその影響の1つです。
+エディター上でゲームを再生するときは大丈夫なのですが、問題なのはビルド時です。ビルド時は @<b>{Editor API の一部が動作しません。}EditorApplication.currentScene もその影響を受けてしまい、ビルド時には常に空文字を返してしまいます。
 
 //image[ss02][左がビルド時の Debug.Log。右がエディター上でゲーム再生時の Debug.Log]{
 
@@ -97,11 +96,13 @@ public class NewBehaviourScript
 }
 //}
 
-対策としては、@<code>{EditorBuildSettings.scenes} を使ってシーンファイルのパスを取得します。
+対策としては、@<code>{Application.loadedLevel} と @<code>{EditorBuildSettings.scenes} を組み合わせてシーンファイルのパスを取得します。
 
 //image[ss03][左がビルド時の Debug.Log。右がエディター上でゲーム再生時の Debug.Log]{
 
 //}
+
+@<code>{Application.loadedLevel} は Build Settings の「Scenens In Build」に登録しているシーンのインデックスを表しています。そして、@<code>{EditorBuildSettings.scenes} は Scenens In Build で設定されているシーン情報の配列を持っています。このインデックスとシーン配列は正しく関係性を持っており、以下のコードのように使用することでシーンのパスが取得できるようになります。
 
 //emlist{
 [PostProcessScene]
@@ -114,16 +115,15 @@ static void OnPostProcessScene ()
 }
 //}
 
-PostProcessScene を使った実装例は @<chapref>{attach_script_to_scene} で紹介しています。
-
+PostProcessScene を使った実装例は @<chapref>{attach_script_to_scene} で紹介しています。ぜひご覧ください。
 
 == InitializeOnLoad
 
-Unity エディターの起動時や、スクリプトのコンパイル直後にクラスの静的コンストラクタを呼び出すための属性です。コンパイル直後に毎回行いたい処理、例えば、（コンパイルごとにデリゲートに登録したものがリセットされるため）デリゲートの再登録を行う目的として使用されます。
+Unity エディターの起動時や、スクリプトのコンパイル直後にクラスの静的コンストラクタを呼び出すための属性です。コンパイル直後に毎回行いたい処理、例えば、（コンパイルごとにデリゲートに登録したものがリセットされる理由で）デリゲートの再登録を行う目的として使用されます。
 
-注意したいのはエディター上でゲーム再生時直後にも InitializeOnLoad 属性の付いた静的コンストラクタが呼び出されてしまいます。
+注意したいのはエディター上でゲームを再生した直後にも InitializeOnLoad 属性の付いた静的コンストラクタが呼び出されてしまいます。
 
-対策として、静的コンストラクタ内で @<b>{EditorApplication.isPlayingOrWillChangePlaymode} を使い、ゲーム再生時に呼び出されたものであるかを判断します。
+この対策としては、静的コンストラクタ内で @<b>{EditorApplication.isPlayingOrWillChangePlaymode} を使い、ゲーム再生時に呼び出されたものであるかを判断します。
 
 //emlist{
 using UnityEditor;
@@ -142,7 +142,7 @@ public class NewBehaviourScript
 }
 //}
 
-Unityエディター機能直後のみ実行したい場合は、@<code>{EditorApplication.timeSinceStartup} を使用します。
+また、Unityエディターを起動した直後のみ実行したい場合は、@<code>{EditorApplication.timeSinceStartup} を組み合わせて使用します。
 
 
 //emlist{
@@ -154,21 +154,35 @@ public class NewBehaviourScript
 {
     static NewBehaviourScript ()
     {
+        // 10秒以内かどうか
         if (EditorApplication.timeSinceStartup > 10)
             return;
 
-        Debug.Log ("call");
+        Debug.Log ("起動時であると判断する");
     }
 }
 //}
 
 == InitializeOnLoadMethod
 
-InitializeOnLoad のメソッド版です。静的メソッドにこの属性を付加することで @<code>{InitializeOnLoad} と同じタイミングで呼び出すことができます。
+InitializeOnLoad のメソッド版です。静的メソッドにこの属性を付加することで @<code>{InitializeOnLoad} と同じタイミング（正確にはInitializeOnLoadが先に呼び出されます）で呼び出すことができます。
+
+//emlist{
+using UnityEditor;
+using UnityEngine;
+
+public class NewBehaviourScript
+{
+    [InitializeOnLoadMethod]
+    static void RunMethod ()
+    {
+    }
+}
+//}
 
 == DidReloadScripts
 
-機能的には @<code>{InitializeOnLoadMethod} とほぼ同じです。ただ1点だけ違うところは@<b>{実行順を選べる}点です。引数として @<code>{callbackOrder} があり、昇順で実行できます。
+機能的には @<code>{InitializeOnLoadMethod} とほぼ同じです。ただ1点だけ違うところは@<b>{実行順を選べる}点です。引数として @<code>{callbackOrder} があり、昇順に実行できます。
 
 //emlist{
 using UnityEditor;
@@ -236,11 +250,15 @@ public class NewBehaviourScript
 
 == EditorApplication.hierarchyWindowChanged と projectWindowChanged
 
-選択しているオブジェクトを変更、新規でゲームオブジェクトを作成するなど、さまざまな要素でヒエラルキーやプロジェクトの構造が変化した時に呼び出されます。
+選択しているオブジェクトを変更したり、新規でゲームオブジェクトを作成するなど、さまざまな要素によってヒエラルキーやプロジェクトの構成が変化した時に呼び出されます。
 
-シーン内の全ゲームオブジェクトを対象に処理をしている場合に使用すると便利です。
+シーン内のゲームオブジェクトを対象に、何らかの処理をしている場合に使用すると便利です。
 
 下記コードは、シーン内のカメラをリストアップするコードです。
+
+//image[ss09][シーンビューの左上にウィンドウが追加された]{
+
+//}
 
 //emlist{
 using UnityEditor;
@@ -258,7 +276,7 @@ public class NewBehaviourScript
         var displayNames = new string[0];
         var windowRect = new Rect (10, 20, 100, 24);
 
-
+        // 変更があれば初期化
         EditorApplication.hierarchyWindowChanged += () => {
             var cameras = Object.FindObjectsOfType<Camera> ();
             displayNames = new string[]{ "None", "" };
@@ -266,8 +284,10 @@ public class NewBehaviourScript
                  cameras.Select (c => c.name).ToArray ());
         };
 
+        // 任意のタイミングで呼び出すことも出来る
         EditorApplication.hierarchyWindowChanged ();
 
+        // 全シーンビューのGUIデリゲート
         SceneView.onSceneGUIDelegate += (sceneView) => {
 
             GUI.skin = EditorGUIUtility.GetBuiltinSkin (EditorSkin.Inspector);
@@ -276,11 +296,12 @@ public class NewBehaviourScript
 
             int windowID =
                 EditorGUIUtility.GetControlID (FocusType.Passive, windowRect);
-
+            // シーンビューにウィンドウを追加
             windowRect = GUILayout.Window (windowID, windowRect, (id) => {
 
                 selected = EditorGUILayout.Popup (selected, displayNames);
 
+                // ドラッグできるように
                 GUI.DragWindow ();
 
             }, "Window");
@@ -291,13 +312,25 @@ public class NewBehaviourScript
 }
 //}
 
+さらに上記のコードにシーンのカメラとゲーム内のカメラの Transform を同期させると、シーンビューのカメラの位置/向きがそのままゲームビューにも反映されます。@<fn>{sync_camera}
+
+//image[ss10][Unite 2014 で発表した Sync Camera の機能になる]{
+
+//}
+
+//footnote[sync_camera][@<href>{https://github.com/anchan828/unitejapan2014/tree/master/SyncCamera/Assets}]
+
 == EditorApplication.hierarchyWindowItemOnGUI と projectWindowItemOnGUI
 
-ヒエラルキーやプロジェクトウィンドウで、各ゲームオブジェクトやアセットの@<b>{ラベルが描画されている範囲}をコールバックとして取得できます。
+ヒエラルキーやプロジェクトウィンドウで、各ゲームオブジェクトやアセットの@<b>{文字が描画されている範囲}をコールバックとして取得できます。
+
+//image[ss11][各ゲームオブジェクト名が描画されてる範囲を取得できる]{
+
+//}
 
 これらは、小さな範囲の中でゲームオブジェクトの情報を表示してもいいですし、ボタンなどを配置して何らかのトリガーとするのもいいかもしれません。
 
-だた、注意して欲しいのはアセットストアにあるアセットでも、@<code>{hierarchyWindowItemOnGUI} を使用している可能性がある点です。もし、使用していた場合かつ、何らかのトリガーとなっている場合は、 hierarchyWindowItemOnGUI の使用は控えたほうがいいかもしれません。
+だた、注意して欲しいのはアセットストアにあるアセットでも、@<code>{hierarchyWindowItemOnGUI} を使用している可能性がある点です。もし、使用していた場合、かつ、何らかのトリガーとなっている場合は、 hierarchyWindowItemOnGUI の使用は控えたほうがいいかもしれません。
 
 //image[ss04][各ゲームオブジェクトの右端にアタッチされているコンポーネントを表示]{
 
@@ -314,7 +347,7 @@ public class NewBehaviourScript
     static void DrawComponentIcons ()
     {
         EditorApplication.hierarchyWindowItemOnGUI += (instanceID, selectionRect) => {
-
+            // インスタンスIDからゲームオブジェクトを取得
             var go = (GameObject)EditorUtility.InstanceIDToObject (instanceID);
 
             if (go == null)
@@ -327,7 +360,8 @@ public class NewBehaviourScript
             };
 
             foreach (var component in go.GetComponents<Component>()) {
-
+                // Transform は全ゲームオブジェクトにあり
+                // 無駄な情報なので表示しない
                 if (component is Transform)
                     continue;
 
@@ -343,7 +377,7 @@ public class NewBehaviourScript
 
 == EditorApplication.playmodeStateChanged
 
-@<icon>{ss05}の再生状態を切り替えた時に呼び出されるコールバックです。ただし、引数もなく@<b>{「現在の再生状態はなにか」}は自分で判断しなくてはいけません。
+@<icon>{ss05}の再生状態を切り替えた時に呼び出されるコールバックです。ただし、引数もなく@<b>{「現在の再生状態はなにか」}はユーザーの手で判断しなくてはいけません。
 
 //emlist{
 [InitializeOnLoadMethod]
@@ -377,7 +411,7 @@ using System.Reflection;
 [InitializeOnLoad]
 public class CompileError
 {
-     // 効果音。自由に変更する
+    // 効果音。自由に変更する
     // http://commons.nicovideo.jp/material/nc32797
     const string musicPath = "Assets/Editor/nc32797.wav";
     const BindingFlags flags = BindingFlags.NonPublic | BindingFlags.Instance;
@@ -641,4 +675,4 @@ public class Test
 //}
 
 
-//footnote[2][200回/秒実行されるのはバグとの報告アリ。ドキュメントでは 100回/秒と記載されています。]
+//footnote[2][200回/秒実行されるのはバグとの報告があります。ドキュメントでは 100回/秒と記載されています。]

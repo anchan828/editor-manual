@@ -6,6 +6,7 @@
 
 //image[ss01][これらは全てマウスで操作できる]{
 
+
 //}
 
 
@@ -36,9 +37,9 @@ public class ExampleInspector : Editor
         Tools.current = Tool.None;
         var component = target as Example;
 
-        
+
         var transform = component.transform;
-        transform.position = 
+        transform.position =
             Handles.PositionHandle (transform.position, transform.rotation);
     }
 }
@@ -56,14 +57,14 @@ public class ExampleInspector : Editor
 void OnSceneGUI ()
 {
     var component = target as Example;
-    
+
     var transform = component.transform;
-    
+
     if (Tools.current == Tool.Move) {
         transform.rotation =
             Handles.RotationHandle (transform.rotation, transform.position);
     } else if (Tools.current == Tool.Rotate) {
-        transform.position = 
+        transform.position =
             Handles.PositionHandle (transform.position, transform.rotation);
     }
 }
@@ -118,7 +119,7 @@ void PositionHandle (Transform transform)
 
     Handles.color = Handles.zAxisColor;
     Handles.Slider (transform.position, transform.forward); // Z 軸
-}    
+}
 //}
 
 //indepimage[ss07]
@@ -184,22 +185,22 @@ Vector3 PositionHandle (Transform transform)
 {
     var position = transform.position;
 
-    var size = 1; 
+    var size = 1;
 
     // X 軸
     Handles.color = Handles.xAxisColor;
-    position = 
-        Handles.Slider (position, transform.right, size, Handles.ArrowCap, snap.x); 
+    position =
+        Handles.Slider (position, transform.right, size, Handles.ArrowCap, snap.x);
 
     // Y 軸
     Handles.color = Handles.yAxisColor;
-    position = 
-        Handles.Slider (position, transform.up, size, Handles.ArrowCap, snap.y); 
+    position =
+        Handles.Slider (position, transform.up, size, Handles.ArrowCap, snap.y);
 
     // Z 軸
     Handles.color = Handles.zAxisColor;
-    position = 
-        Handles.Slider (position, transform.forward, size, Handles.ArrowCap, snap.z); 
+    position =
+        Handles.Slider (position, transform.forward, size, Handles.ArrowCap, snap.z);
 
     return position;
 }
@@ -225,7 +226,7 @@ Handles クラスには、特殊なハンドルを作成できる API がいく�
 3軸を意識せずに自由に動かせるハンドルを作成します。表示するパーツは RectangleCap が好ましいです。
 
 //emlist{
-transform.position = 
+transform.position =
     Handles.FreeMoveHandle (
         transform.position,
         transform.rotation,
@@ -249,7 +250,7 @@ transform.position =
 3軸を意識せずに自由に回転できるハンドルを作成します。表示するパーツは円で固定です。
 
 //emlist{
-transform.rotation = 
+transform.rotation =
     Handles.FreeRotateHandle (
         transform.rotation,
         transform.position,
@@ -343,8 +344,8 @@ public class ExampleInspector2 : Editor
         reorderableList = new ReorderableList (component.vertexes, typeof(Vector3));
 
         reorderableList.drawElementCallback = (rect, index, isActive, isFocused) => {
-            component.vertexes [index] = 
-                EditorGUI.Vector3Field (rect, GUIContent.none, 
+            component.vertexes [index] =
+                EditorGUI.Vector3Field (rect, GUIContent.none,
                                           component.vertexes [index]);
         };
 
@@ -353,7 +354,7 @@ public class ExampleInspector2 : Editor
             ActiveEditorTracker.sharedTracker.ForceRebuild ();
         };
         reorderableList.onRemoveCallback = (list) => {
-            ArrayUtility.Remove (ref component.vertexes, 
+            ArrayUtility.Remove (ref component.vertexes,
                                     component.vertexes [list.index]);
             ActiveEditorTracker.sharedTracker.ForceRebuild ();
         };
@@ -454,7 +455,7 @@ void OnSceneGUI ()
         GUILayout.Button ("Button");
 
         GUI.DragWindow();
-        
+
     }, "Window", GUILayout.Width (100));
 
     Handles.EndGUI ();

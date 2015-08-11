@@ -1,14 +1,16 @@
 = さまざまなイベントのコールバック
 
-Unityでは、「ビルド後」「コンパイル後」「プラットフォームの変更後」などさまざまなコールバックが存在します。
-
+Unityでは、「ビルド後」「コンパイル後」「プラットフォームの変更後」など、特定のアクションの後に呼び出されるさまざまなコールバックが存在します。
+これらのコールバックの中には、使用することで作業の自動化が行える「知らなければ損」なコールバックもあります。
 
 == PostProcessBuildAttribute
 
-Build Settings ウィンドウなどによって、アプリのビルド後に呼び出されるコールバックです。
+Build Settings ウィンドウや @<code>{BuildPipeline.BuildPlayer} によって行われるアプリのビルド後に呼び出されるコールバックです。
 
-ビルドで生成された、 Xcode プロジェクトや Android Project など、成果物をさらに加工する時に使用します。
+ビルドで生成された、Xcode プロジェクトや Android Project などで、成果物をさらに加工したり、アプリを生成するまで自動化することも可能です。
+CIツールと組み合わせたり、ゲーム開発において必須と言えるくらい重要なコールバックなのでぜひ覚えておきましょう。
 
+以下のサンプルでは @<code>{Xcode Manipulation API}@<fn>{xcode_api} を使ってフレームワークを追加しています。
 
 //emlist{
 using UnityEditor;
@@ -18,15 +20,19 @@ using UnityEditor.iOS.Xcode;
 
 public class NewBehaviourScript
 {
-    [PostProcessBuild]
+    // callbackOrder で実行順を指定することが出来る
+    // 0 が内部で使われている order なので 1以上を指定する
+    [PostProcessBuild(1)]
     static void OnPostProcessBuild (BuildTarget buildTarget, string path)
     {
         if (buildTarget != BuildTarget.iOS)
             return;
 
+        // Xcode プロジェクトのパスを取得
         var xcodeprojPath = Path.Combine (path, "Unity-iPhone.xcodeproj");
         var pbxprojPath = Path.Combine (xcodeprojPath, "project.pbxproj");
 
+        // Xcode プロジェクトロード
         PBXProject proj = new PBXProject ();
         proj.ReadFromFile (pbxprojPath);
 
@@ -37,6 +43,9 @@ public class NewBehaviourScript
     }
 }
 //}
+
+
+//footnote[xcode_api][@<href>{http://docs.unity3d.com/ScriptReference/iOS.Xcode.PBXProject.html}]
 
 == PostProcessSceneAttribute
 
@@ -80,7 +89,7 @@ public class NewBehaviourScript
     static void OnPostProcessScene ()
     {
         var currentScenePath = EditorApplication.currentScene;
-        
+
         // ゲーム再生時はシーンのパスを取得できる
         // ビルド時は空文字
         Debug.Log (currentScenePath);
@@ -127,7 +136,7 @@ public class NewBehaviourScript
     {
         if (EditorApplication.isPlayingOrWillChangePlaymode)
             return;
-        
+
         Debug.Log ("call");
     }
 }
@@ -147,7 +156,7 @@ public class NewBehaviourScript
     {
         if (EditorApplication.timeSinceStartup > 10)
             return;
-        
+
         Debug.Log ("call");
     }
 }
@@ -199,7 +208,7 @@ public class NewBehaviourScript
     {
         // プラットフォームごとに bundleIdentifier を切り替える
         EditorUserBuildSettings.activeBuildTargetChanged += () => {
-            
+
             var bundleIdentifier = "com.kyusyukeigo.superapp";
 
             switch (EditorUserBuildSettings.activeBuildTarget) {
@@ -244,7 +253,7 @@ public class NewBehaviourScript
     [InitializeOnLoadMethod]
     static void DrawCameraNames ()
     {
-        
+
         var selected = 0;
         var displayNames = new string[0];
         var windowRect = new Rect (10, 20, 100, 24);
@@ -253,7 +262,7 @@ public class NewBehaviourScript
         EditorApplication.hierarchyWindowChanged += () => {
             var cameras = Object.FindObjectsOfType<Camera> ();
             displayNames = new string[]{ "None", "" };
-            ArrayUtility.AddRange (ref displayNames, 
+            ArrayUtility.AddRange (ref displayNames,
                  cameras.Select (c => c.name).ToArray ());
         };
 
@@ -265,7 +274,7 @@ public class NewBehaviourScript
 
             Handles.BeginGUI ();
 
-            int windowID = 
+            int windowID =
                 EditorGUIUtility.GetControlID (FocusType.Passive, windowRect);
 
             windowRect = GUILayout.Window (windowID, windowRect, (id) => {
@@ -341,7 +350,7 @@ public class NewBehaviourScript
 static void CheckPlaymodeState ()
 {
     EditorApplication.playmodeStateChanged += () => {
-            
+
         if (EditorApplication.isPaused) {
             // 一時停止中
         }
@@ -381,7 +390,7 @@ public class CompileError
             if (!EditorApplication.isPlayingOrWillChangePlaymode
                  && EditorApplication.isPlaying)
                 return;
-            
+
             // SceneViewが存在すること
             if (SceneView.sceneViews.Count == 0)
                 return;
@@ -405,16 +414,16 @@ public class CompileError
 
         if (gameObject == null) {
             //HideAndDontSaveフラグを立てて非表示・保存しないようにする
-            gameObject = 
-                EditorUtility.CreateGameObjectWithHideFlags (gameObjectName, 
+            gameObject =
+                EditorUtility.CreateGameObjectWithHideFlags (gameObjectName,
                     HideFlags.HideAndDontSave, typeof(AudioSource));
         }
 
         var hideAudioSource = gameObject.GetComponent<AudioSource> ();
 
         if (hideAudioSource.clip == null) {
-            hideAudioSource.clip = 
-                AssetDatabase.LoadAssetAtPath (musicPath, 
+            hideAudioSource.clip =
+                AssetDatabase.LoadAssetAtPath (musicPath,
                                             typeof(AudioClip)) as AudioClip;
         }
 
@@ -476,7 +485,7 @@ public class NewBehaviourScript
             var assetPath = "Assets/New Texture.png";
             File.WriteAllBytes (assetPath, www.bytes);
             AssetDatabase.ImportAsset(assetPath);
-        
+
         });
     }
 
@@ -600,19 +609,19 @@ using CallbackFunction = UnityEditor.EditorApplication.CallbackFunction;
 [InitializeOnLoad]
 class EditorApplicationUtility
 {
-    static BindingFlags flags = 
+    static BindingFlags flags =
         BindingFlags.Static | BindingFlags.Instance | BindingFlags.NonPublic;
-    
+
     static FieldInfo info = typeof(EditorApplication)
                                      .GetField ("globalEventHandler", flags);
 
     public static CallbackFunction globalEventHandler {
-        get { 
+        get {
             return  (CallbackFunction)info.GetValue (null);
         }
-        set { 
+        set {
             CallbackFunction functions = (CallbackFunction)info.GetValue (null);
-            functions += value;  
+            functions += value;
             info.SetValue (null, (object)functions);
         }
     }

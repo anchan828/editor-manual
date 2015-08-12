@@ -1,6 +1,6 @@
 = CustomEditor
 
-カスタムエディターは、インスペクターやシーンビューに表示されているGUIをカスタマイズするためのものです。本章ではカスタムエディターの基本的な使い方だけでなく、インスペクターの仕組みについても紹介していきます。
+カスタムエディターは、インスペクターやシーンビューに表示されているGUIをカスタマイズするための機能です。本章ではカスタムエディターの基本的な使い方に加え、インスペクターの仕組みについても紹介していきます。
 
 == インスペクターの Debug モード
 
@@ -10,52 +10,45 @@
 
 //}
 
-その時に、インスペクターのタブ部分、または「 ≡ 」をクリックすると@<img>{ss04}のようにコンテキストメニューが表示され「Normal」と「Debug」項目があります。
+その時に、インスペクターのタブ部分を右クリック、または「 ≡ 」をクリックすると@<img>{ss04}のようにコンテキストメニューが表示され「Normal」と「Debug」項目を見つけることができます。
 
 //image[ss04][通常は Normal にチェックが付いている]{
 
 //}
 
-Debugを選択するとインスペクターに変化が現れます。@<img>{ss03}のように普段見ているインスペクターとは少し違う見た目になりました。
+ここでDebugを選択すると、@<img>{ss03}のように普段見ているインスペクターとは少し違う見た目になります。
 
-//image[ss03][普段見ない Instance ID や File ID のプロパティーが見える]{
+//image[ss03][普段見ない Instance ID や File ID のプロパティーを見ることができる]{
 
 //}
 
-Debug モードでは、GUI 要素がカスタマイズされる前の@<b>{素}の状態に戻ります。@<fn>{1}このように Unity は、インスペクターに表示したい GUI 要素を取捨選択し、カスタマイズして表示します。
-
-では、カスタマイズをするために「インスペクターに表示したい GUI 要素を取捨選択」する部分は一体どこなのかを知らなくてはいけません。
+これは、Debug モードがインスペクターがカスタマイズされる前の@<b>{素の状態}を表示しているためです。@<fn>{1}Unity はデフォルトで、インスペクターに表示したい要素を取捨選択し、GUI をカスタマイズして表示しています。
 
 == オブジェクトと Editor クラス
 
-@<href>{http://docs.unity3d.com/ScriptReference/Editor.html, Editor}クラスは、オブジェクトの情報をインスペクターやシーンビューに表示するための機能です。各オブジェクトに対応した Editor オブジェクトが生成され、Editor オブジェクトを介して必要な情報を GUI で表示できるようになります。
+@<href>{http://docs.unity3d.com/ScriptReference/Editor.html, Editor}クラスは、オブジェクトの情報をインスペクターやシーンビューに表示するための橋渡しとなる機能です。インスペクターに何らかの情報が表示されるときに、各オブジェクトに対応した Editor オブジェクトが生成され、Editor オブジェクトを介して必要な情報を GUI で表示します。
 
 
 //image[ss06][ボックスコライダーを Editor オブジェクトを介して GUI を表示するイメージ]{
 
 //}
 
-その時に、全ての要素を見せるのは必要なかったり、追加の GUI 要素を表示したいということもあるので @<b>{CustomEditor（カスタムエディター）}の機能を使い Editor オブジェクトをカスタマイズできます。
+また、インスペクターに表示する必要のない要素があったり、ボタンなど独自に追加したい GUI 要素があるかもしれません。そのときには、@<b>{CustomEditor（カスタムエディター）}の機能を使うことで Editor オブジェクトをカスタマイズできます。
 
 === 普段見ているインスペクターは既にカスタムエディターが使われている
 
-普段インスペクターで触れているコンポーネントは、既にカスタムエディターによってカスタマイズされています。
+普段インスペクターで触れているコンポーネントは、既にカスタムエディターによってカスタマイズされています。本来の姿は本章の最初に説明した Debug モードの状態です。
 
-//image[ss05][語尾がInspectorとEditorで表記にゆれがあるが違いはない]{
+//image[ss05][語尾がInspectorとEditorで表記にゆれがあるが機能面では違いはない]{
 
 //}
 
-これからカスタムエディターを作成するときには「何ができるか」の参考になります。
+つまり、普段見ているインスペクターの表示をカスタムエディターを扱うことによって、ユーザーの手でも実装が可能です。ユーザーの手で実装するために、改めて「何ができるか」の参考としてインスペクターの表示を確認してみるのもいいかもしれません。
 
 
 == カスタムエディターを使う
 
-例えば、ゲーム中の実際の攻撃力は、キャラクターのちからや武器の強さで計算されて決まるとします。そのときにプログラム上で「攻撃力」というプロパティーを持ち、 getter で計算を行ってみましょう。プログラム上これでいいのですが、攻撃力の値を Unity エディターのインスペクターで確認したい場合は少し困ったことになります。Unityのインスペクターは、シリアライズ可能なフィールドを表示します。setter があってもシリアライズ対象ではないプロパティーは表示されません。
-
-//image[ss01][下記コンポーネントをインスペクターで見た図]{
-
-//}
-
+例えば、ゲーム中に使用する実際の攻撃力は、キャラクターのちからや武器の強さなど様々な要素があわさって決まるとします。そのときにプログラム上で使用する実際の「攻撃力」というプロパティーを持ち、 getter で攻撃力を求める計算を行います。
 
 //quote{
 ソースコードは計算式がちょっとだけ分かりやすいように日本語変数にしてみました。
@@ -76,7 +69,7 @@ public class Character : MonoBehaviour
   // プレイヤーの能力と、剣の強さから攻撃力を求めるプロパティー
   public int 攻撃力 {
       get {
-        return 基本攻撃力 + 
+        return 基本攻撃力 +
                Mathf.FloorToInt (基本攻撃力 * (剣の強さ + ちから - 8) / 16);
       }
   }
@@ -84,13 +77,18 @@ public class Character : MonoBehaviour
 //}
 
 
+プログラム上はこれでいいのですが、攻撃力の値を Unity エディターのインスペクターで確認したい場合は少し困ったことになります。Unityのインスペクターは、シリアライズ可能なフィールドを表示します。シリアライズ対象ではないプロパティーは表示されません。
 
+//image[ss01][下記コンポーネントをインスペクターで見た図]{
 
-今回は、@<img>{ss02}のようにプロパティーである攻撃力をインスペクター上に表示して、確認しながらパラメーターを調整していきます。
+//}
+
+今回は、@<img>{ss02}のようにプロパティーである攻撃力をインスペクター上に表示して、確認しながらパラメーターを調整できるよう実装してみます。
 
 //image[ss02][]{
 
 //}
+
 
 === Editor クラスの派生クラスを作成
 
@@ -135,11 +133,13 @@ public class CharacterInspector : Editor
 }
 //}
 
-これで @<img>{ss02} と同じ表示を行うことができました。
+これで @<img>{ss02} と同じ表示を行うことができました。このように、インスペクターの GUI をカスタマイズする時に、OnInspectorGUI をオーバーライドするだけでなく、@<code>{base.OnInspectorGUI} を呼び出してあげることで、元の GUI 要素はそのままで、インスペクターにカスタム要素を追加することができます。
 
 === シーンビューの GUI のカスタマイズ
 
-シーンビューの GUI は OnSceneGUI を使うことでカスタマイズできます。これについては @<chapref>{handles} にて詳しく説明しているので、そちらをご覧ください。
+シーンビューの GUI は OnSceneGUI を使うことでカスタマイズできます。OnSceneGUI は、主にゲームオブジェクトに対して使用されます。そして OnSceneGUI が実行されるタイミングは、ゲームオブジェクトを選択している（インスペクターが表示されている）時です。
+
+OnSceneGUI では少し特殊な @<b>{3Dに特化したGUI} を扱います。この説明は @<chapref>{handles} にて詳しく説明しているので、そちらをご覧ください。
 
 == カスタムエディターでデータのやり取り
 
@@ -149,7 +149,7 @@ public class CharacterInspector : Editor
 
 //}
 
-2種類の方法を説明していきます。その時には、以下のコンポーネントがあり、このカスタムエディターを作成するものとして話を進めていきます。
+これからその 2 種類の方法について説明していきます。説明時には、以下のコンポーネントがあり、このカスタムエディターを作成するものとして話を進めていきます。
 
 //emlist{
 using UnityEngine;
@@ -162,13 +162,13 @@ public class Character : MonoBehaviour
 
 === Unityのシリアライズ機構を通してアクセスする方法
 
-Unity はデータの持ち方として SerializedObject で、すべてのデータを管理しています。SerializedObject 経由でデータにアクセスすることでデータの操作に柔軟に対応できます。SerializedObject の詳しい説明は @<chapref>{serializedobject} をご覧ください。
+Unity はデータの持ち方として SerializedObject ですべてのデータを管理しています。SerializedObject 経由でデータにアクセスすることによって、データを操作する際に、柔軟な対応が可能になります。SerializedObject の詳しい説明は @<chapref>{serializedobject} をご覧ください。
 
-Editor オブジェクトが生成されると同時に、コンポーネントがシリアライズされ、serializedObject 変数に格納されます。serializedObject 変数から各プロパティーにアクセスできます。
+Editor オブジェクトが生成されると同時に、コンポーネントがシリアライズされ、Editor クラスの serializedObject 変数に格納されます。そして serializedObject 変数からシリアライズされた各値にアクセスできます。
 
-下記のコードのように、「@<b>{SerializedPropertyにアクセスする前}は必ず SerializedObject を最新に更新」します。これは同じコンポーネントの SerializedObject が他の場所で更新された場合に、その変更点を適用するためです。
+下記のコードのように、「@<b>{SerializedPropertyにアクセスする "前" }は必ず SerializedObject を最新に更新」しなければいけません。これは同じコンポーネントの SerializedObject が他の場所で更新された場合に、その変更点を適用するためです。
 
-「@<b>{SerializedPropertyにアクセスした後}は必ずプロパティーの変更点を SerializedObject に適用」します。これによりデータの保存処理が実行されます。
+「@<b>{SerializedPropertyにアクセスした "後" }は必ずプロパティーの変更点を SerializedObject に適用」します。これによりデータを保存する処理が実行されます。
 
 //emlist{
 using UnityEngine;
@@ -190,10 +190,6 @@ public class CharacterInspector : Editor
 
         EditorGUILayout.IntSlider (hpProperty, 0, 100);
 
-        // どちらも同じ処理
-        //hpProperty.intValue = 
-        //    EditorGUILayout.IntSlider ("Hp", hpProperty.intValue, 0, 100);
-
         serializedObject.ApplyModifiedProperties ();
     }
 }
@@ -201,7 +197,9 @@ public class CharacterInspector : Editor
 
 === コンポーネントに直接アクセスする方法
 
-この方法は本章の前半で行っています。コンポーネントに直接アクセスすることで、GUI のカスタマイズを簡単に行うことが可能です。
+（この方法は本章の前半で既に紹介されています。）
+
+コンポーネントに直接アクセスすることで、値の変更や GUI の作成を簡単に行うことができます。
 
 対象のコンポーネントは Editor オブジェクトの target 変数でアクセスできます。 UnityEngine.Object 型なのでキャストする必要があります。
 
@@ -228,8 +226,17 @@ public class CharacterInspector : Editor
 
 ==== Undo を実装すること
 
-コンポーネントに直接アクセスする方法はとても楽な方法です。文字列でプロパティーにアクセスする SerializedObject と比べると、typo などケアレスミスも少なくなります。ですがこの方法で、エディター拡張を「きちんと」実装するには Undo 処理を実装しなければいけません。Undo の詳しい説明は @<chapref>{undo} をご覧ください。
+コンポーネントに直接アクセスする方法はとても楽な方法です。文字列でプロパティーにアクセスする SerializedObject と比べると、typo などケアレスミスも少なくなります。ですがこの方法で、エディター拡張を「きちんと」実装するには Undo 処理を実装しなければいけません。Undo は自動で登録されるものではなく、値を変更するときには Undo 処理を自前で実装します。対して、SerializedObject では Undo は自動で登録されるので Undo について木にする必要はありません。Undo の詳しい説明は @<chapref>{undo} をご覧ください。
 
+
+==== オブジェクトが更新されたことをエディターに通知するSetDirty
+
+コンポーネントの値を変更したときは、必ず@<b>{EditorUtility.SetDirty}を呼び出します。これはUnityエディターにオブジェクトの状態が更新されたことを通知するために使用されます。
+
+オブジェクトには @<b>{Dirty flag（ダーティーフラグ）}があり、このフラグを立てることにより、Unityエディターは「アセットを最新の状態にする」ことができます。例えば、プレハブにアタッチされているコンポーネントの値を変更した時に、 @<b>{EditorUtility.SetDirty} を使用します。そして Unity
+プロジェクトを保存（File -> Save Project や AssetDatabase.SaveAssets）したとき、ダーティーフラグの立ったオブジェクトすべてがアセッに書き込まれます。
+
+このように、正しく変更された値をディスクに保存するためには、ダーティフラグを正しく設定していかなければなりません。主に、MonoBehaviour や　ScriptableObject の派生クラスで @<b>{EditorUtility.SetDirty} を使用します。
 
 //emlist{
 Character character;
@@ -266,7 +273,7 @@ Unity ではゲームオブジェクトを複数選択し@<b>{同時に}同じ�
 
 //}
 
-カスタムエディターを実装していない通常のコンポーネントでは@<b>{デフォルトで}同時編集が可能ですが、カスタムエディターを実装したコンポーネントでは同時編集できるようになっていません。
+ユーザーの手でカスタムエディターを実装していない通常のコンポーネントでは、@<b>{デフォルトで}同時編集が可能ですが、カスタムエディターを実装したコンポーネントではデフォルトで同時編集できるようにはなりません。
 
 === CanEditMultipleObjects
 
@@ -355,7 +362,7 @@ public class CharacterInspector : Editor
         EditorGUI.BeginChangeCheck ();
 
         // 異なる値が 2 以上であれば true
-        EditorGUI.showMixedValue = 
+        EditorGUI.showMixedValue =
             characters.Select (x => x.hp).Distinct ().Count () > 1;
 
         var hp = EditorGUILayout.IntSlider ("Hp", characters [0].hp, 0, 100);
@@ -413,7 +420,7 @@ public class Character : MonoBehaviour
 [CustomPropertyDrawer (typeof(Example))]
 public class ExampleDrawer : PropertyDrawer
 {
-    public override void OnGUI (Rect position, 
+    public override void OnGUI (Rect position,
                            SerializedProperty property, GUIContent label)
     {
         using (new EditorGUI.PropertyScope (position, label, property)) {
@@ -436,7 +443,7 @@ public class ExampleDrawer : PropertyDrawer
 
             EditorGUI.BeginChangeCheck ();
 
-            EditorGUI.MinMaxSlider (label, 
+            EditorGUI.MinMaxSlider (label,
                         minMaxSliderRect, ref minHp, ref maxHp, 0, 100);
 
             EditorGUI.LabelField (labelRect, minHp.ToString (), maxHp.ToString ());
@@ -448,7 +455,7 @@ public class ExampleDrawer : PropertyDrawer
         }
     }
 
-    public override float GetPropertyHeight (SerializedProperty property, 
+    public override float GetPropertyHeight (SerializedProperty property,
                                                                 GUIContent label)
     {
         return base.GetPropertyHeight (property, label) * 2;
@@ -660,19 +667,19 @@ public class PreviewExampleInspector : Editor
 public override void OnPreviewGUI (Rect r, GUIStyle background)
 {
     previewRenderUtility.BeginPreview (r, background);
-    
+
     var previewCamera = previewRenderUtility.m_Camera;
 
-    previewCamera.transform.position = 
+    previewCamera.transform.position =
         previewObject.transform.position + new Vector3 (0, 2.5f, -5);
-    
+
     previewCamera.transform.LookAt (previewObject.transform);
-    
+
     previewCamera.Render ();
 
     previewRenderUtility.EndAndDrawPreview (r);
 
-    
+
     // 描画タイミングが少ないことによって
     // カクつきがきになる時は Repaint を呼び出す（高負荷）
     // Repaint ();
@@ -697,7 +704,7 @@ public class PreviewExampleInspector : Editor
         previewRenderUtility.m_CameraFieldOfView = 30f;
 
         previewRenderUtility.m_Camera.farClipPlane = 1000;
-        previewRenderUtility.m_Camera.nearClipPlane = 0.3f; 
+        previewRenderUtility.m_Camera.nearClipPlane = 0.3f;
 
         var component = (Component)target;
         previewObject = component.gameObject;
@@ -723,9 +730,9 @@ public class PreviewExampleInspector : Editor
 
         previewCamera.transform.position =
             previewObject.transform.position + new Vector3 (0, 2.5f, -5);
-        
+
         previewCamera.transform.LookAt (previewObject.transform);
-        
+
         previewCamera.Render ();
 
         previewRenderUtility.EndAndDrawPreview (r);
@@ -745,7 +752,7 @@ public class PreviewExampleInspector : Editor
 
 プレビューで使用されているゲームオブジェクトはシーンの中に生成されています。
 
-下記の手順を行うことで、シーン内にあるプレビュー用ゲームオブジェクトを、プレビュー画面で表示すること可能です。 
+下記の手順を行うことで、シーン内にあるプレビュー用ゲームオブジェクトを、プレビュー画面で表示すること可能です。
 
  1. Object.Instantiate でプレビュー用ゲームオブジェクトを生成する
  2. プレビュー用ゲームオブジェクトに Preview 専用のレイヤー「PreviewCullingLayer」を設定

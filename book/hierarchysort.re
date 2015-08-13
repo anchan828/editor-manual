@@ -9,11 +9,11 @@ Hierarchyウィンドウでは、ゲームオブジェクトの順番を任意�
 
 ただ、ここで1つ抑えてほしいことは あくまで Hierarchy の表示順をかえるということであり GameObject.Find などのゲームオブジェクトの取得順は変更されていない、ということに注意してください。
 
-さらに、HierarchySortを自分で作成する方法が用意されています。
+本章では、HierarchySortを自分で作成する方法を紹介していきます。
 
 == HierarchySortを自作する
 
-公式のスクリプトリファレンスで@<href>{http://docs.unity3d.com/ja/current/ScriptReference/BaseHierarchySort.html,サンプル}として、Alphabetical Sort を作成する方法が掲載されています。
+公式のスクリプトリファレンスには@<href>{http://docs.unity3d.com/ja/current/ScriptReference/BaseHierarchySort.html,サンプル}として、Alphabetical Sort を作成する方法が掲載されています。
 
 HierarchySortを自作するには、@<b>{BaseHierarchySort}を継承したクラスを用意して@<code>{Compare}メソッドをオーバーライドします。
 
@@ -33,7 +33,7 @@ public class AlphaNumericSort : BaseHierarchySort
 
 == TagSort を作成する
 
-今回は ゲームオブジェクトのタグ名で並び替えるHierarchySortを作成してみましょう。
+今回は ゲームオブジェクトのタグ名で並び替えるHierarchySortを作成してみます。
 
 === BaseHierarchySort を継承したクラスを作成する
 

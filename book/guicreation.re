@@ -1,10 +1,9 @@
 
 = GUIを自作する
 
+@<b>{注: 本章はObjectFieldがSpriteに対応していない時に執筆されたものです。なので目的となる「Sprite に対応したフィールドの作成」は必要のない拡張になってしまいますが、その過程で使用する技術はためになるので掲載しています。}
 
-例えば@<b>{EditorGUILayout.ObjectField}でSpriteのフィールドを表示した時、Texture系であればプレビューがあるGUIに変化しますがSpriteはプレビューが実装されていませんでした。
-
-@<b>{注: 本章はObjectFieldがSpriteに対応していない時に執筆されたものです。なので目的となる「Sprite に対応したフィールドの作成」は無駄になりますが、その過程で使用する技術は有用なので掲載しています。}
+例えば@<b>{EditorGUILayout.ObjectField}でSpriteのフィールドを表示した時、Texture系であればプレビュー形式のGUIに変化しますが、Spriteはプレビュー形式にはなりません。（注: 最新バージョンのUnityではプレビュー形式になります）
 
 //image[ss01][Texture2DとSpriteのGUIを並べたもの][scale=0.5]{
 
@@ -23,17 +22,17 @@ void OnGUI ()
 }
 //}
 
-@<b>{プレビュー対応しているSpriteField}のような自分でGUIを作成する事が可能です。
+@<b>{プレビュー形式に対応したSpriteField}を自作してみましょう。
 
 
 == GUIを作る
 
-IMGUI（Immediate Mode GUI - Unity4.5までのGUIシステムをこう呼びます）でランタイムでもエディター上でも自由にGUIを作成することが可能です。
-ですがNGUIやUnity4.6から搭載されるuGUIを触る人が多く、ほぼGUIを作成するのはエディター拡張分野となってしまったため、GUIを作成する技術はそれほど認知されていません。
+IMGUI@<fn>{imgui}でランタイムでもエディター上でも自由にGUIを作成することが可能です。
+ですがNGUIやUnity4.6から搭載されるuGUIを触る人が多く、ほぼ GUI クラスを使って GUI を作成するのは、エディター拡張をする時のみとなってしまいました。なので、GUI クラスにある@<code>{IntField}のようなGUIフィールドを作成する技術はそれほど認知されていません。
 
-そこで今回はGUIを作成するときに必要最低限必要な知識を書いていきたいと思います。
+そこで今回はGUIフィールドを作成するときに必要な、最低限の知識を紹介していきます。
 
-実際にGUIを作成するにはいくつかの知識が必要です。
+//footnote[imgui][Immediate Mode GUI - Unity4.5まで主流だったGUIシステムをこう呼びます]
 
 == GUIStyle
 
@@ -61,42 +60,42 @@ GUILayout.Label ("ラベル", "box");
 
 2つのパターンを紹介しました。最後にもう1つあり、これがGUIを作成する上で必要な知識となります。
 
-GUIStyleにはGUIStyle.DrawというAPIが存在します。これはGUISkinとして設定されたフォントやテクスチャ、文字の色を使用して描画を行うものです。
-皆さんが普段目にしている@<code>{GUILayout.Button}のボタン画像も、<code>{GUILayout.Button}の内部でGUIStyle.Drawによって描かれています。
+GUIStyleにはGUIStyle.DrawというAPIが存在します。これは GUIStyle に設定されたフォントやテクスチャ、文字の色を使用して描画を行うものです。
+皆さんが普段目にしている@<code>{GUILayout.Button}のボタン画像も、@<code>{GUILayout.Button}の内部でGUIStyle.Drawが呼び出されています。
 
 
 == Event
 
-Eventクラスはすべてのイベントを管理するために使用されています。
+Eventクラスはすべてのイベントを管理するための機能です。
 
-GUIに関するイベントではボタンをマウスでクリックするとき
+GUIに関するイベントは、さまざまな種類があり、例えばボタンをマウスでクリックするとき
 
  * ボタンの上にマウスがある
  * クリックされた
  * ボタンが押しっぱなしである
 
-などのイベントが発生し、このイベントを適切に処理することでボタンの動きを表現できます。
+のイベントが発生します。この時に、イベントを適切に処理することによってボタンの動きを表現できます。
 
-Eventを使用するとき、例えば「ボタンを押した」というイベントをコードにすると以下のようになります。
+例えば「ボタンを押した」というイベントをコードにした時は、以下のようになります。
 
 //emlist{
 if (Event.current.type == EventType.MouseDown) {
 
     ...ボタンを押した時の処理...
 
-    // ボタン（マウス）を押したというイベントとして処理。以降はイベントは使用されない
+    // ボタンを押した（使用済み）として処理。
     Event.current.Use();
 }
 //}
 
 「ボタンを押した」というイベントを使用する場合、必ずEvent.Useを呼び出します。そうすると@<b>{今回のイベントは既に使用された}という状態になります。
 
-Event.Useを呼び出した後はEvent.typeは@<b>{used}となります。こうすることにより、他のイベント処理は実行されなくなり他のイベントと競合することがなくなります。
+Event.Useを呼び出した後はEvent.typeは@<b>{used}となります。こうすることにより、他のイベント処理は実行されなくなり、他のイベントと競合することがなくなります。
 
 == Control ID
 
 すべてのGUIに対してコントロールIDというものが割り振られています。このIDによりそれぞれのGUIは独立したものとなります。
-このIDを適切に割り振らないと、「GUI.Windowをマウスでドラッグした時に範囲選択ツールが動作してしまった」というような意図しないGUIの複数操作（競合？）をしてしまうことになります。
+このIDを適切に割り振らないと、「GUI.Windowをマウスでドラッグした時に範囲選択ツールが動作してしまった」というような意図しないGUIの複数操作（競合）をしてしまうことになります。
 
 
 === コントロールIDの生成/取得
@@ -117,7 +116,7 @@ GUIStyle.DrawにコントロールIDを渡すことによって、スタイル�
 
 === 現在フォーカス中のコントロールID
 
-現在何のコントロールIDにフォーカスが当てられているかを知るには@<code>{GUIUtility.hotControl}を使用します。またはキーボードのフォーカスを知るには@<code>{GUIUtility.keyboardControl}となります。
+現在、どのコントロールIDにフォーカスが当てられているかを知るには@<code>{GUIUtility.hotControl}を使用します。またはキーボードのフォーカスを知るには@<code>{GUIUtility.keyboardControl}となります。
 また、GUIUtility.hotControlに代入することで強制的にコントロールIDを切り替えることが可能です。
 
 == ObjectPicker
@@ -129,7 +128,7 @@ GUIStyle.DrawにコントロールIDを渡すことによって、スタイル�
 
 オブジェクトピッカーの表示は@<code>{EditorGUIUtility.ShowObjectPicker}で行うことが可能です。
 
-そして、オブジェクトピッカーで選択中のオブジェクト・選択されたオブジェクトを取得するにはEventのコマンド名(Event.commandname)が@<b>{ObjectSelectorUpdated}と@<code>{EditorGUIUtility.GetObjectPickerObject}を組み合わせて使用することになります。
+そして、オブジェクトピッカーで選択中のオブジェクト・選択されたオブジェクトを把握するために、Eventのコマンド名(Event.commandname)が@<b>{ObjectSelectorUpdated}と@<code>{EditorGUIUtility.GetObjectPickerObject}を組み合わせて使用することになります。
 
 //emlist{
 // コマンド名がObjectSelectorUpdatedでオブジェクトピッカーが
@@ -156,7 +155,7 @@ if (GUI.Button(buttonRect, "select", EditorStyles.objectFieldThumb.name + "Overl
 == DragAndDrop
 
 ObjectFieldのようにドラッグ＆ドロップしてオブジェクトの参照を格納したい場合があります。その時にはDragAndDropを使用します。
-DragAndDropではオブジェクトをドラッグする処理と、ドロップする処理の2つにわかれます。ObjectFieldのようなGUIを作成するときは、プロジェクトブラウザーからドラッグする処理は既にUnity側で実装されているのでドロップする処理のみを実装すれば良いです。
+DragAndDropではオブジェクトをドラッグする処理と、ドロップする処理の2つにわかれます。ObjectFieldと似たGUIを作成するときは、ヒエラルキーやプロジェクトブラウザーでは既にドラッグする処理が実装済みなので、GUIへドロップする処理のみを実装すればよいです。
 
 
 //emlist{
@@ -226,9 +225,12 @@ if (rect.Contains(evt.mousePosition))
 == GUIUtility.ExitGUI
 
 GUIでは描画に関するEventを2種類発行しています。GUIのレイアウトを構成する「Layout」と再描画を行う「Repaint」です。
-このイベント中以外で描画を変更するような処理を加えた時、Unity側はエラーとなり正しくGUIが描画されなくなります。
-これを回避するために@<code>{GUIUtility.ExitGUI}を呼び出し、以降のGUIの描画に関する処理は全て無視する事が可能です。
-こうすることで次の「Layout」と「Repaint」処理が発行され、次は正しく描画されることになります。
+これらのイベント以外で描画を変更するような処理を加えた場合、GUIのレイアウトが崩れたとこになりUnity側はエラーと判断し、GUIが正しく描画されなくなります。
+
+この現象は、「GUI関数の引数で使う要素を配列で保持しているときに、特定の要素を配列から削除」するときによく起こります。
+
+これを回避するためには、@<code>{GUIUtility.ExitGUI}を呼び出し、以降のGUIの描画に関する処理は全て無視する事ができます。
+こうすることで問題なく次フレームの「Layout」と「Repaint」処理が発行され、エラーは発生しません。
 
 == GUILayout対応
 
@@ -247,7 +249,214 @@ public static Sprite SpriteField(Sprite sprite, params GUILayoutOption[] options
 
 このように既に実装されているGUILayoutのAPIを発行した後、@<code>{GUILayoutUtility.GetLastRect}を行うことで簡単にRect情報を取得することが可能です。
 
-== 最後に
+これで、@<code>{SpriteField} を作成するための知識が揃いました。細かな説明を加えながらコードを組み立てていきましょう。
 
-おそらく普段Editor拡張を触っている人たちでもコントロールIDに関する部分は触らないことが多いと思います。難しかったでしょうか？
-ここを理解すれば自作のGUIやEventクラスの動きについての理解が深まります。
+
+== SpriteField 関数を作成する
+
+//indepimage[ss04]
+
+まずは @<code>{CustomEditorGUI} クラスを作成し、その中に SpriteField のメソッドを追加します。
+
+//emlist{
+using UnityEditor;
+using UnityEngine;
+
+public class CustomEditorGUI
+{
+    public static Sprite SpriteField (Rect rect, Sprite sprite)
+    {
+    }
+}
+//}
+
+つぎに、@<code>{GUIStyle.Draw} を使って背景を描画します。@<code>{GUIStyle.Draw} は EventType.Repaint の時のみ実行なので気をつけてください。
+
+//emlist{
+using UnityEditor;
+using UnityEngine;
+
+public class CustomEditorGUI
+{
+    public static Sprite SpriteField (Rect rect, Sprite sprite)
+    {
+        var evt = Event.current;
+        if (evt.type == EventType.Repaint) {
+            // サムネ形式の背景を描画
+            EditorStyles.objectFieldThumb.Draw (rect, GUIContent.none, id, false);
+
+            if (sprite) {
+                // スプライトからプレビュー用のテクスチャを取得
+                var spriteTexture = AssetPreview.GetAssetPreview (sprite);
+
+                if (spriteTexture) {
+                    spriteStyle.normal.background = spriteTexture;
+                    // スプライトを描画
+                    spriteStyle.Draw (rect, false, false, false, false);
+                } 
+            }
+        }
+    }
+}
+//}
+
+つぎはドラッグ＆ドロップの処理です。 GUI 上にマウスがあるときのみ処理を行うので @<code>{Rect.Contains} でマウスの位置を監視します。
+
+//emlist{
+using UnityEditor;
+using UnityEngine;
+
+public class CustomEditorGUI
+{
+    public static Sprite SpriteField (Rect rect, Sprite sprite)
+    {
+        var evt = Event.current;
+        
+        // ... 背景描画のコードは略 ...
+
+
+        if (rect.Contains (evt.mousePosition)) {
+        
+            switch (evt.type) {
+        
+            case EventType.DragUpdated:
+            case EventType.DragPerform:
+        
+                if (DragAndDrop.objectReferences.Length == 1)
+                    DragAndDrop.AcceptDrag ();
+        
+                DragAndDrop.visualMode = DragAndDropVisualMode.Generic;
+        
+                break;
+            case EventType.DragExited:
+        
+                if (DragAndDrop.objectReferences.Length == 1) {
+                    var reference = DragAndDrop.objectReferences [0] as Sprite;
+                    if (reference != null) {
+                        sprite = reference;
+                        HandleUtility.Repaint ();
+                    }
+                }
+                break;
+            }
+        }
+    }
+}
+//}
+
+
+つぎに、描画範囲に対してのコントロールIDを取得します。今回は Tab キーを押すことで別の GUI 要素へ移動する実装を行います。その時には、FocusType.Keyboard を使って ID を作成します。
+
+
+//emlist{
+using UnityEditor;
+using UnityEngine;
+
+public class CustomEditorGUI
+{
+    public static Sprite SpriteField (Rect rect, Sprite sprite)
+    {
+          var id = GUIUtility.GetControlID (FocusType.Keyboard, rect);
+    }
+}
+//}
+
+また、Drawの引数にコントロールIDが使用できます。これは、ドラッグ&ドロップと関係があります。現在ドラッグ中で、マウスが GUI 上にある場合は on は true となり、@<b>{GUI にフォーカスがあたっている状態}を表現することができます。
+
+//emlist{
+var on = DragAndDrop.activeControlID == id;
+EditorStyles.objectFieldThumb.Draw (rect, GUIContent.none, id, on);
+
+.
+.
+.
+
+switch (evt.type)
+{
+case EventType.DragUpdated:
+case EventType.DragPerform:
+    DragAndDrop.activeControlID = id;
+//}
+
+最後に オブジェクトピッカー を実装します。
+
+
+まずは、オブジェクトピッカーを表示するための小さなボタンを右下に表示します。
+
+ただ、ボタンを表示するのではなく、キーボード操作でもボタンを押せるようにします。
+
+//emlist{
+var buttonRect = new Rect (rect);
+// 加工
+buttonRect.x += buttonRect.width * 0.5f;
+buttonRect.width *= 0.5f;
+buttonRect.y += rect.height - 16;
+buttonRect.height = 16;
+
+// キーをおした時
+// エンターキーである時
+// そして操作しているのがこの GUI であるとき
+var hitEnter = evt.type == EventType.KeyDown 
+               && (evt.keyCode == KeyCode.Return || evt.keyCode == KeyCode.KeypadEnter) 
+               && EditorGUIUtility.keyboardControl == id;
+
+// ボタンをおした時、またはエンターキーを押した時にオブジェクトピッカーを表示
+if (GUI.Button (buttonRect, "select", EditorStyles.objectFieldThumb.name + "Overlay2") || hitEnter) {
+    // どの GUI で表示したか判断できるようにコントロールIDを渡す
+    EditorGUIUtility.ShowObjectPicker<Sprite> (sprite, false, "", id);
+    evt.Use ();
+    GUIUtility.ExitGUI ();
+}
+//}
+
+最後にオブジェクトピッカーで選択したものを取得して実装は完了です。
+
+//emlist{
+// オブジェクトピッカーがこの GUI のためのものであるか判断
+if (evt.commandName == "ObjectSelectorUpdated"
+    && id == EditorGUIUtility.GetObjectPickerControlID ()) {
+   
+    sprite = EditorGUIUtility.GetObjectPickerObject () as Sprite;
+
+    // 描画するスプライトが変更されたので再描画
+    HandleUtility.Repaint ();
+}
+//}
+
+GUILayout ようにもクラスを作成します。
+
+//emlist{
+public class CustomEditorGUILayout
+{
+    public static Sprite SpriteField (Sprite sprite, params GUILayoutOption[] options)
+    {
+        EditorGUILayout.LabelField ("", "", options);
+        var rect = GUILayoutUtility.GetLastRect ();
+        return CustomEditorGUI.SpriteField (rect, sprite);
+    }
+}
+//}
+
+作成したものは以下のように使用します。
+
+//emlist{
+using UnityEditor;
+using UnityEngine;
+
+public class NewBehaviourScript : EditorWindow
+{
+    [MenuItem("Window/SpriteEditor")]
+    static void Open()
+    {
+        GetWindow<NewBehaviourScript>();
+    }
+
+    private Sprite sprite1,sprite2;
+    void OnGUI()
+    {
+        sprite1 = CustomEditorGUI.SpriteField(new Rect(134, 1, 128, 128), sprite1);
+        sprite2 = CustomEditorGUILayout.SpriteField(sprite2, 
+                                      GUILayout.Width(128), GUILayout.Height(128));
+    }
+}
+//}

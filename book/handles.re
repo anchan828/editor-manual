@@ -12,7 +12,7 @@
 
 == ゲームオブジェクトにハンドルを追加
 
-ゲームオブジェクトに独自のハンドルを追加してみましょう。ハンドルの実装は通常 @<b>{CustomEditor} の @<code>{OnSceneGUI} 関数の中で行います。
+ゲームオブジェクトに独自のハンドルを追加します。ハンドルの実装は通常 @<b>{CustomEditor} の @<code>{OnSceneGUI} 関数の中で行います。
 
 
 //emlist{
@@ -100,13 +100,13 @@ void PositionHandle (Transform transform)
 }
 //}
 
-これで、３軸の矢印のハンドルを表示することができました。ですが、まだ色がついていません。
+これで、3軸の矢印のハンドルを表示することができました。ですが、まだ色がついていません。
 
 //indepimage[ss06]
 
 ==== ハンドルに色を付ける
 
-色をつけるには、ハンドルを描画する「前」に @<b>{Handles.color} に値を代入します。各軸の色は既に用意されているものを使いましょう。
+色をつけるには、ハンドルを描画する「前」に @<b>{Handles.color} に値を代入します。各軸の色は既に用意されているものを使います。
 
 //emlist{
 void PositionHandle (Transform transform)
@@ -127,7 +127,7 @@ void PositionHandle (Transform transform)
 
 ==== ハンドルで位置を移動
 
-Sliderで移動させた結果をオブジェクトへ反映しましょう。
+Sliderで移動させた結果をオブジェクトへ反映します。
 
 //emlist{
 void OnSceneGUI ()
@@ -313,7 +313,7 @@ void OnSceneGUI ()
 }
 //}
 
-ハンドルが大きいと感じる場合は、本章で自作した PositionHandle を使用してみましょう。
+ハンドルが大きいと感じる場合は、本章で自作した PositionHandle を使用してみます。
 
 //image[ss13][各点に PositionHandle が表示された]{
 
@@ -432,7 +432,7 @@ void OnSceneGUI ()
 
 === ウィンドウの表示
 
-GUI クラスの使い方は、インスペクターや他のウィンドウでの使い方と変わりません。試しにウィンドウを表示してみましょう。
+GUI クラスの使い方は、インスペクターや他のウィンドウでの使い方と変わりません。試しにウィンドウを表示してみます。
 
 //image[ss17][左上に GUI のウィンドウが表示される]{
 

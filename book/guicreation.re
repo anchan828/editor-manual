@@ -254,7 +254,7 @@ public static Sprite SpriteField(Sprite sprite, params GUILayoutOption[] options
 
 == SpriteField 関数を作成する
 
-//indepimage[ss04]
+
 
 まずは @<code>{CustomEditorGUI} クラスを作成し、その中に SpriteField のメソッドを追加します。
 
@@ -397,11 +397,12 @@ buttonRect.height = 16;
 // エンターキーである時
 // そして操作しているのがこの GUI であるとき
 var hitEnter = evt.type == EventType.KeyDown 
-               && (evt.keyCode == KeyCode.Return || evt.keyCode == KeyCode.KeypadEnter) 
-               && EditorGUIUtility.keyboardControl == id;
+            && (evt.keyCode == KeyCode.Return || evt.keyCode == KeyCode.KeypadEnter) 
+            && EditorGUIUtility.keyboardControl == id;
 
 // ボタンをおした時、またはエンターキーを押した時にオブジェクトピッカーを表示
-if (GUI.Button (buttonRect, "select", EditorStyles.objectFieldThumb.name + "Overlay2") || hitEnter) {
+if (GUI.Button (buttonRect, "select", EditorStyles.objectFieldThumb.name + "Overlay2")
+     || hitEnter) {
     // どの GUI で表示したか判断できるようにコントロールIDを渡す
     EditorGUIUtility.ShowObjectPicker<Sprite> (sprite, false, "", id);
     evt.Use ();
@@ -460,3 +461,5 @@ public class NewBehaviourScript : EditorWindow
     }
 }
 //}
+
+//indepimage[ss04]

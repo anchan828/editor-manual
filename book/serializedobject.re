@@ -13,7 +13,7 @@ SerializedObject は、Unity上で扱う全てのオブジェクトに関係し�
 === UnityEngine.Object と SerializedObject の関係
 
 
-Unityエディター上では全てのオブジェクト（UnityEngine.Object）は SerializedObject に変換されて扱われています。インスペクターでコンポーネントの値を編集している時も、Component のインスタンスを編集しているわけではなく、SerializedObject のインスタンスを編集していることになります。
+Unityエディター上では、全てのオブジェクト（UnityEngine.Object）は SerializedObject に変換されて扱われています。インスペクターでコンポーネントの値を編集している時も、Component のインスタンスを編集しているわけではなく、SerializedObject のインスタンスを編集していることになります。
 
 //image[ss03][Unityエディター上では必ず SerializedObject 経由で値を編集することになる。ただし CustomEditor を実装している場合はその限りではない。]{
 
@@ -22,21 +22,21 @@ Unityエディター上では全てのオブジェクト（UnityEngine.Object）
 Unityエディター上、つまりエディター拡張では@<b>{できるだけ}すべてのオブジェクト操作を SerializedObject で行っていく必要があります。この理由として SerializedObject では、シリアライズされたデータを扱うだけではなく @<b>{Undo} や @<b>{Selection} のハンドリングも行っています。
 
 : Undo のハンドリング
-  SerializedObject で値を編集する時、Undo処理は意識せずとも登録されます。UnityEngine.Object のインスタンスを直接編集した場合は、Undo 処理を独自で実装しなければいけません。Undo について詳しくは @<chapref>{undo} をご覧ください。
+  SerializedObject で値を編集する時、Undo処理は意識せずとも登録されます。UnityEngine.Object のインスタンスを直接編集した場合は、Undo 処理を独自で実装しなければいけません。Undo について詳しくは@<chapref>{undo}をご覧ください。
 
 : Selection のハンドリング
  プロジェクトウィンドウでアセットを選択した時、即座にデシリアライズして UnityEngine.Object のインスタンスを取得し、インスペクターに値を表示します。このハンドリングで主に役立つのが、複数のオブジェクトを選択した時に、シリアライズされたプロパティーの同時編集を可能にする仕組みです。
 
-このように Unity でオブジェクトを扱う上で便利な機能を包括しています。もし、SerializedObject 経由でオブジェクトを扱わない場合、 Undo や Selection のハンドリングを自分で実装しなければいけません。この2つのハンドリングについては @<chapref>{customeditor} にて説明しています。また、この章の後半でも軽く説明します。
+このように Unity でオブジェクトを扱う上で便利な機能を包括しています。もし、SerializedObject 経由でオブジェクトを扱わない場合、Undo や Selection のハンドリングを自分で実装しなければいけません。この2つのハンドリングについては@<chapref>{customeditor}にて説明しています。また、この章の後半でも軽く説明します。
 
 
 
 
 === アセットと SerializedObject の関係
 
-UnityEngine.Object をアセットとして保存する場合、@<b>{バイナリ形式} 、または @<b>{YAML 形式のテキストデータ}として保存されます。これらのシリアル化を担うのが SerializedObject です。
+UnityEngine.Object をアセットとして保存する場合、@<b>{バイナリ形式}、または @<b>{YAML 形式のテキストデータ}として保存されます。これらのシリアル化を担うのが SerializedObject です。
 
-単純なイメージとしては @<img>{ss02} となります。 UnityEngine.Object をアセットとして保存するには SerializedObject に一度変換します。次に、変換された SerializedObject はアセットと @<b>{.meta} ファイルの作成を試みます。
+単純なイメージとしては@<img>{ss02} となります。UnityEngine.Object をアセットとして保存するには SerializedObject に一度変換します。次に、変換された SerializedObject はアセットと @<b>{.meta} ファイルの作成を試みます。
 
 //image[ss02][データの流れ]{
 
@@ -75,10 +75,10 @@ m_TextureSettings
 m_ColorSpace
 //}
 
-このように Texture2D オブジェクトは SerializedObject に変換した時にはインポーターの設定も持っていることがわかります。Texture2D をアセットとして保存する場合は、これらの設定をディスク上にあるテクスチャ（jpg や png）に書き込むわけにもいきませんので、 .meta ファイルに書き出す仕様となっています。
+このように Texture2D オブジェクトは SerializedObject に変換した時にはインポーターの設定も持っていることがわかります。Texture2D をアセットとして保存する場合は、これらの設定をディスク上にあるテクスチャ（jpg や png）に書き込むわけにもいきませんので、.meta ファイルに書き出す仕様となっています。
 
 
-また逆に、アセットをインポートするときは、アセットと .meta ファイル（.metaファイルがなければデフォルト設定で自動生成）から SerializedObject が生成され、 UnityEngine.Object へと変換されます。
+また逆に、アセットをインポートするときは、アセットと .meta ファイル（.metaファイルがなければデフォルト設定で自動生成）から SerializedObject が生成され、UnityEngine.Object へと変換されます。
 
 === シリアライズ対象のクラス変数
 
@@ -117,7 +117,7 @@ public string str {
 
 == SerializedObjectの使い方
 
-本格的な実装例は @<chapref>{customeditor} で紹介しています。ここでは、 SerializedObject を上手く扱うための API を紹介していきます。
+本格的な実装例は@<chapref>{customeditor}で紹介しています。ここでは、SerializedObject を上手く扱うための API を紹介していきます。
 
 
 === SerializedObjectからパラメーターを取得する
@@ -251,7 +251,7 @@ public class NewBehaviourScript : Editor
 内部キャッシュに変更点を適用します。
 先ほどの Update で常に最新の情報にし、変更点を ApplyModifiedProperties で適用します。これで1セットと考えてください。
 
-特に変更点を適用するための条件がない場合は、Update をメソッドの一番最初の行に、ApplyModifiedProperties をメソッドの一番最後の行に記述します。
+特に変更点を適用するための条件がない場合は、Update をメソッドの最初の行に、ApplyModifiedProperties をメソッドの最後の行に記述します。
 
 //emlist{
 using UnityEngine;
@@ -277,7 +277,7 @@ public class NewBehaviourScript : Editor
 
 == 複数の UnityEngine.Object を1つの SerializedObject で扱う
 
-SerializedObject のコンストラクタで配列を渡すだけで複数の UnityEngine.Object を扱うことができます。@<b>{ただし、同じ型である必要があります。}
+SerializedObject のコンストラクタで配列を渡すだけで複数の UnityEngine.Object を扱うことができます。@<b>{ただし、引数として渡せるものは同じ型のみです。}もし異なる型のオブジェクトを引数として渡した場合、キーマップが一致せずにエラーが発生します。
 
 //emlist{
 // 複数のリジッドボディ
@@ -290,7 +290,7 @@ serializedObject.FindProperty ("m_UseGravity").boolValue = true;
 
 == プロパティー名を知るには
 
-SerializedProperty にアクセスするにはプロパティーのパスを知らなければいけません。自分で作成したコンポーネントにアクセスする場合は@<b>{プロパティーのパス}がすぐ分かるのですが、Unityが実装している UnityEngine.Object はプロパティー名に @<b>{m_} が付いている場合があります。@<b>{m_} はインスペクター上では省かれてプロパティー名として表示されるため、なかなか把握することが難しいです。
+SerializedProperty にアクセスするには、プロパティーのパスを知らなければいけません。自分で作成した MonoBehaviour コンポーネントにアクセスする場合は@<b>{プロパティーのパス}はスクリプトファイルを見ればすぐ分かります。Unity側で実装している コンポーネントや UnityEngine.Object 関連のプロパティーは、プロパティー名に @<b>{m_} が付いている場合があります。@<b>{m_} はインスペクター上では省かれてプロパティー名として表示されるため、実際のプロパティを把握するのが難しくなっています。また、インスペクターに表示されるプロパティ名と実際のプロパティ名が一致しない場合があります。
 
 プロパティーを知る方法は大きく分けて 2 パターンあります。
 

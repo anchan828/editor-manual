@@ -44,7 +44,7 @@
 
 === OnDrawGizmos と OnDrawGizmosSelected
 
-最も簡単にギズモを表示する方法として、2つのメソッドが用意されています。そのメソッドは MonoBehaviour の派生クラス内で、 Update 関数のようなコールバックとして使用できます。@<b>{ゲームオブジェクトまたは親を選択中の時のみ表示する} @<code>{OnDrawGizmosSelected}、@<b>{ゲームオブジェクトがアクティブの時に常に表示する} @<code>{OnDrawGizmos} の 2 つがあります。
+最も簡単にギズモを表示する方法として、2つのメソッドが用意されています。そのメソッドは MonoBehaviour の派生クラス内でUpdate 関数のようなコールバックとして使用できます。@<b>{ゲームオブジェクトまたは親を選択中の時のみ表示する} @<code>{OnDrawGizmosSelected}、@<b>{ゲームオブジェクトがアクティブの時に常に表示する} @<code>{OnDrawGizmos} の 2 つがあります。
 
 
 //image[ss03][OnDrawGizmosSelected を使ってオブジェクトを選択中にギズモを表示]{

@@ -1,13 +1,14 @@
 = ScriptableObject
 
+#@# TODO インスペクターに情報を表示するためには ScriptableObject を使うと言う節を書く
 
 == ScriptableObject とは
 
-ScriptableObject は独自のアセットを作成するための仕組みです。また、Unityのシリアライズ機構を扱うための形式とも言えます。
+ScriptableObject は独自のアセットを作成するための仕組みです。また、Unityのシリアライズ機構が扱う形式とも言えます。
 
 Unity には独自のシリアライズ機構を持っており、全てのオブジェクト（UnityEngine.Object）は、そのシリアライズ機構を通してデータのシリアライズ/デシリアライズを行い、ファイルとUnityエディター間のやりとりをしています。シリアライズ機構については@<chapref>{serializedobject}を参照してください。
 
-Unity 内部のアセット（マテリアルやアニメーションクリップ等）は全て UnityEngine.Object の派生クラスです。独自のアセットを作成するために、UnityEngine.Object の派生クラスを作成したいですが、ユーザー側では UnityEngine.Object の派生クラスを作成するのは禁止されています。ユーザーが Unity のシリアライズ機構を利用した、独自のアセットを作成するには ScriptableObject を扱う必要があります。
+Unity 内部のアセット（マテリアルやアニメーションクリップ等）は全て UnityEngine.Object の派生クラスです。独自のアセットを作成するために、UnityEngine.Object の派生クラスを作成したいですが、ユーザー側では UnityEngine.Object の派生クラスを作成するのは禁止されています。ユーザーが Unity のシリアライズ機構を利用した、独自のアセットを作成するには @<code>{ScriptableObject} を扱う必要があります。
 
 == ScriptableObject は Unity エディターの要
 
@@ -53,7 +54,7 @@ public class ExampleAsset : ScriptableObject
 
 次にインスタンス化したオブジェクトをアセットとして保存します。アセットの作成は @<code>{AssetDatabase.CreateAsset} を使って作成することが可能です。
 
-アセットの拡張子は、@<b>{必ず} @<code>{.asset} でなくてはいけません。他の拡張子にしてしまうと、Unity が ScriptableObject 派生のアセットと認識しません。
+アセットの拡張子は、@<b>{必ず} @<code>{.asset} でなくてはいけません。他の拡張子にしてしまうと、Unity が ScriptableObject 派生のアセットとして認識しません。
 
 //emlist{
 [MenuItem ("Example/Create ExampleAsset")]
@@ -92,15 +93,15 @@ CreateAssetMenu を使用した場合は 「Assets/Create」配下にメニュ�
 [MenuItem ("Example/Load ExampleAsset")]
 static void LoadExampleAsset ()
 {
-    var exampleAsset = 
-    　　　　AssetDatabase.LoadAssetAtPath<ExampleAsset> 
+    var exampleAsset =
+    　　　　AssetDatabase.LoadAssetAtPath<ExampleAsset>
                                ("Assets/Editor/ExampleAsset.asset");
 }
 //}
 
 === インスペクターにプロパティーを表示する
 
-MonoBehaviour と同じで、フィールドに SerializeField を付けるだけで表示されるようになります。また、 PropertyDrawer も適用されます。
+MonoBehaviour と同じで、フィールドに SerializeField を付けるだけで表示されるようになります。またPropertyDrawer も適用されます。
 
 //indepimage[ss03]
 

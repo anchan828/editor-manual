@@ -20,7 +20,7 @@ Unityエディターはさまざまな機能を持つEditorWindowの集まりで
 
 EditorWindow は単体で描画されているわけではなく、親として @<b>{DockArea} を持ち、この DockArea によって EditorWindow は描画されています。
 
-//image[ss19][]{
+//image[ss19][DockAreaの上に EditorWindow があるイメージ]{
 
 //}
 
@@ -31,13 +31,13 @@ DockArea は「Webブラウザーのタブ」と同じ機能を提供します�
 //image[ss20][Chromeのタブ機能]{
 //}
 
-見た目も似ていることながら、タブを摘んで別のウィンドウにする機能も実装されています。
+見た目も似ていますし、タブの機能として、タブを摘んで別のウィンドウにすることもできます。
 
 //image[ss21][DockAreaのタブ機能]{
 
 //}
 
-このように、DockArea には1つ以上の EditorWidow を描画するための機能が備わっています。例えば、2つ以上の EditorWindow が DockArea にある場合、タブ機能を使って各 EditorWindow を表示するか、 @<b>{SplitWindow} で DockArea の領域を分割して表示できます。
+このように、DockArea には1つ以上の EditorWidow を描画するための機能が備わっています。例えば、2つ以上の EditorWindow が DockArea にある場合、タブ機能を使ってそれぞれの EditorWindow を表示するか@<b>{SplitWindow} で DockArea の領域を分割して表示します。
 
 
 //image[ss22][1つの DockArea にシーンビューとヒエラルキービューを分割して表示]{
@@ -45,7 +45,7 @@ DockArea は「Webブラウザーのタブ」と同じ機能を提供します�
 //}
 
 
-さらに DockArea は @<b>{HostView} の役割も持っています。HostView は、さまざまなオブジェクト・イベントとのやり取りを行うための View です。ウィンドウの「Update関数」や「OnSelectionChange関数」などを実行するための機能が含まれています。
+さらに DockArea は @<b>{HostView} の役割も持っています。HostView は、さまざまなオブジェクト・イベントとのやり取りを行うための機能があります。ウィンドウの「Update関数」や「OnSelectionChange関数」などを実行するための機能が含まれています。
 
 3つのウィンドウ「HostView」「SplitView」「DockArea」を紹介しました。これらの領域（クラス）には残念ながらアクセスできません。ですが、覚えておくと EditorWindow の仕組みがより早く理解できるかもしれません。
 
@@ -172,9 +172,9 @@ public class Example : EditorWindow
 
 == どのShow関数を呼ぶかで変わる特殊なEditorWindow
 
-今までこの章で扱ったEditorWidowはデフォルト状態のタブウィンドウです。この他にもUnityで作成できるEditorWindowは複数存在します。
+今までこの章で扱ったEditorWidowはデフォルト状態のタブ機能が使えるウィンドウです。他にも EditorWindow は様々な種類のウィンドウを作成することができます。
 
-どの@<code>{Show}関数を呼び出すかでどのタイプのEditorWindowを表示するかが決定します。
+@<code>{Show} 関数は複数用意されており、どの@<code>{Show}関数を呼び出すかで表示される EditorWindow が変化します。
 
 === Show
 
@@ -182,7 +182,7 @@ public class Example : EditorWindow
 
 === ShowUtility
 
-タブウィンドウとして扱えず、必ず手前に表示し続けるウィンドウです。
+タブウィンドウとして扱えず、常に手前に表示し続けるウィンドウです。
 たとえ他のウィンドウにフォーカスを当ててもそのWindow自体が裏側に回り込むことがありません。設定ウィンドウのような頻繁に他のウィンドウを操作してても最前面に表示したい場合に使用してください。
 
 //image[ss05][ヒエラルキーのMain Cameraを選択してもウィンドウは最前面に表示されている]{

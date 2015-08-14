@@ -20,8 +20,7 @@ public class Example : MonoBehaviour
 
 この hp 変数に以下の制限が付いている場合、どうすればいいでしょうか。
 
- * 自キャラのHPがマイナスになってはいけない@<fn>{1}
- * HPの上限は決まっている
+ * HPの上限下限は決まっている
  * この値は未調整で、値を変更しながらちょうどいい値を見つけなければいけない
 
 これらの制限（仕様）は開発時の時点で考慮しなければいけなく、特にインスペクターで値を編集するときは、これらの制限を付けるのは@<b>{標準機能であれば}難しいです。
@@ -29,11 +28,11 @@ public class Example : MonoBehaviour
 
 == PropertyDrawer とは
 
-標準機能で難しい機能・操作を実現させるのがエディター拡張です。今回のようにインスペクターに表示されるコンポーネントの GUI を変更するには @<b>{CustomEditor} が適しています。ですが、これはコンポーネント全体のカスタマイズになります。今回はコンポーネントの一部である hp 変数（プロパティー）のみをカスタマイズしたいので @<b>{CustomEditor} ではなく @<b>{PropertyDrawer} を使用します。
+Unity は、シリアライズされたデータを Unity が自動判断して適切な GUI を使い、インスペクター@<fn>{2}に表示します。
 
-まず Unity は、シリアライズされたデータを Unity が自動判断して適切な GUI を使ってインスペクター@<fn>{2}に表示します。
+@<b>{PropertyDrawer} はその  Unity による自動判断処理をフックして、自前の GUI を使用するための技術です。これにより、特定の GUI のみをカスタマイズすることが可能です。
 
-@<b>{PropertyDrawer} はその自動判断して適切な GUI を使う判断処理をフックして、自前の GUI を使用する技術です。
+インスペクターに表示されるコンポーネントの GUI を変更するには @<b>{CustomEditor} が適しています。ですが、これはコンポーネント全体のカスタマイズになります。今回は、コンポーネントの一部である hp 変数（プロパティー）のみをカスタマイズしたいので @<b>{CustomEditor} ではなく @<b>{PropertyDrawer} を使用します。
 
 //indepimage[ss02]
 
@@ -183,7 +182,7 @@ using UnityEngine;
 [CustomPropertyDrawer (typeof(Range2Attribute))]
 internal sealed class RangeDrawer : PropertyDrawer
 {
-    public override void OnGUI (Rect position, 
+    public override void OnGUI (Rect position,
                       SerializedProperty property, GUIContent label)
     {
         Range2Attribute range2 = (Range2Attribute)attribute;
@@ -226,26 +225,26 @@ Unity に標準実装されているものは@<chapref>{part2-standardextension}
 //}
 
 
-API として @<img>{ss06} のようにノブ（取って）を表示する @<code>{EditorGUILayout.Knob} があります。ですが、 PropertyDrawer では EditorGUILayout の使用は禁止されているので使うことができません。
+API として @<img>{ss06} のようにノブ（取って）を表示する @<code>{EditorGUILayout.Knob} があります。ですがPropertyDrawer では EditorGUILayout の使用は禁止されているので使うことができません。
 内部的には EditorGUI.Knob が実装されており、リフレクションを使って呼び出すことによって使用が可能になります。
 
 //emlist{
 private readonly MethodInfo knobMethodInfo = typeof(EditorGUI).GetMethod("Knob",
        BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Static);
 
-private float Knob(Rect position, Vector2 knobSize, 
-                      float currentValue, float start, 
-                      float end, string unit, 
-                      Color backgroundColor, Color activeColor, 
+private float Knob(Rect position, Vector2 knobSize,
+                      float currentValue, float start,
+                      float end, string unit,
+                      Color backgroundColor, Color activeColor,
                       bool showValue)
 {
-    var controlID = GUIUtility.GetControlID("Knob".GetHashCode(), 
+    var controlID = GUIUtility.GetControlID("Knob".GetHashCode(),
                                               FocusType.Native, position);
 
-    var invoke = knobMethodInfo.Invoke(null, new object[] { 
-        position, knobSize, currentValue, 
-        start, end, unit, backgroundColor, 
-        activeColor, showValue, 
+    var invoke = knobMethodInfo.Invoke(null, new object[] {
+        position, knobSize, currentValue,
+        start, end, unit, backgroundColor,
+        activeColor, showValue,
         controlID });
     return (float)(invoke ?? 0);
 }
@@ -261,14 +260,14 @@ public class AngleDrawer : PropertyDrawer
 {
   private AngleAttribute angleAttribute { get { return (AngleAttribute)attribute; } }
 
-  public override void OnGUI (Rect position, 
+  public override void OnGUI (Rect position,
                     SerializedProperty property, GUIContent label)
   {
     // 略
   }
 
   // 戻り値として返した値が GUI の高さとして使用されるようになる
-  public override float GetPropertyHeight(SerializedProperty property, 
+  public override float GetPropertyHeight(SerializedProperty property,
                                                             GUIContent label)
   {
       var height = base.GetPropertyHeight(property, label);
@@ -297,19 +296,19 @@ public class AnimatorParameterExample : MonoBehaviour
     // すべてのタイプのパラメーターを取得
     [AnimatorParameter]
     public string param;
-    
+
     // Float のみ
     [AnimatorParameter(AnimatorParameterAttribute.ParameterType.Float)]
     public string floatParam;
-    
+
     // Int のみ
     [AnimatorParameter(AnimatorParameterAttribute.ParameterType.Int)]
     public string intParam;
-    
+
     // Bool のみ
     [AnimatorParameter(AnimatorParameterAttribute.ParameterType.Bool)]
     public string boolParam;
-    
+
     // Trigger のみ
     [AnimatorParameter(AnimatorParameterAttribute.ParameterType.Trigger)]
     public string triggerParam;
@@ -374,7 +373,7 @@ BeginDisabledGroup と EndDisabledGroup、または DisabledGroupScope を使っ
 インスペクターで編集できなくなったといっても、インスペクターを Debug モードにすると編集できますし、スクリプトから値の編集ができるので注意してください。
 
 //emlist{
-public override void OnGUI(Rect position, 
+public override void OnGUI(Rect position,
                              SerializedProperty property, GUIContent label)
 {
     EditorGUI.BeginDisabledGroup(true);
@@ -407,7 +406,7 @@ public class EnumLabelExample : MonoBehaviour
 }
 //}
 
-GUI を表示する時に、 EnumLabel に渡した文字列を使って Popup を表示しています。上記の例のように test 変数にも属性を付けないと適用されません。これは PropertyAttribute がフィールドについていないとイベントが発火しないためです。
+GUI を表示する時にEnumLabel に渡した文字列を使って Popup を表示しています。上記の例のように test 変数にも属性を付けないと適用されません。これは PropertyAttribute がフィールドについていないとイベントが発火しないためです。
 
 
 === Popup
@@ -439,7 +438,7 @@ public class PopupExample : MonoBehaviour
 public class PopupAttribute : PropertyAttribute
 {
     public object[] list;
-    
+
     // 引数は object 配列
     public PopupAttribute (params object[] list)
     {
@@ -458,7 +457,7 @@ SerializedProperty に値を代入するには @<code>{property.stringValue}、@
 
 テクスチャのプレビューを表示します。
 
-//indepimage[ss10]    
+//indepimage[ss10]
 
 //emlist{
 using UnityEngine;
@@ -482,13 +481,13 @@ public class PreviewTextureAttributeExample : MonoBehaviour
 //emlist{
 void DrawTexture(Rect position, Texture2D texture)
 {
-    float width = Mathf.Clamp(texture.width, 
-                              position.width * 0.7f, 
+    float width = Mathf.Clamp(texture.width,
+                              position.width * 0.7f,
                               position.width * 0.7f);
 
-    var rect = new Rect(position.width * 0.15f, 
-                        position.y + 16, 
-                        width, 
+    var rect = new Rect(position.width * 0.15f,
+                        position.y + 16,
+                        width,
                         texture.height * (width / texture.width));
 
     if (style == null)
@@ -526,5 +525,4 @@ public class SceneNameExample : MonoBehaviour
 
 シーンは @<code>{EditorBuildSettings.scenes} 変数で管理されています。ただし Build Settings の Scene In Build にシーンを登録していないと一覧に含まれないので注意してください。
 
-//footnote[1][ushort や uint 使えばいいじゃんというツッコミはなしで...!!]
-//footnote[2][実際は OnGUI を使う場所だとどこでも Unity が自動判断して適切な GUI を表示します。]
+//footnote[2][実際は、インスペクターに限らず OnGUI を使う場所だとどこでも Unity が自動判断して適切な GUI を表示します。]

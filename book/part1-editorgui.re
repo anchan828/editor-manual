@@ -1,12 +1,12 @@
 = EditorGUI (EdirotGUILayout)
 
 
-//image[frontispiece][頑張ればこのような GUI を作ることもできる]{
+//image[frontispiece][頑張ればこのような GUI スタイルにすることもできる]{
 
 //}
 
 //lead{
-この機能を知らなくてはエディター拡張では何もできないと言っても過言ではありません。この章では全てを紹介はできませんが、知っておくと EditorGUI や EditorGUILayout でできることの幅が広がるものを中心に説明していきます。サンプルコードは簡略化の関係でEditorGUILayoutを使用することが多くなります。
+この機能を知らなくてはエディター拡張では何もできないと言っても過言ではありません。この章では全てを紹介はできませんが、知っておくと EditorGUI や EditorGUILayout でできることの幅が広がる機能を中心に説明していきます。サンプルコードは簡略化の関係でEditorGUILayoutを使用することが多くなります。
 //}
 
 //pagebreak
@@ -16,9 +16,9 @@
 ランタイム側にあるGUIクラスと役割は同じですがEditor向けに機能が追加されているクラスです。
 逐次配置されるEditorGUILayoutクラスも用意されています。
 
-まずは簡単にEditorWindowの上にEditorGUIで文字を表示してみましょう。
+まずは簡単に EditorWindow の上に EditorGUILayout で文字を表示してみましょう。
 
-//image[ss01][EditorGUIの第一歩]{
+//image[ss01][GUIの第一歩]{
 
 //}
 
@@ -42,11 +42,9 @@ public class NewBehaviourScript : EditorWindow
 //}
 
 
-
-
 == ChangeCheck
 
-BeginChangeCheckとEndChangeCheckでの間でGUIが使用されている時、GUIに何らかの変更が生じた場合にEndChangeCheckがtrueを返します。
+BeginChangeCheckとEndChangeCheckで囲まれた GUI に何らかの変更が行われた時、EndChangeCheck が true を返します。
 
 //emlist{
 using UnityEngine;
@@ -69,9 +67,10 @@ public class NewBehaviourScript : EditorWindow
         // toggleをマウスでクリックして値を変更する
         toggleValue = EditorGUILayout.ToggleLeft ("Toggle", toggleValue);
 
+        // toggleValueの値が変更されるたびに true になる
         if (EditorGUI.EndChangeCheck ()) {
 
-            // toggleValueの値が変更されるたびに呼び出される
+            
 
             if (toggleValue) {
                 Debug.Log ("toggleValueがtrueになった瞬間呼び出される");
@@ -84,8 +83,8 @@ public class NewBehaviourScript : EditorWindow
 
 === 実はGUI.changed
 
-ChangeCheckの中身はGUI.changedで実装されています。
-GUI.changedのみで実装すると階層のことを考え以下のような実装になります。
+ChangeCheck は @<b>{GUI.changed} で実装されています。
+GUI.changed で ChangeCheck と同じ実装をすると、階層のことを考え以下のような実装になります。
 
 //emlist{
 bool toggleValue;
@@ -107,7 +106,6 @@ void OnGUI ()
 
     // EndChangeCheckの役割
     {
-        // 変更があればtrueを取得する
         bool changed = GUI.changed;
 
         // どちらかがtrueであれば以降はすべて変更されているものとする
@@ -115,7 +113,7 @@ void OnGUI ()
     }
 
     if (changed) {
-
+        Debug.Log ("toggleValueがtrueになった瞬間呼び出される");
     }
 }
 //}
@@ -162,8 +160,8 @@ public class NewBehaviourScript : EditorWindow
 
 === 実はGUI.enabled
 
-DisabledGroupの中身はGUI.enabledで実装されています。
-GUI.enabledのみで実装すると以下のような実装になります。
+DisabledGroupの中身は @<code>{GUI.enabled} で実装されています。
+GUI.enabled で DisabledGroup と同じ実装をすると、以下のような実装になります。
 
 //emlist{
 void OnGUI ()
@@ -194,7 +192,7 @@ void Display ()
 //}
 
 GUIのグループをフェードイン・フェードアウトさせる場合に使用します。
-何かのトリガー、今回はボタンを押したらフェードでGUIが表示されるようにしてみました。
+何らかのトリガー、今回はボタンを押したらフェードで GUI が表示されるようにしてみます。
 
 フェード中はGUIを操作できません。フェードのスピードはある程度早めにしてユーザーを待たせることのないようにしましょう。
 
@@ -242,7 +240,7 @@ public class NewBehaviourScript : EditorWindow
         EditorGUILayout.BeginVertical ();
         EditorGUILayout.ToggleLeft ("Toggle", false);
 
-        var options = new GUILayout[]{GUILayout.Width (128), GUILayout.Height (128)};
+        var options = new []{GUILayout.Width (128), GUILayout.Height (128)};
 
         tex = EditorGUILayout.ObjectField (
                 tex, typeof(Texture), false, options) as Texture;
@@ -362,7 +360,7 @@ void OnGUI ()
 }
 //}
 
-== ○○Scope
+== Scope
 
 EditorGUILayout.BeginHorizontal/EndHorizontal というように Begin/End で始まるGUIグループのヘルパー機能になります。
 標準で@<code>{HorizontalScope}、@<code>{VerticalScope}、@<code>{ScrollViewScope} などのスコープが用意されています。
@@ -373,7 +371,7 @@ EditorGUILayout.BeginHorizontal/EndHorizontal というように Begin/End で�
 #@end
 //}
 
-//image[ss04][][]{
+//image[ss04][ボタンが横に並んだ状態][]{
 //}
 
 === Scopeの自作 - BackgroundColorScope
@@ -410,21 +408,29 @@ CloseScopeメソッドはDispose時に呼び出されるメソッドです。コ
 == 見た目はボタン、中身はトグル
 
 
-エディターには見た目（GUIStyle）はボタンだが、動作はトグルのようなオン/オフとなる部分、またはボタンの群があり切り替わっていくものがいくつかあります。
+Unityエディターの GUI には見た目のスタイルはボタンなのに、動作はトグルのオン/オフ機能が備わった、ボタン群がいくつも存在します。
 
 //image[ss07][ツール、再生ボタン、PlayerSettingsのプラットフォーム別設定][]{
 
 //}
 
-これらのボタン？トグル？たちが一体どうやって実装されているか、数パターン紹介していきます。
+これらのボタン？トグル？の実装方法を紹介していきます。
 
 === スタイルがボタンなトグル（シングル）
 
-//indepimage[ss08][]
+//image[ss08][on の時はボタンがずっと押されている状態]{
+    
+//}
+
+作り方はいたってシンプルで、Toggle に ボタンのスタイルを適用するだけです。
 
 //emlist{
-#@maprange(unityprojects/part1/editorgui/Assets/Editor/ButtonToggle.cs,ButtonToggle_Pattern1)
-#@end
+bool on;
+void OnGUI ()
+{
+    // GUIStyle は文字列で指定することも出来る
+    on = GUILayout.Toggle (on, on ? "on" : "off", "button");
+}
 //}
 
 === スタイルがボタンなトグル（マルチプル）
@@ -440,7 +446,7 @@ CloseScopeメソッドはDispose時に呼び出されるメソッドです。コ
 //}
 
 おそらく、複数のトグルを配置しようとすると上記のようなコードになるかもしれません。ですがこれは悪手です。これだとbool変数がトグルの数だけ増えることになりますし、その管理も面倒です。
-これらは@<code>{GUILayout.Toolbar}を使って解決できます。
+これらは@<code>{GUILayout.Toolbar}を使って簡単に解決することができます。
 
 //emlist{
 #@maprange(unityprojects/part1/editorgui/Assets/Editor/ButtonToggle.cs,ButtonToggle_Pattern3)
@@ -460,7 +466,7 @@ CloseScopeメソッドはDispose時に呼び出されるメソッドです。コ
 #@end
 //}
 
-1列に表示した@<code>{GUILayout.SelectionGrid}で、スタイルを@<b>{PreferencesKeysElement}（Unity内部で実装されているGUIStyle）にするとPreferenceｓウィンドウで表現されている選択メニューとなります。
+1列に表示した@<code>{GUILayout.SelectionGrid}で、スタイルを@<b>{PreferencesKeysElement}（Unity内部で実装されているGUIStyle）にすると Preferences ウィンドウで表現されている選択メニューとなります。
 
 //indepimage[ss10][]
 

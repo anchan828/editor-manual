@@ -12,7 +12,7 @@
 
 == アセットの生成
 
-アセットの生成は @<code>{ProjectWindowUtil.CreateAsset} を使用します。第2引数の pathName は "Assets/New Material.mat" というような階層を表現するパスではなく、 "New Material.mat" のアセット名のみを設定するようにしてください。こうすることで、現在選択中のフォルダー以下にアセットを生成するようになります。
+アセットの生成は @<code>{ProjectWindowUtil.CreateAsset} を使用します。第2引数の pathName は "Assets/New Material.mat" というような階層を表現するパスではなく"New Material.mat" のアセット名のみを設定するようにしてください。こうすることで、現在選択中のフォルダー以下にアセットを生成するようになります。
 
 //emlist{
 using UnityEngine;

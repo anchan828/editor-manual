@@ -11,7 +11,7 @@
 
 保存した値はメジャーバージョンごとのUnityエディターに影響します。
 
-Unity 4.x で保存した値は、Unity 4.x でのみ扱えます。Unity 5.x もまた、 Unity 5.x でのみ扱えます。
+Unity 4.x で保存した値は、Unity 4.x でのみ扱えます。Unity 5.x もまたUnity 5.x でのみ扱えます。
 
 //image[ss01][Unity4.x のみ影響。Unity5.x のみ影響というように分かれる]{
 PCとUityとプロジェクトの影響が分かるような図

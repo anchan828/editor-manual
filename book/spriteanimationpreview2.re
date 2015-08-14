@@ -173,7 +173,7 @@ Spriteの保持の仕方などは省いていますが、実際に使用する�
 
 == さらに機能を追加していく
 
-さらに改良し、Sprite Animation Preview@<fn>{1}	としてアセットストアで配布しています。配布するまでに行った細かな実装について説明していきます。
+さらに改良したものを、Sprite Animation Preview@<fn>{1}	としてアセットストアで配布しています。配布するまでに行った細かな実装について説明していきます。
 
 //indepimage[ss12]
 
@@ -195,7 +195,7 @@ private List<Editor> GetSpriteEditors(params Sprite[] sprites)
 {
     var type = Types.GetType("UnityEditor.SpriteInspector", "UnityEditor.dll");
     var editors = new List<Editor>();
-                
+
 	foreach (var sprite in sprites)
     {
 		Editor _editor = Editor.CreateEditor(sprite, type);
@@ -214,7 +214,7 @@ private List<Editor> GetSpriteEditors(params Sprite[] sprites)
 
 //emlist{
 var editor = spriteEditors[i];
-var previewTexture = editor.RenderStaticPreview("", null, 
+var previewTexture = editor.RenderStaticPreview("", null,
                         (int)previewRect.width,
                         (int)previewRect.height);
 //}

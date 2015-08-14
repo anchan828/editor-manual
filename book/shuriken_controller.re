@@ -30,7 +30,7 @@
 
 ランタイム用の API は、ランタイムで編集可能なプロパティーのみ編集できます。なので ParticleSystem.duration は getter のみで操作はできませんし、圧倒的に触りたいプロパティーが足りません。
 
-@<b>{Unityが公開しているロードマップによれば Unity 5.3 に API が公開される模様です。} 
+@<b>{Unityが公開しているロードマップによれば Unity 5.3 に API が公開される模様です。}
 
 === 困ったときの SerializedObject
 
@@ -52,7 +52,7 @@ public class NewBehaviourScript
   [MenuItem ("Assets/Get SerializedObject")]
   static void GetSerializedObject ()
   {
-    var particleSystems = 
+    var particleSystems =
         Selection.gameObjects.Select (o => o.GetComponent<ParticleSystem> ());
 
     foreach (var particleSystem in particleSystems) {
@@ -103,12 +103,12 @@ ParticleSystem:
 
 === SaveToSerializedFileAndForget を使う
 
-Prefab やアセットにできない（アセットにする手法が提供されていない）ものである場合は、@<code>{UnityEditorInternal} にある @<code>{InternalEditorUtility.SaveToSerializedFileAndForget} を使用します。SaveToSerializedFileAndForget は、UnityEngine.Object をシリアライズを行いアセットとして保存するための API です。
+Prefab やアセットにできない（アセットにする手法が提供されていない）ものである場合は、@<code>{UnityEditorInternal} にある @<code>{InternalEditorUtility.SaveToSerializedFileAndForget} を使用します。SaveToSerializedFileAndForget は、UnityEngine.Object のシリアライズを行いアセットとして保存するための API です。
 
 //emlist{
 InternalEditorUtility.SaveToSerializedFileAndForget (
-  new Object[]{ particleSystem }, 
-  "particleSystem.txt", 
+  new Object[]{ particleSystem },
+  "particleSystem.txt",
   true);
 //}
 
@@ -116,7 +116,7 @@ InternalEditorUtility.SaveToSerializedFileAndForget (
 
 === SerializedObject.GetIterator を使う
 
-Iterator により、全ての SerializedProperty を取得します。Uity上のみで完結させたいのであればこの方法を使いますが、プロパティー名のみを把握したい時にとっては手間となることが多いので、この方法はおすすめしません。
+Iterator により、全ての SerializedProperty を取得します。Uity上のみで完結させたいのであればこの方法を使います。ですが、特定のプロパティー名のみを把握したい場合にこの方法だと手間となることが多いので、この方法はおすすめしません。
 
 //emlist{
 var so = new SerializedObject (particleSystem);
@@ -225,7 +225,7 @@ bool IsRoot (ParticleSystem ps)
 背景をボックス、さらにつまみ部分もボックスにします。その時にスライダーの高さを変更、スタイルをボックスにしたことで幅いっぱいに広がる設定が失われたので @<code>{GUILayout.ExpandWidth} を設定します。
 
 //emlist{
-GUILayout.HorizontalSlider (value, leftValue, rightValue, 
+GUILayout.HorizontalSlider (value, leftValue, rightValue,
     "box", "box", GUILayout.Height (40), GUILayout.ExpandWidth (true));
 //}
 
@@ -266,16 +266,16 @@ for (int i = 1; i < gridline; i++) {
 
 //emlist{
 if (Event.current.type == EventType.KeyDown) {
-    
+
     // 再生中であれば一時停止させる
     timeControl.Pause ();
-    
+
     if (Event.current.keyCode == KeyCode.RightArrow)
       timeControl.currentTime += 0.01f;
-    
+
     if (Event.current.keyCode == KeyCode.LeftArrow)
       timeControl.currentTime -= 0.01f;
-      
+
     GUI.changed = true;
     Event.current.Use ();
     Repaint ();
@@ -293,8 +293,8 @@ if (Event.current.type == EventType.KeyDown) {
 
 //emlist{
 playlist [key] = GUILayout.Toggle (
-                     playlist [key], key.name, 
-                     EditorStyles.miniButton, 
+                     playlist [key], key.name,
+                     EditorStyles.miniButton,
                      GUILayout.MaxWidth (position.width / 3));
 //}
 

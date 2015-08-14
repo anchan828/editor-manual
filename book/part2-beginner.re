@@ -2,7 +2,7 @@
 
 
 //lead{
-エディター拡張を行うためには知っておかなければならないことが2点あります。この章ではエディター拡張の世界へ入る第一歩としてエディター拡張で重要な「フォルダー」について説明します。
+エディター拡張を始める最初の段階として知っておかなければならないことがあります。この章ではエディター拡張の世界へ入る第一歩としてエディター拡張で重要な「フォルダー」について説明します。
 //}
 
 == Editorフォルダー
@@ -10,7 +10,7 @@
 EditorフォルダーはエディターAPIを使用するための特別なフォルダーです。
 通常エディターAPIは、ランタイム@<fn>{runtime}で動作はできません。
 
-試しに以下のコードをAssetsフォルダー直下に作成しビルドをしてみましょう。
+試しに以下のコードをAssetsフォルダー直下に作成し、Build Settings ウィンドウからビルドをしてみましょう。
 
 
 //emlist{
@@ -22,11 +22,13 @@ public class NewBehaviourScript : MonoBehaviour
 }
 //}
 
+そうするとビルドが失敗し、以下の画像のようにログが表示されます。
+
 //image[ss01][ビルドエラー。名前空間「UnityEditor」が見つからない]{
 
 //}
 
-これはビルド時に生成される@<b>{Assembly-CSharp.dll}では@<b>{UnityEditor.dllの参照}を行わないためです。
+これはビルド時に生成される @<b>{Assembly-CSharp.dll} が、@<b>{UnityEditor.dll} の参照を行わないためです。
 
 ですが、開発時のUnityエディターで生成されるAssembly-CSharp.dllにはUnityEditor.dllの参照が行われているためスクリプトのコンパイルエラーは発生しません。@<b>{UnityEditor.dllの参照が行われないのはビルド時に生成されるAssembly-CSharp.dllのみ}ということを覚えておきましょう。この仕様を知らないと「突然ビルドが通らなくなった」原因になってしまいます。
 
@@ -34,11 +36,11 @@ public class NewBehaviourScript : MonoBehaviour
 
 //}
 
-さて、このままではエディターAPIを使用できません。ビルドごとにエディターAPIを使用しているスクリプトファイルを除去するということも考えられますがそれは手間です。
+さて、このままではエディターAPIを満足に使用できません。ビルドごとにエディターAPIを使用しているスクリプトファイルを除去するということも考えられますがそれは手間です。
 
-UnityEditorでは@<b>{Assembly-CSharp-Editor.dll}を生成し、エディターAPIとランタイムAPIの住み分けを行うことで解決しています。このAssembly-CSharp-Editor.dllはビルド時には含まれないのでビルドエラーも発生しません。
+UnityEditorでは @<b>{Assembly-CSharp-Editor.dll} を生成し、エディターAPIとランタイムAPIの住み分けを行うことでこの問題を解決しています。この Assembly-CSharp-Editor.dll はビルド時には含まれないのでビルドエラーも発生しません。
 
-@<b>{Assembly-CSharp-Editor.dll}は@<b>{Editor}フォルダー内のスクリプトファイルを含めるよう設計されています。
+@<b>{Assembly-CSharp-Editor.dll} は @<b>{Editor} フォルダー内のスクリプトファイルがコンパイルされて生成されます。
 
 Editorフォルダーの場所は特に制限はありません。どこにでも@<b>{複数}作成できます。
 

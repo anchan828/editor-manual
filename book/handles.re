@@ -397,7 +397,7 @@ void OnSceneGUI ()
 //}
 ===[column] Handles.BeginGUI を GUI.Scope で表現する
 
-GUI.Scope の機能を使って、 Handles.BeginGUI と EndGUI の記述を省くことで、いくらかコードの可読性が上がるかもしれません。
+GUI.Scope の機能を使ってHandles.BeginGUI と EndGUI の記述を省くことで、いくらかコードの可読性が上がるかもしれません。
 
 まずは HandleGUIScope を作成します。
 

@@ -35,7 +35,7 @@ public class ExampleInspector : Editor
 
     void OnEnable ()
     {
-        reorderableList = new ReorderableList (serializedObject, 
+        reorderableList = new ReorderableList (serializedObject,
                                  serializedObject.FindProperty ("texts"));
     }
 
@@ -51,7 +51,7 @@ public class ExampleInspector : Editor
 
 //indepimage[ss02]
 
-ですがこのまま要素を追加しても@<img>{ss03} のように「Element n」という要素の名前のみ表示されてしまいます。
+ですがこのまま要素を追加しても@<img>{ss03} のように「Element (数字)」という要素の名前のみ表示されてしまいます。
 
 //image[ss03][右下の + ボタンを押すと要素を追加できる]{
 
@@ -59,11 +59,11 @@ public class ExampleInspector : Editor
 
 == カスタマイズ
 
-要素の名前ではなく、値を表示するには少しカスタマイズを行わなくてはいけません。
+要素の名前ではなく、値を表示するには、カスタマイズを行わなくてはいけません。
 
 === 要素の描画
 
-要素を変更するには drawElementCallback を使います。
+要素を変更するには @<code>{drawElementCallback} を使います。
 描画する rect、何番目の要素かの index、状態を表す isActive と isFocused を扱うことができます。
 
 rect が描画の最大範囲なので、少し小さくします。
@@ -106,7 +106,7 @@ public override void OnInspectorGUI ()
 //emlist{
 reorderableList = new ReorderableList (serializedObject, prop);
 
-reorderableList.drawHeaderCallback = (rect) => 
+reorderableList.drawHeaderCallback = (rect) =>
                      EditorGUI.LabelField (rect, prop.displayName);
 //}
 
@@ -148,12 +148,12 @@ onAddCallback を使用することで、「+」ボタンなどを押した時�
 
 //emlist{
 reorderableList.onAddCallback += (list) => {
-    
+
     //要素を追加
     prop.arraySize++;
-    
+
     //最後の要素を選択状態にする
-    list.index = prop.arraySize - 1; 
+    list.index = prop.arraySize - 1;
 
     // 追加した要素に文字列を追加する（配列が string[] 前提）
     var element = prop.GetArrayElementAtIndex (list.index);
@@ -173,9 +173,9 @@ reorderableList.onAddDropdownCallback = (Rect buttonRect, ReorderableList list) 
     menu.AddItem (new GUIContent ("Example 1"), false, () => {
     });
     menu.AddSeparator ("");
-    
+
     menu.AddDisabledItem (new GUIContent ("Example 2"));
-    
+
     menu.DropDown(buttonRect);
 
 };
@@ -210,7 +210,7 @@ public class Character
 {
     [SerializeField]
     Texture icon;
-    
+
     [SerializeField]
     string name;
 
@@ -231,6 +231,10 @@ public class Character
 
 そこで @<b>{PropertyDrawer} を使って要素の描画を変更します。PropertyDrawer については @<chapref>{property_drawer} をご覧ください。
 要素の GUI を drawElementCallback 内でカスタマイズしてもいいのですが、汎用性を考えてできるだけ PropertyDrawer を使用するようにしましょう。
-//image[ss10][PropertyDrawer でカスタマイズした図]{
+//image[ss10][PropertyDrawer でカスタマイズ。その1]{
+
+//}
+
+//image[ss11][PropertyDrawer でカスタマイズ。その2]{
 
 //}

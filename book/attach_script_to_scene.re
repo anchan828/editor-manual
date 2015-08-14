@@ -105,16 +105,16 @@ public class ScenePrefabUtility
         Directory.CreateDirectory (PREFAB_FOLDER_PATH);
     }
 
-    public static GameObject CreateScenePrefab (string scenePath, 
+    public static GameObject CreateScenePrefab (string scenePath,
                                         params System.Type[] components)
     {
         var guid = ScenePathToGUID (scenePath);
 
         // HideFlags はコンパイルエラーなどの予想外のエラーによって中断された時の対策として
         // 非表示 & 保存禁止
-        var go = EditorUtility.CreateGameObjectWithHideFlags (guid, 
+        var go = EditorUtility.CreateGameObjectWithHideFlags (guid,
                                      HideFlags.HideAndDontSave, components);
-        
+
         var prefabPath = string.Format ("{0}/{1}.prefab", PREFAB_FOLDER_PATH, guid);
 
         var prefab = PrefabUtility.CreatePrefab (prefabPath, go);
@@ -128,7 +128,7 @@ public class ScenePrefabUtility
     // プレハブ名をシーンアセットの guid にする
     public static GameObject GetScenePrefab (string scenePath)
     {
-        // シーン名だと同名がある可能性があるので guid にする
+        // シーン名だと同名が存在する可能性があるので guid にする
         var guid = ScenePathToGUID (scenePath);
         var prefabPath = string.Format ("{0}/{1}.prefab", PREFAB_FOLDER_PATH, guid);
         return AssetDatabase.LoadAssetAtPath<GameObject> (prefabPath);
@@ -258,7 +258,7 @@ void InitActiveEditors ()
 
     // コンポーネントから　Editor オブジェクトを生成
     foreach (var component in scenePrefab.GetComponents<Component> ()) {
-        
+
         // Transform と RectTransform は省く
         // 本章の目的では必要ないと判断したため
         if (component is Transform || component is RectTransform)
@@ -303,22 +303,22 @@ public override void OnInspectorGUI ()
 
 void DrawInspectorTitlebar (Editor editor)
 {
-    var rect = GUILayoutUtility.GetRect (GUIContent.none, 
-                                         GUIStyle.none, 
+    var rect = GUILayoutUtility.GetRect (GUIContent.none,
+                                         GUIStyle.none,
                                          GUILayout.Height (20));
     rect.x = 0;
     rect.y -= 5;
     rect.width += 20;
-    activeEditors [editor] = EditorGUI.InspectorTitlebar (rect, 
-                                                          activeEditors [editor], 
+    activeEditors [editor] = EditorGUI.InspectorTitlebar (rect,
+                                                          activeEditors [editor],
                                                           new []{ editor.target });
 }
 
 void DrawLine ()
 {
     EditorGUILayout.Space ();
-    var lineRect = GUILayoutUtility.GetRect (GUIContent.none, 
-                                             GUIStyle.none, 
+    var lineRect = GUILayoutUtility.GetRect (GUIContent.none,
+                                             GUIStyle.none,
                                              GUILayout.Height (2));
     lineRect.y -= 3;
     lineRect.width += 20;
@@ -365,9 +365,9 @@ public override void OnInspectorGUI ()
     // OnInspectorGUI の最後に実装
 
     // 残りの余った領域を取得
-    var dragAndDropRect = GUILayoutUtility.GetRect (GUIContent.none, 
-                                                     GUIStyle.none, 
-                                                     GUILayout.ExpandHeight (true), 
+    var dragAndDropRect = GUILayoutUtility.GetRect (GUIContent.none,
+                                                     GUIStyle.none,
+                                                     GUILayout.ExpandHeight (true),
                                                      GUILayout.MinHeight (200));
 
     switch (Event.current.type) {
@@ -445,7 +445,7 @@ public class ScenePrefabUtility
         var prefab = GetScenePrefab (scenePath);
 
         // インスタンス化
-        if (prefab) 
+        if (prefab)
             GameObject.Instantiate (prefab).name = "ScenePrefab";
     }
 }

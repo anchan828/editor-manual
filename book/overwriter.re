@@ -116,7 +116,7 @@ public class Overwriter : AssetPostprocessor
 同名のファイルをインポートする際、リネームされた状態でインポートされます。ですが、DragAndDrop.paths にはリネーム前のファイルパスが格納されて残っています。
 
 //emlist{
-// hoge.png がある状態で、 hoge.png をインポート
+// hoge.png がある状態でhoge.png をインポート
 static void OnPostprocessAllAssets (
         string[] importedAssets, 
         string[] deletedAssets, 

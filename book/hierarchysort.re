@@ -7,7 +7,7 @@ Hierarchyウィンドウでは、ゲームオブジェクトの順番を任意�
 
 //}
 
-ただ、ここで1つ抑えてほしいことは あくまで Hierarchy の表示順をかえるということであり GameObject.Find などのゲームオブジェクトの取得順は変更されていない、ということに注意してください。
+ただ、ここで1つ抑えてほしいことは あくまで Hierarchy の表示順を変えるということであり GameObject.Find などのゲームオブジェクトの取得順は変更されていない、ということに注意してください。
 
 本章では、HierarchySortを自分で作成する方法を紹介していきます。
 
@@ -135,7 +135,7 @@ public class TagSort : BaseHierarchySort
 
 
 //emlist{
-Type hierarcyType = 
+Type hierarcyType =
     Types.GetType("UnityEditor.SceneHierarchyWindow", "UnityEditor.dll");
 //}
 
@@ -164,7 +164,7 @@ SerializedObject hierarcyWindowObject = new SerializedObject(hierarcyWindow);
 
 
 //emlist{
-var currentSortName = 
+var currentSortName =
     hierarcyWindowObject.FindProperty("m_CurrentSortMethod").stringValue;
 //}
 
@@ -258,7 +258,7 @@ public class TagSort : BaseHierarchySort
     get {
 
       if (hierarcyWindowObject == null) {
-        var hierarcyType = 
+        var hierarcyType =
           Types.GetType ("UnityEditor.SceneHierarchyWindow", "UnityEditor.dll");
         var hierarcyWindows = Resources.FindObjectsOfTypeAll (hierarcyType);
         if (hierarcyWindows.Length != 0) {

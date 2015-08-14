@@ -28,20 +28,19 @@ public class NewBehaviourScript : MonoBehaviour
 
     [Range(1, 10)]
     public float num2;
-    
+
     [Range(1, 10)]
     public long num3;
-    
+
     [Range(1, 10)]
     public double num4;
 }
-
 //}
 
 
 === Multiline / TextArea
 
-デフォルトでは一行のTextFieldですが、複数行のTextAreaに変更できます。MultilineとTextAreaはほぼ機能は同じですが、Multilineは「幅に合わせて自動改行されない」「スクロールバーが表示されない」といった制限があります。特に理由のない限りTextAreaを使うことをオススメします。
+デフォルトでは一行のTextFieldですが、複数行のTextAreaに変更できます。MultilineとTextAreaは、ほぼ機能は同じですが、Multilineは「幅に合わせて自動改行されない」「スクロールバーが表示されない」といった制限があります。特に理由のない限りTextAreaを使うことをオススメします。
 
 //image[ss02][上がMultiline。下がTextArea。TextAreaはスクロールバーが表示される]{
 
@@ -55,7 +54,7 @@ public class NewBehaviourScript : MonoBehaviour
 {
     [Multiline(5)]
     public string multiline;
-    
+
     [TextArea(3, 5)]
     public string textArea;
 }
@@ -142,7 +141,7 @@ public class NewBehaviourScript : MonoBehaviour
     public class Player
     {
         public string name;
-       
+
         [Range(1,100)]
         public int hp;
     }
@@ -205,7 +204,7 @@ using UnityEngine;
 public class NewBehaviourScript : MonoBehaviour
 {
     public string str1;
- 
+
     [HideInInspector]
     public string str2;
 }

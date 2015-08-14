@@ -16,6 +16,7 @@
 
 //}
 
+
 ここでDebugを選択すると、@<img>{ss03}のように普段見ているインスペクターとは少し違う見た目になります。
 
 //image[ss03][普段見ない Instance ID や File ID のプロパティーを見ることができる]{
@@ -48,7 +49,7 @@
 
 == カスタムエディターを使う
 
-例えば、ゲーム中に使用する実際の攻撃力は、キャラクターのちからや武器の強さなど様々な要素があわさって決まるとします。そのときにプログラム上で使用する実際の「攻撃力」というプロパティーを持ち、 getter で攻撃力を求める計算を行います。
+例えば、ゲーム中に使用する実際の攻撃力は、キャラクターのちからや武器の強さなど様々な要素があわさって決まるとします。そのときにプログラム上で使用する実際の「攻撃力」というプロパティーを持ちgetter で攻撃力を求める計算を行います。
 
 //quote{
 ソースコードは計算式がちょっとだけ分かりやすいように日本語変数にしてみました。
@@ -149,6 +150,7 @@ OnSceneGUI では少し特殊な @<b>{3Dに特化したGUI} を扱います。�
 
 //}
 
+
 これからその 2 種類の方法について説明していきます。説明時には、以下のコンポーネントがあり、このカスタムエディターを作成するものとして話を進めていきます。
 
 //emlist{
@@ -233,7 +235,7 @@ public class CharacterInspector : Editor
 
 コンポーネントの値を変更したときは、必ず@<b>{EditorUtility.SetDirty}を呼び出します。これはUnityエディターにオブジェクトの状態が更新されたことを通知するために使用されます。
 
-オブジェクトには @<b>{Dirty flag（ダーティーフラグ）}があり、このフラグを立てることにより、Unityエディターは「アセットを最新の状態にする」ことができます。例えば、プレハブにアタッチされているコンポーネントの値を変更した時に、 @<b>{EditorUtility.SetDirty} を使用します。そして Unity
+オブジェクトには @<b>{Dirty flag（ダーティーフラグ）}があり、このフラグを立てることにより、Unityエディターは「アセットを最新の状態にする」ことができます。例えば、プレハブにアタッチされているコンポーネントの値を変更した時に@<b>{EditorUtility.SetDirty} を使用します。そして Unity
 プロジェクトを保存（File -> Save Project や AssetDatabase.SaveAssets）したとき、ダーティーフラグの立ったオブジェクトすべてがアセッに書き込まれます。
 
 このように、正しく変更された値をディスクに保存するためには、ダーティフラグを正しく設定していかなければなりません。主に、MonoBehaviour や　ScriptableObject の派生クラスで @<b>{EditorUtility.SetDirty} を使用します。
@@ -326,7 +328,7 @@ public class CharacterInspector : Editor
 
 ==== コンポーネントに直接アクセスしての同時編集
 
-同時編集を可能にするには複数のコンポーネントにアクセスしなければいけません。複数選択した場合は、 target 変数ではなく @<code>{targets} 変数を使用します。targets に現在選択中のオブジェクト全てが格納されています。
+同時編集を可能にするには複数のコンポーネントにアクセスしなければいけません。複数選択した場合はtarget 変数ではなく @<code>{targets} 変数を使用します。targets に現在選択中のオブジェクト全てが格納されています。
 
 複数選択した時にインスペクターに表示されるものは、最初に選択したコンポーネントです。これは target に格納されており、また targets の1番目の要素でもあります。
 
@@ -619,7 +621,7 @@ public override void OnPreviewGUI (Rect r, GUIStyle background)
 
 //}
 
-これらの仕組みは特別なことをやっているわけではありません。@<img>{ss18}までリッチにするのは本章では行いません。ですが、最低限実装するための手順を紹介していきます。
+これらの仕組みは特別なことをやっているわけではありません。@<img>{ss18}までリッチにするのは本章では行いませんが、最低限の実装するための手順を紹介していきます。
 
 
 === PreviewRenderUtility
@@ -633,7 +635,7 @@ public override void OnPreviewGUI (Rect r, GUIStyle background)
 
 //}
 
-まずは OnEnable メソッドの中で PreviewRenderUtility のインスタンスを生成し、 LookAt する対象のゲームオブジェクトをコンポーネント経由で取得します。
+まずは OnEnable メソッドの中で PreviewRenderUtility のインスタンスを生成しLookAt する対象のゲームオブジェクトをコンポーネント経由で取得します。
 
 //emlist{
 using UnityEngine;
@@ -664,7 +666,7 @@ public class PreviewExampleInspector : Editor
 }
 //}
 
-そして描画を行う部分です。@<code>{BeginPreview} と @<code>{EndAndDrawPreview} で囲み、その中で @<code>{Camera.Render} を呼び出します。そうすることでプレビュー画面に、 「PreviewRenderUtility が持つカメラからのレンダリング結果」が表示されるようになります。
+そして描画を行う部分です。@<code>{BeginPreview} と @<code>{EndAndDrawPreview} で囲み、その中で @<code>{Camera.Render} を呼び出します。そうすることでプレビュー画面に「PreviewRenderUtility が持つカメラからのレンダリング結果」が表示されるようになります。
 
 //emlist{
 public override void OnPreviewGUI (Rect r, GUIStyle background)
@@ -811,7 +813,6 @@ foreach (Transform transform in previewObject.transform) {
 }
 //}
 
-
 ==== 3. Camera.Render の直前後にプレビュー用オブジェクトをアクティブ/非アクティブにする
 
 
@@ -845,7 +846,7 @@ public override void OnInteractivePreviewGUI (Rect r, GUIStyle background)
 
 === 中心位置を取得する
 
-@<code>{transform.position} で取得できるものは必ずゲームオブジェクトの中心位置とは限りません。モデルデータであれば足元が原点である可能性もあります。中心位置を求めるには、プレビュー対象がメッシュの場合、 Bounds を取得し、その中心位置を求めなければいけません。
+@<code>{transform.position} で取得できるものは必ずゲームオブジェクトの中心位置とは限りません。モデルデータであれば足元が原点である可能性もあります。中心位置を求めるには、プレビュー対象がメッシュの場合Bounds を取得し、その中心位置を求めなければいけません。
 
 少し力技ですが、@<b>{プレビュー対象のゲームオブジェクトがシーン内のもの}であれば、簡単に中心位置を求める方法があります。Pivot が @<code>{PivotMode.Center} の場合、ゲームオブジェクトは原点ではなくゲームオブジェクト全体の中心位置に Pivot を設定するようになります。これにより、ツール系（位置、回転、スケールなどのハンドル）の表示位置が変化します。この仕様を使って、@<code>{Tools.handlePosition} でゲームオブジェクトの中心位置を取得することが可能です。
 
@@ -865,7 +866,7 @@ public override void OnInteractivePreviewGUI (Rect r, GUIStyle background)
 
 //}
 
-ほとんどの場合は、一番大きな Bounds を使えば問題ないので、 @<code>{Bounds.Encapsulate} を使用します。これは引数として与えた Bounds と比較して最大サイズに置き換えます。
+ほとんどの場合は、一番大きな Bounds を使えば問題ないので@<code>{Bounds.Encapsulate} を使用します。これは引数として与えた Bounds と比較して最大サイズに置き換えます。
 
 //emlist{
 Bounds bounds = new Bounds (component.transform.position, Vector3.zero);
@@ -897,7 +898,7 @@ public override void OnInteractivePreviewGUI (Rect r, GUIStyle background)
 }
 //}
 
-そして、 Bounds で求めた中心位置を使い、X 軸と Y 軸に合わせて回転させます。
+そしてBounds で求めた中心位置を使い、X 軸と Y 軸に合わせて回転させます。
 
 //emlist{
 private void RotatePreviewObject (Vector2 drag)
@@ -991,7 +992,7 @@ public class PreviewExampleInspector : Editor
         }
 
         // 中心位置から一定の距離離れたところにカメラを設置
-        previewRenderUtility.m_Camera.transform.position = 
+        previewRenderUtility.m_Camera.transform.position =
                                         centerPosition + Vector3.forward * -5;
 
         // マウスの移動量をオブジェクトの角度に適用

@@ -187,7 +187,7 @@ public class Example : EditorWindow
 //}
 
 
-本章で作成した TimeControl は、 @<chapref>{shuriken_controller} や @<chapref>{spriteanimationpreview2} で使用されています。使用例として参考にしてください。
+本章で作成した TimeControl は@<chapref>{shuriken_controller} や @<chapref>{spriteanimationpreview2} で使用されています。使用例として参考にしてください。
 
 //footnote[1][DateTime.Now.Ticks を使っても問題ありません。紹介のために timeSinceStartup を扱ってみました。]
 //footnote[2][機能的にループ強制としました。ループをオプションとしたいときには loop 変数などを作成して制御するようにしてください。]

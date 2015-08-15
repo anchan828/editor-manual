@@ -13,7 +13,6 @@ aut: 安藤 圭吾
 
 # 以下はオプション
 # prt: 出版社
-prt: 安藤 圭吾
 # asn: Associated name
 # ant: Bibliographic antecedent
 # clb: 貢献者
@@ -25,13 +24,13 @@ edt: 安藤 圭吾
 # pht: 撮影者
 # trl: 翻訳者
 # date: 刊行日
-# date: 2014-8-17
+date: 2014-8-16
 # rights: 権利表記
 rights: |
-  (C) 2015 kyusyukeigo.com
+  (C) 2015 Keigo Ando
 # description: ブックの説明
 description: 効率のいい開発をするために
-contact: anchan828@gmail.com
+contact: anchan828+c88@gmail.com
 #
 # coverfile: カバーページのbody要素内に挿入する内容を記述したファイル名
 #coverfile: unibook2-cover.html
@@ -75,8 +74,8 @@ highlight:
 # デバッグフラグ。nullでないときには一時ファイルをカレントディレクトリに作成し、削除もしない
 #hook_afterbody: "./hook_afterbody.sh"
 
-#pubhistory: |
-#  2014年12月30日 コミックマーケット87版発行
+pubhistory: |
+  2015年08月16日 コミックマーケット88版発行
 
 
 # LaTeX用のdocumentclassを指定する

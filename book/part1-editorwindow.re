@@ -197,7 +197,7 @@ using UnityEditor;
 public class Example : EditorWindow
 {
     static Example exampleWindow;
-    
+
     [MenuItem("Window/Example")]
     static void Open ()
     {
@@ -226,7 +226,7 @@ using UnityEngine;
 public class Example : EditorWindow
 {
     static Example exampleWindow;
-    
+
     [MenuItem("Window/Example")]
     static void Open ()
     {
@@ -277,7 +277,7 @@ public class Example : EditorWindow
 
     // インスタンス化
     ExamplePupupContent popupContent = new ExamplePupupContent ();
-    
+
     void OnGUI ()
     {
         if (GUILayout.Button ("PopupContent",GUILayout.Width(128))) {
@@ -338,14 +338,14 @@ using UnityEngine;
 public class Example : EditorWindow
 {
     static Example exampleWindow;
-    
+
     [MenuItem("Window/Example")]
     static void Open ()
     {
         if (exampleWindow == null) {
             exampleWindow = CreateInstance<Example> ();
         }
-        
+
         var buttonRect = new Rect (100, 100, 300, 100);
         var windowSize = new Vector2 (300, 100);
         exampleWindow.ShowAsDropDown (buttonRect, windowSize);
@@ -610,7 +610,7 @@ public class Example : EditorWindow, IHasCustomMenu
         });
 
         menu.AddItem (new GUIContent ("example2"), true, () => {
-            
+
         });
     }
 
@@ -700,9 +700,9 @@ public class Example : EditorWindow
 
 //}
 
-通常のScriptableObjectの動作に則って、アセットとしてウィンドウを保存することもできますし、シリアライズプロパティーを作成してインスペクターに表示することも可能です。
+EditorWindow は、ScriptableObjectの動作にしたがい、EditorWindowオブジェクトをアセットとして保存することができます。その時に、インスペクターにはシリアライズされたプロパティーも表示されます。
 
-//image[ss18][]{
+//image[ss18][Example ウインドウをアセットとして保存した時のインスペクター]{
 
 //}
 
@@ -734,7 +734,7 @@ public class Example : EditorWindow
   m_TitleContent:
     m_Text: Example
     m_Image: {fileID: 0}
-    m_Tooltip: 
+    m_Tooltip:
   m_DepthBufferBits: 0
   m_AntiAlias: 0
   m_Pos:
@@ -744,4 +744,3 @@ public class Example : EditorWindow
     width: 320
     height: 240
 //}
-

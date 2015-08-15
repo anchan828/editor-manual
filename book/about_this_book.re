@@ -37,3 +37,17 @@
 === 本書で扱うソースコード
 
 ソースコードは Github にて公開しています。@<href>{https://github.com/anchan828/unity-editor-book-example}
+
+
+=== 正誤表
+
+下記サイトにて連絡します。また、間違いを見つけた場合は定期的に修正版をアップデートしていきます。
+
+@<href>{http://anchan828.github.io/editor-manual/}
+
+
+=== 連絡先
+
+下記メールアドレスまでよろしくお願いします。
+
+anchan828+c88@gmail.com　

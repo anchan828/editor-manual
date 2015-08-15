@@ -24,12 +24,12 @@ edt: 安藤 圭吾
 # pht: 撮影者
 # trl: 翻訳者
 # date: 刊行日
-date: 2014-8-16
+date: 2015-8-16
 # rights: 権利表記
 rights: |
   (C) 2015 Keigo Ando
 # description: ブックの説明
-description: 効率のいい開発をするために
+description: Unityで効率のよい開発をするために
 contact: anchan828+c88@gmail.com
 #
 # coverfile: カバーページのbody要素内に挿入する内容を記述したファイル名

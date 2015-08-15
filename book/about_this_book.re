@@ -36,7 +36,9 @@
 
 === 本書で扱うソースコード
 
-ソースコードは Github にて公開しています。@<href>{https://github.com/anchan828/unity-editor-book-example}
+本書で扱うコードは全て MIT ライセンスで提供します。
+
+また、一部ソースコードは Github にも公開していますので参考にしてください。@<href>{https://github.com/anchan828/unity-editor-book-example}
 
 
 === 正誤表

@@ -7,7 +7,7 @@ BASE_PATH=$(cd $(dirname $0) && pwd)
 BOOK_DIR="${BASE_PATH}/${BOOK}"
 TEMP_DIR="${BASE_PATH}/temp"
 ARCHIVE_DIR="${BASE_PATH}/archives"
-
+BOOTH_DIR="${BASE_PATH}/booth"
 pdf_maker()
 {
 	cd $TEMP_DIR
@@ -55,10 +55,10 @@ web_watch_maker()
 	string_filename=${string_filename##*\\}
 	string_filename_without_extension=${string_filename%.*}
 	string_extension=${changed_file##*.}
-	
+
 	if [ "${string_extension}" == "md" -o  "${string_extension}" == "re" ];then
 		re_file=${string_filename_without_extension}.re
-		
+
 		if [ "${string_extension}" == "md" ];then
 			md2review $string_filename > "${TEMP_DIR}/${re_file}"
 		else
@@ -66,7 +66,7 @@ web_watch_maker()
 		fi
 		preproc_re_file "${TEMP_DIR}/${re_file}"
 	fi
-	
+
 	web_maker
 }
 
@@ -118,6 +118,14 @@ build_release()
 {
 	cp -f catalog-release.yml catalog.yml
 	build
+	stamp_booth
+}
+
+stamp_booth()
+{
+	cd $BOOTH_DIR
+	cpdf=./`uname`-cpdf
+	$cpdf -add-text 'booth.pm version' -color '0.8 0.8 0.8' -bottom 10pt ${ARCHIVE_DIR}/${bookname}.pdf 2-end -o unity-editor-extension.pdf
 }
 
 build()
@@ -174,11 +182,11 @@ rmlink() {
 setUp()
 {
 	workspace=$1
-	
+
 	if [ ! -d $workspace ];then
 		mkdir $workspace
 	fi
-	
+
 	remove_temp_files
 	symlink $workspace
 	copy_files $workspace
@@ -193,7 +201,7 @@ symlink()
 	dirs=`ls -F | grep /`
 
 	cd $workspace
-	
+
 	for dir in $dirs;do
 		if [ ! -d "${dir}" ];then
 			link "${dir}" "../${BOOK}/${dir}"
@@ -223,11 +231,11 @@ preproc_re_files()
 {
 	cd $1
 	md2re
-	
+
 	for file in $(find . -name "*.re");do
 		preproc_re_file $file
 	done
-	
+
 	remove_md2re_files
 }
 

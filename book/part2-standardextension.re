@@ -94,7 +94,7 @@ public class NewBehaviourScript : MonoBehaviour
 
 === ColorUsage
 
-色の変さらにはカラーピッカーを使用します。ColorUsageは、カラーピッカーでアルファの使用を有効/無効にできたり、HDR用のからピッカーに変更できます。
+色の変更にはカラーピッカーを使用します。ColorUsageは、カラーピッカーでアルファの使用を有効/無効にできたり、HDR用のからピッカーに変更できます。
 
 //image[ss14][左からデフォルト、アルファなし、HDRカラーピッカー]{
 

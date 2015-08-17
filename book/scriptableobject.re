@@ -6,7 +6,7 @@
 
 ScriptableObject は独自のアセットを作成するための仕組みです。また、Unityのシリアライズ機構が扱う形式とも言えます。
 
-Unity には独自のシリアライズ機構を持っており、全てのオブジェクト（UnityEngine.Object）は、そのシリアライズ機構を通してデータのシリアライズ/デシリアライズを行い、ファイルとUnityエディター間のやりとりをしています。シリアライズ機構については@<chapref>{serializedobject}を参照してください。
+Unity には独自のシリアライズ機構を持っており、全てのオブジェクト（UnityEngine.Object）は、そのシリアライズ機構を通してデータのシリアライズ/デシリアライズを行い、ファイルとUnityエディター間でやり取りをしています。シリアライズ機構については@<chapref>{serializedobject}を参照してください。
 
 Unity 内部のアセット（マテリアルやアニメーションクリップ等）は全て UnityEngine.Object の派生クラスです。独自のアセットを作成するために、UnityEngine.Object の派生クラスを作成したいですが、ユーザー側では UnityEngine.Object の派生クラスを作成するのは禁止されています。ユーザーが Unity のシリアライズ機構を利用した、独自のアセットを作成するには @<code>{ScriptableObject} を扱う必要があります。
 
@@ -142,7 +142,7 @@ public class ExampleAsset : ScriptableObject
 
 //}
 
-=== Gozmos にアイコンを置く
+=== Gizmos にアイコンを置く
 
 もう1つアイコンを変更する方法として、@<b>{Gizmos}フォルダーに@<code>{[クラス名] Icon} という名前でアイコン画像を置くと変更されるようになります。Gizmos フォルダーが Assets フォルダー直下のみという仕様で少し使いづらいかもしれませんが、同じアイコン画像が3つ並ばなくても良くなる点で、この方法も覚えておくと便利かもしれません。
 

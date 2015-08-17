@@ -72,3 +72,10 @@ dl {
 
 .u_contact_body {
 }
+
+ins{
+    background-color: #a6f3a6;
+}
+del{
+    background-color: #f8cbcb;
+}

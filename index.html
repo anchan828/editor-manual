@@ -104,6 +104,9 @@
                     <a class="page-scroll" href="#gallery">ギャラリー</a>
                 </li>
                 <li>
+                    <a class="page-scroll" href="#eratta">正誤表</a>
+                </li>
+                <li>
                     <a class="page-scroll" href="#u_contact">お問い合せ</a>
                 </li>
             </ul>
@@ -244,12 +247,15 @@
             <div class="col-md-8">
                 <p class="text-muted">電子書籍版PDFを<a href="https://booth.pm">BOOTH</a>で販売しています。</p>
                 <a href="https://kyusyukeigo.booth.pm/items/128404" class="page-scroll btn btn-xl" target="_blank">購入ページへ移動する</a>
+
                 <div class="clearfix"></div>
-                <p class="text-muted col-md-6 center" style="margin-top: 10px">内容は、コミケ88 の頒布物と同じものです。また、今後のアップデート（修正・補足など）も両方に反映されます。</p>
+                <p class="text-muted col-md-6 center" style="margin-top: 10px">内容は、コミケ88
+                    の頒布物と同じものです。また、今後のアップデート（修正・補足など）も両方に反映されます。</p>
 
             </div>
             <div class="col-md-12">
                 <h3 class="">お願い</h3>
+
                 <p class="text-muted">誤字脱字や説明不足など何かありましたら、気軽に<a href="#u_contact">ご連絡</a>ください。早急に対応いたします。</p>
             </div>
         </div>
@@ -662,6 +668,56 @@
     </div>
 </section>
 
+<section id="eratta">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12 text-center">
+                <h2 class="section-heading">正誤表</h2>
+
+                <h3 class="section-subheading text-muted">ここに記載されているものは既に修正しています。購入ページより再度ダウンロードしてください。</h3>
+            </div>
+            <div class="col-lg-8 center">
+                <p>ページ番号は、更新ごとに変化するおそれがあるので明記していません。<br/>また、記載されていない誤字脱字などありましたら<a href="#u_contact" class="page-scroll">お問い合せ</a>から連絡していただけると助かります。</p>
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th>章</th>
+                        <th>誤</th>
+                        <th>正</th>
+                        <th>差分</th>
+                    </tr>
+                    </thead>
+                    <tr class="eratta">
+                        <td>第2章<br/>標準で使えるエディター拡張機能</td>
+                        <td class="eratta-wrong">色の変さらにはカラーピッカーを使用します</td>
+                        <td class="eratta-correct">色の変更にはカラーピッカーを使用します</td>
+                        <td class="eratta-diff">色の変<ins>更</ins><del>さら</del>にはカラーピッカーを使用します</td>
+                    </tr>
+                    <tr class="eratta">
+                        <td>第4章<br/>ScriptableObject</td>
+                        <td class="eratta-wrong">Gozmosにアイコンを置く</td>
+                        <td class="eratta-correct">Gizmosにアイコンを置く</td>
+                        <td class="eratta-diff">G<ins>i</ins><del>o</del>zmos</td>
+                    </tr>
+                    <tr class="eratta">
+                        <td>第12章<br/>Undoについて</td>
+                        <td class="eratta-wrong">プロパティーの変さらに対するUndo</td>
+                        <td class="eratta-correct">プロパティーの変数に対するUndo</td>
+                        <td class="eratta-diff">プロパティーの変<ins>更</ins><del>さら</del>に対するUndo</td>
+                    </tr>
+
+                    <tr class="eratta">
+                        <td>第12章<br/>Undoについて</td>
+                        <td class="eratta-wrong">オブジェクトのプロパティー（値）変さらに対するUndo</td>
+                        <td class="eratta-correct">オブジェクトのプロパティー（値）変数に対するUndo</td>
+                        <td class="eratta-diff">オブジェクトのプロパティー（値）変<ins>更</ins><del>さら</del>に対するUndo</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+</section>
+
 <section id="u_contact">
     <div class="container">
         <div class="row">
@@ -724,6 +780,7 @@
 <script src="js/agency.js"></script>
 <script src="js/blueimp-gallery.min.js"></script>
 <script src="js/jquery.blueimp-gallery.min.js"></script>
+<script src="js/diff.min.js"></script>
 <script>
 
     $(function () {
@@ -738,6 +795,7 @@
         $.get("./change_log.html", function (text) {
             $("#change_log_body").html(text)
         })
+
     })
 
 

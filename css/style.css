@@ -48,10 +48,14 @@ dl {
 #change_log {
     color: #000000;
 }
+
 #change_log_body {
     text-align: left;
     color: #000000;
+    overflow-y: scroll;
+    max-height: 100px;
 }
+
 .center {
     margin-left: auto;
     margin-right: auto;
@@ -62,9 +66,9 @@ dl {
     margin: 15px;
 }
 
-#u_contact{
+#u_contact {
     text-align: left;
 }
 
-.u_contact_body{
+.u_contact_body {
 }

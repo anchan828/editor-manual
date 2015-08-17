@@ -79,3 +79,12 @@ ins{
 del{
     background-color: #f8cbcb;
 }
+
+.toc-h1>li{
+    font-weight: bold;
+    font-size: 1.2em;
+}
+.toc-h2>li{
+    font-weight: normal;
+    font-size: 0.8em;
+}

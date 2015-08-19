@@ -73,18 +73,24 @@ dl {
 .u_contact_body {
 }
 
-ins{
+ins {
     background-color: #a6f3a6;
 }
-del{
+
+del {
     background-color: #f8cbcb;
 }
 
-.toc-h1>li{
+.toc-h1 > li {
     font-weight: bold;
     font-size: 1.2em;
 }
-.toc-h2>li{
+
+.toc-h2 > li {
     font-weight: normal;
     font-size: 0.8em;
+}
+
+.y-label {
+    color: #000000 !important;
 }

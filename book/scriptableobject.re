@@ -128,6 +128,213 @@ public class ExampleAsset : ScriptableObject
 }
 //}
 
+== ScriptableObject に ScriptableObject の参照を持たせる
+
+まずは、「親のScriptableObject」と、その親が変数として持つ「子のScriptableObject」をイメージしてください。
+
+下記が、そのイメージをコードに流し込んだものです。
+
+//emlist[親のScriptableObject]{
+using UnityEngine;
+
+public class ParentScriptableObject : ScriptableObject
+{
+  	[SerializeField]
+  	ChildScriptableObject child1;
+}
+//}
+
+//emlist[子のScriptableObject]{
+using UnityEngine;
+
+public class ChildScriptableObject : ScriptableObject
+{
+  // 何もないとインスペクターが寂しいので変数追加
+	[SerializeField]
+	string str;
+
+	public ChildScriptableObject ()
+	{
+    // 初期アセット名を設定
+		name = "New ChildScriptableObject";
+	}
+}
+
+//}
+
+次に、ParentScriptableObjectをアセットとして保存します。引数にある child もインスタンス化した状態にしてみましょう。
+
+//emlist[子のScriptableObject]{
+using UnityEngine;
+using UnityEditor;
+
+public class ParentScriptableObject : ScriptableObject
+{
+	const string PATH = "Assets/Editor/New ParentScriptableObject.asset";
+
+	[SerializeField]
+	ChildScriptableObject child;
+
+	[MenuItem ("Assets/Create ScriptableObject")]
+	static void CreateScriptableObject ()
+	{
+    //親をインスタンス化
+		var parent = ScriptableObject.CreateInstance<ParentScriptableObject> ();
+
+    //子をインスタンス化
+		parent.child = ScriptableObject.CreateInstance<ChildScriptableObject> ();
+
+		// 親をアセットとして保存
+    AssetDatabase.CreateAsset (parent, PATH);
+
+    // インポート処理を走らせて最新の状態にする
+		AssetDatabase.ImportAsset (PATH);
+	}
+}
+//}
+
+ParentScriptableObject をアセットとして保存した後、インスペクターを見てみると、@<img>{ss08}のようにchildプロパティーが@<b>{Type mismatch}になります。
+
+//image[ss08][childプロパティーが@<code>{Type mismatch}となっている]{
+
+//}
+
+試しに、@<code>{Type mismatch}の部分をダブルクリックしてみると、ChildScriptableObject の情報がインスペクターに表示され、問題なく正しい挙動をしているように見えます。
+
+//image[ss09][ChildScriptableObjectのプロパティーを操作することが出来る]{
+
+//}
+
+=== UnityEngine.Object をアセットとして扱うにはディスクに保存しなければいけない
+
+@<code>{Type mismatch}状態の child を持つ ParentScriptableObject を作成したら、このまま Unity を再起動してみましょう。再度、ParentScriptableObject のインスペクターを見ると child の部分が None（null） になっているのがわかります。
+
+//image[ss10][アセットにする前に child のインスタンスを作成したのに null となっている]{
+
+//}
+
+これは理由は単純なもので @<b>{ScriptableObject の基底クラスである UnityEngine.Object} は、ディスク上にアセットとして保存しなければいけません。@<code>{Type mismatch}状態は、@<b>{インスタンスは存在するが、ディスク上にアセットとして存在しない状態}を指しています。つまり、そのインスタンスが何らかの状況（Unity再起動など）で破棄されてしまうとデータにアクセスができなくなります。
+
+=== ScriptableObject は全てアセットとして保存する
+
+@<code>{Type mismatch}の状況を回避するのはとても簡単です。ScriptableObject を全てアセットとして保存して、その参照をシリアライズ可能なフィールドに持たせることで解決します。
+
+//image[ss11][テクスチャなどのアセットのように普段行うようなドラッグ＆ドロップの操作で参照を持たせることが出来る]{
+
+//}
+
+ただし、今回のように「親」と「子」の関係がある状態で、それぞれ独立したアセットを作成してしまうのは管理面で見ても得策ではありません。子の数が増えたり、リストを扱うことになった時にその分アセットを作成するのは非常にファイル管理が面倒になってきます。
+
+そこで @<b>{サブアセット} という機能を使って親子関係であるアセットを1つにまとめ上げることができます。
+
+=== サブアセット
+
+親となるメインアセットにアセット情報を付加した UnityEngine.Object がサブアセットとして扱われます。このサブアセットの例で一番わかりやすいのがモデルデータです。
+
+モデルデータの中には、メッシュやアニメーションなどのアセットが含まれています。これらは普段、独立したアセットとして存在しなければいけませんが、サブアセットとして扱うことでメッシュやアニメーションクリップのアセットをディスク上に保存することなく使用することが出来ます。
+
+//image[ss12][モデルデータの中にはメッシュやアバター、アニメーションなどが含まれる]{
+
+//}
+
+ScriptableObject もサブアセットの機能を使うことで、ディスク上に余計なアセットを増やすことなく親子関係の ScriptableObject を構築することが出来ます。
+
+==== AssetDatabase.AddObjectToAsset
+
+UnityEngine.Object をサブアセットとして登録するには、メインとなるアセットにオブジェクトを追加します。
+
+//emlist[子のScriptableObject]{
+using UnityEngine;
+using UnityEditor;
+
+public class ParentScriptableObject : ScriptableObject
+{
+	const string PATH = "Assets/Editor/New ParentScriptableObject.asset";
+
+	[SerializeField]
+	ChildScriptableObject child;
+
+	[MenuItem ("Assets/Create ScriptableObject")]
+	static void CreateScriptableObject ()
+	{
+    //親をインスタンス化
+		var parent = ScriptableObject.CreateInstance<ParentScriptableObject> ();
+
+    //子をインスタンス化
+		parent.child = ScriptableObject.CreateInstance<ChildScriptableObject> ();
+
+    //親に child オブジェクトを追加
+    AssetDatabase.AddObjectToAsset (parent.child, PATH);
+
+		//親をアセットとして保存
+    AssetDatabase.CreateAsset (parent, PATH);
+
+    //インポート処理を走らせて最新の状態にする
+		AssetDatabase.ImportAsset (PATH);
+	}
+}
+//}
+
+
+@<img>{ss13}をみるとわかりますが、親である ParentScriptableObject が 2つあるように見えたり、実質データを持っているのは階層的にはサブアセットの ParentScriptableObject であったりと少し特殊な階層構造となっていることがわかります。
+
+//image[ss13][メインアセットにサブアセットが追加された状態]{
+
+//}
+
+この状態は、ユーザーが（サブアセットを作成したことによって）特殊なアセットを作成したと Unity が判断し、メインアセットを何にも属さない DefaultAsset として表示した状態です。
+
+メインアセットとして扱いたいアセットがサブアセット側に移動してしまう状況はとても気持ちのいいものではありません。このように、ユーザーの手でサブアセットを作成することはできますが、これをモデルのように最大限活用することは未だ想定されていません。
+
+==== HideFlags.HideInHierarchy でサブアセットを隠す
+
+サブアセット自体を隠すことによって、メインアセットのみが存在するような見た目を作成することが出来ます。
+
+//emlist{
+[MenuItem ("Assets/Create ScriptableObject")]
+static void CreateScriptableObject ()
+{
+  var parent = ScriptableObject.CreateInstance<ParentScriptableObject> ();
+  parent.child = ScriptableObject.CreateInstance<ChildScriptableObject> ();
+
+　//サブアセットとなる child を非表示する
+  parent.child.hideFlags = HideFlags.HideInHierarchy;
+
+  AssetDatabase.AddObjectToAsset (parent.child, PATH);
+
+  AssetDatabase.CreateAsset (parent, PATH);
+  AssetDatabase.ImportAsset (PATH);
+}
+//}
+
+このように、階層表示はなくなりましたが2つのアセットを1つにまとめて扱うことが出来るようになりました。
+
+//image[ss14][ParentScriptableObject のみ表示されているがサブアセットの ChildScriptableObject の参照が正しく行われている]{
+
+//}
+
+==== メインアセットからサブアセットを削除する
+
+サブアセットの削除方法は簡単です。@<code>{Object.DestroyImmediate} を使うことによってサブアセットを削除することが出来ます。
+
+//emlist{
+[MenuItem ("Assets/Remove ChildScriptableObject")]
+static void Remove ()
+{
+  var parent = AssetDatabase.LoadAssetAtPath<ParentScriptableObject> (PATH);
+
+  //アセットの CarentScriptableObject を破棄
+  Object.DestroyImmediate (parent.child, true);
+
+  //破棄したら Missing 状態になるので null を代入
+  parent.child = null;
+
+  //再インポートして最新の情報に更新
+  AssetDatabase.ImportAsset (PATH);
+}
+//}
+
+
 == アイコンの変更
 
 デフォルトのアイコンは @<icon>{ScriptableObject} となっています。特に重要ではありませんがこのアイコンを変更する方法があります。

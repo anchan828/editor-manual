@@ -4,30 +4,40 @@ using UnityEditor;
 public class ParentScriptableObject : ScriptableObject
 {
 	const string PATH = "Assets/Editor/New ParentScriptableObject.asset";
-//	[SerializeField]
-//	ChildScriptableObject child1;
-//
-//
-//
-//	[SerializeField]
-//	ChildScriptableObject child2;
-//
-//
-//	[MenuItem ("Assets/Creat ScriptableObject in ScriptableObject")]
-//	static void Create ()
-//	{
-//		var parent = ScriptableObject.CreateInstance<ParentScriptableObject> ();
-//
-//		parent.child1 = CreateScriptableObjectWithHideFlags<ChildScriptableObject> ("child1", HideFlags.HideInHierarchy);
-//		parent.child2 = CreateScriptableObjectWithHideFlags<ChildScriptableObject> ("child2", HideFlags.HideInHierarchy);
-//
-//
-//		AssetDatabase.CreateAsset (parent, PATH);
-//
-//		AssetDatabase.AddObjectToAsset (parent.child1, PATH);
-//		AssetDatabase.AddObjectToAsset (parent.child2, PATH);
-//		AssetDatabase.ImportAsset (PATH);
-//	}
+	//	[SerializeField]
+	//	ChildScriptableObject child1;
+	//
+	//
+	//
+	//	[SerializeField]
+	//	ChildScriptableObject child2;
+	//
+	//
+	//	[MenuItem ("Assets/Creat ScriptableObject in ScriptableObject")]
+	//	static void Create ()
+	//	{
+	//		var parent = ScriptableObject.CreateInstance<ParentScriptableObject> ();
+	//
+	//		parent.child1 = CreateScriptableObjectWithHideFlags<ChildScriptableObject> ("child1", HideFlags.HideInHierarchy);
+	//		parent.child2 = CreateScriptableObjectWithHideFlags<ChildScriptableObject> ("child2", HideFlags.HideInHierarchy);
+	//
+	//
+	//		AssetDatabase.CreateAsset (parent, PATH);
+	//
+	//		AssetDatabase.AddObjectToAsset (parent.child1, PATH);
+	//		AssetDatabase.AddObjectToAsset (parent.child2, PATH);
+	//		AssetDatabase.ImportAsset (PATH);
+	//	}
+
+	[MenuItem ("Assets/HideFlags.None")]
+	static void SetHideFlags ()
+	{
+		var path = AssetDatabase.GetAssetPath (Selection.activeObject);
+		foreach (var item in AssetDatabase.LoadAllAssetsAtPath(path)) {
+			item.hideFlags = HideFlags.None;
+		}
+		AssetDatabase.ImportAsset (path);
+	}
 
 	[SerializeField]
 	ChildScriptableObject child;
@@ -47,14 +57,14 @@ public class ParentScriptableObject : ScriptableObject
 	}
 
 
-//	static T CreateScriptableObjectWithHideFlags<T> (string name, HideFlags flags) where T : ScriptableObject
-//	{
-//		var scriptableObject = ScriptableObject.CreateInstance<T> ();
-//		scriptableObject.name = name;
-//		scriptableObject.hideFlags = flags;
-//		return scriptableObject;
-//	}
-//
+	//	static T CreateScriptableObjectWithHideFlags<T> (string name, HideFlags flags) where T : ScriptableObject
+	//	{
+	//		var scriptableObject = ScriptableObject.CreateInstance<T> ();
+	//		scriptableObject.name = name;
+	//		scriptableObject.hideFlags = flags;
+	//		return scriptableObject;
+	//	}
+	//
 	[MenuItem ("Assets/Remove ChildScriptableObject")]
 	static void Remove ()
 	{

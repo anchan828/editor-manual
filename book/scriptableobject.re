@@ -128,7 +128,7 @@ public class ExampleAsset : ScriptableObject
 }
 //}
 
-== ScriptableObject に ScriptableObject の参照を持たせる
+== ScriptableObject の親子関係
 
 まずは、「親のScriptableObject」と、その親が変数として持つ「子のScriptableObject」をイメージしてください。
 

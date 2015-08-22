@@ -139,8 +139,8 @@ using UnityEngine;
 
 public class ParentScriptableObject : ScriptableObject
 {
-  	[SerializeField]
-  	ChildScriptableObject child1;
+    [SerializeField]
+    ChildScriptableObject child1;
 }
 //}
 
@@ -150,14 +150,14 @@ using UnityEngine;
 public class ChildScriptableObject : ScriptableObject
 {
   // 何もないとインスペクターが寂しいので変数追加
-	[SerializeField]
-	string str;
+  [SerializeField]
+  string str;
 
-	public ChildScriptableObject ()
-	{
+  public ChildScriptableObject ()
+  {
     // 初期アセット名を設定
-		name = "New ChildScriptableObject";
-	}
+    name = "New ChildScriptableObject";
+  }
 }
 
 //}
@@ -170,26 +170,26 @@ using UnityEditor;
 
 public class ParentScriptableObject : ScriptableObject
 {
-	const string PATH = "Assets/Editor/New ParentScriptableObject.asset";
+  const string PATH = "Assets/Editor/New ParentScriptableObject.asset";
 
-	[SerializeField]
-	ChildScriptableObject child;
+  [SerializeField]
+  ChildScriptableObject child;
 
-	[MenuItem ("Assets/Create ScriptableObject")]
-	static void CreateScriptableObject ()
-	{
+  [MenuItem ("Assets/Create ScriptableObject")]
+  static void CreateScriptableObject ()
+  {
     //親をインスタンス化
-		var parent = ScriptableObject.CreateInstance<ParentScriptableObject> ();
+    var parent = ScriptableObject.CreateInstance<ParentScriptableObject> ();
 
     //子をインスタンス化
-		parent.child = ScriptableObject.CreateInstance<ChildScriptableObject> ();
+    parent.child = ScriptableObject.CreateInstance<ChildScriptableObject> ();
 
-		// 親をアセットとして保存
+    // 親をアセットとして保存
     AssetDatabase.CreateAsset (parent, PATH);
 
     // インポート処理を走らせて最新の状態にする
-		AssetDatabase.ImportAsset (PATH);
-	}
+    AssetDatabase.ImportAsset (PATH);
+  }
 }
 //}
 
@@ -213,9 +213,9 @@ ParentScriptableObject をアセットとして保存した後、インスペク
 
 //}
 
-これは理由は単純なもので @<b>{ScriptableObject の基底クラスである UnityEngine.Object} は、ディスク上にアセットとして保存しなければいけません。@<code>{Type mismatch}状態は、@<b>{インスタンスは存在するが、ディスク上にアセットとして存在しない状態}を指しています。つまり、そのインスタンスが何らかの状況（Unity再起動など）で破棄されてしまうとデータにアクセスができなくなります。
+このは理由は@<b>{ScriptableObject の基底クラスである UnityEngine.Object}をシリアライズデータとして扱うには、ディスク上にアセットとして保存しなければいけません。@<code>{Type mismatch}状態は、@<b>{インスタンスは存在するが、ディスク上にアセットとして存在しない状態}を指しています。つまり、そのインスタンスが何らかの状況（Unity再起動など）で破棄されてしまうとデータにアクセスができなくなります。
 
-=== ScriptableObject は全てアセットとして保存する
+=== ScriptableObject は全てアセットとして保存すること
 
 @<code>{Type mismatch}の状況を回避するのはとても簡単です。ScriptableObject を全てアセットとして保存して、その参照をシリアライズ可能なフィールドに持たせることで解決します。
 
@@ -229,11 +229,11 @@ ParentScriptableObject をアセットとして保存した後、インスペク
 
 === サブアセット
 
-親となるメインアセットにアセット情報を付加した UnityEngine.Object がサブアセットとして扱われます。このサブアセットの例で一番わかりやすいのがモデルデータです。
+親となるメインアセットにアセット情報を付加することで UnityEngine.Object がサブアセットとして扱われます。このサブアセットの例で一番わかりやすいのがモデルアセットです。
 
-モデルデータの中には、メッシュやアニメーションなどのアセットが含まれています。これらは普段、独立したアセットとして存在しなければいけませんが、サブアセットとして扱うことでメッシュやアニメーションクリップのアセットをディスク上に保存することなく使用することが出来ます。
+モデルアセットの中には、メッシュやアニメーションなどのアセットが含まれています。これらは普段、独立したアセットとして存在しなければいけませんが、サブアセットとして扱うことで、メッシュやアニメーションクリップのアセットを、メインのアセット情報の中に包括してディスク上に保存することなく使用することが出来ます。
 
-//image[ss12][モデルデータの中にはメッシュやアバター、アニメーションなどが含まれる]{
+//image[ss12][モデルアセットの中にはメッシュやアバター、アニメーションなどが含まれる]{
 
 //}
 
@@ -249,29 +249,29 @@ using UnityEditor;
 
 public class ParentScriptableObject : ScriptableObject
 {
-	const string PATH = "Assets/Editor/New ParentScriptableObject.asset";
+  const string PATH = "Assets/Editor/New ParentScriptableObject.asset";
 
-	[SerializeField]
-	ChildScriptableObject child;
+  [SerializeField]
+  ChildScriptableObject child;
 
-	[MenuItem ("Assets/Create ScriptableObject")]
-	static void CreateScriptableObject ()
-	{
+  [MenuItem ("Assets/Create ScriptableObject")]
+  static void CreateScriptableObject ()
+  {
     //親をインスタンス化
-		var parent = ScriptableObject.CreateInstance<ParentScriptableObject> ();
+    var parent = ScriptableObject.CreateInstance<ParentScriptableObject> ();
 
     //子をインスタンス化
-		parent.child = ScriptableObject.CreateInstance<ChildScriptableObject> ();
+    parent.child = ScriptableObject.CreateInstance<ChildScriptableObject> ();
 
     //親に child オブジェクトを追加
     AssetDatabase.AddObjectToAsset (parent.child, PATH);
 
-		//親をアセットとして保存
+    //親をアセットとして保存
     AssetDatabase.CreateAsset (parent, PATH);
 
     //インポート処理を走らせて最新の状態にする
-		AssetDatabase.ImportAsset (PATH);
-	}
+    AssetDatabase.ImportAsset (PATH);
+  }
 }
 //}
 
@@ -312,6 +312,32 @@ static void CreateScriptableObject ()
 //image[ss14][ParentScriptableObject のみ表示されているがサブアセットの ChildScriptableObject の参照が正しく行われている]{
 
 //}
+
+このサブアセットを隠す方法は、AnimatorControllerでも行われています。確かめてみましょう。
+
+//emlist{
+[MenuItem ("Assets/Set to HideFlags.None")]
+static void SetHideFlags ()
+{
+  //AnimatorController を選択した状態でメニューを実行
+  var path = AssetDatabase.GetAssetPath (Selection.activeObject);
+
+  //サブアセット含め全て取得
+  foreach (var item in AssetDatabase.LoadAllAssetsAtPath(path)) {
+    //フラグを全て None にして非表示設定を解除
+    item.hideFlags = HideFlags.None;
+  }
+  //再インポートして最新にする
+  AssetDatabase.ImportAsset (path);
+}
+//}
+
+上記のコードを実行すると、HideFlagsが解除され、サブアセットが表示されます。
+
+//image[ss15][LayerやBrendTreeなどがサブアセットとして追加されていることが分かる]{
+
+//}
+
 
 ==== メインアセットからサブアセットを削除する
 

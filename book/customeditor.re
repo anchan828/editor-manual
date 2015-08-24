@@ -236,7 +236,7 @@ public class CharacterInspector : Editor
 コンポーネントの値を変更したときは、必ず@<b>{EditorUtility.SetDirty}を呼び出します。これはUnityエディターにオブジェクトの状態が更新されたことを通知するために使用されます。
 
 オブジェクトには @<b>{Dirty flag（ダーティーフラグ）}があり、このフラグを立てることにより、Unityエディターは「アセットを最新の状態にする」ことができます。例えば、プレハブにアタッチされているコンポーネントの値を変更した時に@<b>{EditorUtility.SetDirty} を使用します。そして Unity
-プロジェクトを保存（File -> Save Project や AssetDatabase.SaveAssets）したとき、ダーティーフラグの立ったオブジェクトすべてがアセッに書き込まれます。
+プロジェクトを保存（File -> Save Project や AssetDatabase.SaveAssets）したとき、ダーティーフラグの立ったオブジェクトすべてがアセットに書き込まれます。
 
 このように、正しく変更された値をディスクに保存するためには、ダーティフラグを正しく設定していかなければなりません。主に、MonoBehaviour や　ScriptableObject の派生クラスで @<b>{EditorUtility.SetDirty} を使用します。
 

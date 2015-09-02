@@ -7,7 +7,7 @@ BASE_PATH=$(cd $(dirname $0) && pwd)
 BOOK_DIR="${BASE_PATH}/${BOOK}"
 TEMP_DIR="${BASE_PATH}/temp"
 ARCHIVE_DIR="${BASE_PATH}/archives"
-BOOTH_DIR="${BASE_PATH}/booth"
+CUSTOM_DIR="${BASE_PATH}/custom"
 pdf_maker()
 {
 	cd $TEMP_DIR
@@ -118,14 +118,16 @@ build_release()
 {
 	cp -f catalog-release.yml catalog.yml
 	build
-	stamp_booth
+	stamp_custom
 }
 
-stamp_booth()
+stamp_custom()
 {
-	cd $BOOTH_DIR
-	cpdf=./`uname`-cpdf
-	$cpdf -add-text 'booth.pm version' -color '0.8 0.8 0.8' -bottom 10pt ${ARCHIVE_DIR}/${bookname}.pdf 2-end -o unity-editor-extension.pdf
+	cd $CUSTOM_DIR
+
+	if [ `uname` == 'Darwin' ];then
+		ruby stamp_and_move_to_dropbox.rb
+	fi
 }
 
 build()

@@ -1,0 +1,3 @@
+booth,version
+SEGA Interactive R&D2,20150902-001
+SEGA Games SGN,20150902-002

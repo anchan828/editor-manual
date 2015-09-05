@@ -23,7 +23,7 @@
 
 //}
 
-Debug モードは、インスペクターがカスタマイズされる前の@<b>{素の状態}を表示します。@<fn>{1}Unity はデフォルトで、インスペクターに表示したい要素を取捨選択し、GUI をカスタマイズして表示しています。
+Debug モードは、インスペクターがカスタマイズされる前の@<b>{素の状態}を表示します。@<fn>{1}Unity エディターはデフォルトで、インスペクターに表示したい要素を取捨選択し、GUI をカスタマイズして表示しています。
 
 == オブジェクトと Editor クラス
 
@@ -78,7 +78,7 @@ public class Character : MonoBehaviour
 //}
 
 
-プログラム上はこれでいいのですが、攻撃力の値を Unity エディターのインスペクターで確認したい場合は少し困ったことになります。Unityのインスペクターは、シリアライズ可能なフィールドを表示します。シリアライズ対象ではないプロパティーは表示されません。
+プログラム上はこれでいいのですが、攻撃力の値を Unity エディターのインスペクターで確認したい場合は少し困ったことになります。インスペクターは、シリアライズ可能なフィールドを表示します。シリアライズ対象ではないプロパティーは表示されません。
 
 //image[ss01][下記コンポーネントをインスペクターで見た図]{
 
@@ -164,7 +164,7 @@ public class Character : MonoBehaviour
 
 === Unityのシリアライズ機構を通してアクセスする方法
 
-Unity はデータの持ち方として SerializedObject ですべてのデータを管理しています。SerializedObject 経由でデータにアクセスすることによって、データを操作する際に、柔軟な対応が可能になります。SerializedObject の詳しい説明は @<chapref>{serializedobject} をご覧ください。
+Unity エディターはデータの持ち方として SerializedObject ですべてのデータを管理しています。SerializedObject 経由でデータにアクセスすることによって、データを操作する際に、柔軟な対応が可能になります。SerializedObject の詳しい説明は @<chapref>{serializedobject} をご覧ください。
 
 Editor オブジェクトが生成されると同時に、コンポーネントがシリアライズされ、Editor クラスの serializedObject 変数に格納されます。そして serializedObject 変数からシリアライズされた各値にアクセスできます。
 
@@ -233,9 +233,9 @@ public class CharacterInspector : Editor
 
 ==== オブジェクトが更新されたことをエディターに通知するSetDirty
 
-コンポーネントの値を変更したときは、必ず@<b>{EditorUtility.SetDirty}を呼び出します。これはUnityエディターにオブジェクトの状態が更新されたことを通知するために使用されます。
+コンポーネントの値を変更したときは、必ず@<b>{EditorUtility.SetDirty}を呼び出します。これは、Unity エディターにオブジェクトの状態が更新されたことを通知するために使用されます。
 
-オブジェクトには @<b>{Dirty flag（ダーティーフラグ）}があり、このフラグを立てることにより、Unityエディターは「アセットを最新の状態にする」ことができます。例えば、プレハブにアタッチされているコンポーネントの値を変更した時に@<b>{EditorUtility.SetDirty} を使用します。そして Unity
+オブジェクトには @<b>{Dirty flag（ダーティーフラグ）}があり、このフラグを立てることにより、Unity エディターは「アセットを最新の状態にする」ことができます。例えば、プレハブにアタッチされているコンポーネントの値を変更した時に@<b>{EditorUtility.SetDirty} を使用します。そして Unity
 プロジェクトを保存（File -> Save Project や AssetDatabase.SaveAssets）したとき、ダーティーフラグの立ったオブジェクトすべてがアセットに書き込まれます。
 
 このように、正しく変更された値をディスクに保存するためには、ダーティフラグを正しく設定していかなければなりません。主に、MonoBehaviour や　ScriptableObject の派生クラスで @<b>{EditorUtility.SetDirty} を使用します。
@@ -1005,7 +1005,7 @@ public class PreviewExampleInspector : Editor
         previewRenderUtility.EndAndDrawPreview (r);
 
         // ドラッグした時は再描画処理を行う
-        // これを行わないとかくかくした動きになってしまう
+        // これを行わないとカクカクした動きになってしまう
         if (drag != Vector2.zero)
             Repaint ();
     }

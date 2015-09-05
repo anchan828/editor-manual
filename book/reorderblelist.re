@@ -229,12 +229,145 @@ public class Character
 //}
 
 
-そこで @<b>{PropertyDrawer} を使って要素の描画を変更します。PropertyDrawer については @<chapref>{property_drawer} をご覧ください。
+そこで @<b>{PropertyDrawer} を使って要素の描画を変更します。PropertyDrawer 自体の説明については @<chapref>{property_drawer} をご覧ください。
 要素の GUI を drawElementCallback 内でカスタマイズしてもいいのですが、汎用性を考えてできるだけ PropertyDrawer を使用するようにしましょう。
+
 //image[ss10][PropertyDrawer でカスタマイズ。その1]{
 
 //}
 
-//image[ss11][PropertyDrawer でカスタマイズ。その2]{
 
+//emlist[ゲームオブジェクトにアタッチする Example コンポーネント]{
+using UnityEngine;
+
+public class Example : MonoBehaviour
+{
+  [SerializeField]
+  Character[] characters;
+}
+//}
+
+//emlist[ReorderbleList の要素として描画する Character]{
+using UnityEngine;
+using System;
+
+[Serializable]
+public class Character
+{
+  [SerializeField]
+  Texture icon;
+
+  [SerializeField]
+  string name;
+
+  [SerializeField]
+  int hp;
+
+  [SerializeField]
+  int power;
+}
+//}
+//emlist[Character の PropertyDrawer]{
+using UnityEngine;
+using UnityEditor;
+
+[CustomPropertyDrawer (typeof(Character))]
+public class CharacterDrawer : PropertyDrawer
+{
+  private Character character;
+
+
+  public override void OnGUI (Rect position,
+    SerializedProperty property, GUIContent label)
+  {
+    //元は 1 つのプロパティーであることを示すために PropertyScope で囲む
+    using (new EditorGUI.PropertyScope (position, label, property)) {
+
+      //サムネの領域を確保するためにラベル領域の幅を小さくする
+      EditorGUIUtility.labelWidth = 50;
+
+      position.height = EditorGUIUtility.singleLineHeight;
+
+      var halfWidth = position.width * 0.5f;
+
+      //各プロパティーの Rect を求める
+      var iconRect = new Rect (position) {
+        width = 64,
+        height = 64
+      };
+
+      var nameRect = new Rect (position) {
+        width = position.width - 64,
+        x = position.x + 64
+      };
+
+      var hpRect = new Rect (nameRect) {
+        y = nameRect.y + EditorGUIUtility.singleLineHeight + 2
+      };
+
+      var powerRect = new Rect (hpRect) {
+        y = hpRect.y + EditorGUIUtility.singleLineHeight + 2
+      };
+
+      //各プロパティーの SerializedProperty を求める
+      var iconProperty = property.FindPropertyRelative ("icon");
+      var nameProperty = property.FindPropertyRelative ("name");
+      var hpProperty = property.FindPropertyRelative ("hp");
+      var powerProperty = property.FindPropertyRelative ("power");
+
+      //各プロパティーの GUI を描画
+      iconProperty.objectReferenceValue =
+        EditorGUI.ObjectField (iconRect,
+          iconProperty.objectReferenceValue, typeof(Texture), false);
+
+      nameProperty.stringValue =
+        EditorGUI.TextField (nameRect,
+          nameProperty.displayName, nameProperty.stringValue);
+
+      EditorGUI.IntSlider (hpRect, hpProperty, 0, 100);
+      EditorGUI.IntSlider (powerRect, powerProperty, 0, 10);
+
+    }
+  }
+}
+//}
+
+//emlist[Example の CustomEditor]{
+using UnityEngine;
+using UnityEditor;
+using UnityEditorInternal;
+
+[CustomEditor (typeof(Example))]
+public class ExampleInspector : Editor
+{
+  ReorderableList reorderableList;
+
+  void OnEnable ()
+  {
+    var prop = serializedObject.FindProperty ("characters");
+
+    reorderableList = new ReorderableList (serializedObject, prop);
+    reorderableList.elementHeight = 68;
+    reorderableList.drawElementCallback =
+      (rect, index, isActive, isFocused) => {
+        var element = prop.GetArrayElementAtIndex (index);
+        rect.height -= 4;
+        rect.y += 2;
+        EditorGUI.PropertyField (rect, element);
+    };
+
+    var defaultColor = GUI.backgroundColor;
+
+    reorderableList.drawHeaderCallback = (rect) =>
+      EditorGUI.LabelField (rect, prop.displayName);
+
+  }
+
+  public override void OnInspectorGUI ()
+  {
+    serializedObject.Update ();
+    reorderableList.DoLayoutList ();
+    serializedObject.ApplyModifiedProperties ();
+  }
+}
 //}

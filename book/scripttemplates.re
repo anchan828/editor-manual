@@ -253,7 +253,7 @@ public class NewEditorWindow : EditorWindow
 
 == メニューの表示位置
 
-メニューの位置はpriorityにより決まります。priorityについて詳しくは@<chapref>{part1-menuitem}を御覧ください。
+メニューの位置はpriorityにより決まります。priorityについて詳しくは@<chapref>{part1-menuitem}をご覧ください。
 
 
 //image[ss05][@<code>{Assets/Create}の各priority]{

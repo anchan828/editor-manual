@@ -29,6 +29,7 @@ CHAPS:
  - spriteanimationpreview2.re
  - attach_script_to_scene.re
  - time_control.re
+ - asset_database.re
 
 POSTDEF:
  - past_works.re

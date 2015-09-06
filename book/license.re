@@ -1,6 +1,8 @@
 = ライセンス表記ページ
 
+== 表紙素材
 
+@<href>{http://www.freepik.com/} から素材を使わせていただきました。
 
 == Pow Studios 様
 

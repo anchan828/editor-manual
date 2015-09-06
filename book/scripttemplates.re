@@ -216,7 +216,7 @@ Windows	C:\Program Files\Unity\Editor\Data\Resources\ScriptTemplates
 
 //}
 
-配置した後は、@<b>{必ずUnityエディターを再起動します。}このScriptTemplatesが読み込まれるのはUnityエディターの起動時のみだからです。
+配置した後は、@<b>{必ずUnity エディターを再起動します。}このScriptTemplatesが読み込まれるのはUnity エディターの起動時のみだからです。
 
 再起動した後、@<code>{Assets/Create}メニューに自作したテンプレートファイルのメニューが追加されているのがわかります。
 
@@ -253,7 +253,7 @@ public class NewEditorWindow : EditorWindow
 
 == メニューの表示位置
 
-メニューの位置はpriorityにより決まります。priorityについて詳しくは@<chapref>{part1-menuitem}を御覧ください。
+メニューの位置はpriorityにより決まります。priorityについて詳しくは@<chapref>{part1-menuitem}をご覧ください。
 
 
 //image[ss05][@<code>{Assets/Create}の各priority]{

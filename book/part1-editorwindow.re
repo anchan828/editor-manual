@@ -8,7 +8,7 @@
 == EditorWindowとは
 
 シーンウィンドウ、ゲームウィンドウ、インスペクターウィンドウなど、これら全てはEditorWindowです。
-Unityエディターはさまざまな機能を持つEditorWindowの集まりでできています。
+Unity エディターはさまざまな機能を持つEditorWindowの集まりでできています。
 
 
 //image[ss01][これら全てはEditorWindow]{
@@ -562,7 +562,7 @@ ScriptableWizardクラスはEditorWindowを継承しています。なのでOnGU
 === PreferenceItem
 
 PreferenceItemはUnity Preferencesにメニューを追加するための機能です。
-Unity PreferencesにはUnityエディター全体に影響のある設定を行うためにあります。
+Unity PreferencesにはUnity エディター全体に影響のある設定を行うためにあります。
 
 
 //image[ss16][追加されるメニューは一番最後の位置に追加される]{

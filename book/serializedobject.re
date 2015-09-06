@@ -13,13 +13,13 @@ SerializedObject は、Unity上で扱う全てのオブジェクトに関係し�
 === UnityEngine.Object と SerializedObject の関係
 
 
-Unityエディター上では、全てのオブジェクト（UnityEngine.Object）は SerializedObject に変換されて扱われています。インスペクターでコンポーネントの値を編集している時も、Component のインスタンスを編集しているわけではなく、SerializedObject のインスタンスを編集していることになります。
+Unity エディター上では、全てのオブジェクト（UnityEngine.Object）は SerializedObject に変換されて扱われています。インスペクターでコンポーネントの値を編集している時も、Component のインスタンスを編集しているわけではなく、SerializedObject のインスタンスを編集していることになります。
 
-//image[ss03][Unityエディター上では必ず SerializedObject 経由で値を編集することになる。ただし CustomEditor を実装している場合はその限りではない。]{
+//image[ss03][Unity エディター上では必ず SerializedObject 経由で値を編集することになる。ただし CustomEditor を実装している場合はその限りではない。]{
 
 //}
 
-Unityエディター上、つまりエディター拡張では@<b>{できるだけ}すべてのオブジェクト操作を SerializedObject で行っていく必要があります。この理由として SerializedObject では、シリアライズされたデータを扱うだけではなく @<b>{Undo} や @<b>{Selection} のハンドリングも行っています。
+Unity エディター上、つまりエディター拡張では@<b>{できるだけ}すべてのオブジェクト操作を SerializedObject で行っていく必要があります。この理由として SerializedObject では、シリアライズされたデータを扱うだけではなく @<b>{Undo} や @<b>{Selection} のハンドリングも行っています。
 
 : Undo のハンドリング
   SerializedObject で値を編集する時、Undo処理は意識せずとも登録されます。UnityEngine.Object のインスタンスを直接編集した場合は、Undo 処理を独自で実装しなければいけません。Undo について詳しくは@<chapref>{undo}をご覧ください。

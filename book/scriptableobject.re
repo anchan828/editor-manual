@@ -6,7 +6,7 @@
 
 ScriptableObject は独自のアセットを作成するための仕組みです。また、Unityのシリアライズ機構が扱う形式とも言えます。
 
-Unity には独自のシリアライズ機構を持っており、全てのオブジェクト（UnityEngine.Object）は、そのシリアライズ機構を通してデータのシリアライズ/デシリアライズを行い、ファイルとUnityエディター間でやり取りをしています。シリアライズ機構については@<chapref>{serializedobject}を参照してください。
+Unity には独自のシリアライズ機構を持っており、全てのオブジェクト（UnityEngine.Object）は、そのシリアライズ機構を通してデータのシリアライズ/デシリアライズを行い、ファイルとUnity エディター間でやり取りをしています。シリアライズ機構については@<chapref>{serializedobject}を参照してください。
 
 Unity 内部のアセット（マテリアルやアニメーションクリップ等）は全て UnityEngine.Object の派生クラスです。独自のアセットを作成するために、UnityEngine.Object の派生クラスを作成したいですが、ユーザー側では UnityEngine.Object の派生クラスを作成するのは禁止されています。ユーザーが Unity のシリアライズ機構を利用した、独自のアセットを作成するには @<code>{ScriptableObject} を扱う必要があります。
 

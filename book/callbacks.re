@@ -142,7 +142,7 @@ public class NewBehaviourScript
 }
 //}
 
-また、Unityエディターを起動した直後のみ実行したい場合は、@<code>{EditorApplication.timeSinceStartup} を組み合わせて使用します。
+また、Unity エディターを起動した直後のみ実行したい場合は、@<code>{EditorApplication.timeSinceStartup} を組み合わせて使用します。
 
 
 //emlist{
@@ -591,7 +591,7 @@ public class Test
 
 インスペクター関連の更新処理後に実行されるコールバックです。1度実行すると登録されたデリゲートは破棄されます。
 
-//image[ss06][Unityエディター実行の流れ]{
+//image[ss06][Unity エディター実行の流れ]{
 
 //}
 

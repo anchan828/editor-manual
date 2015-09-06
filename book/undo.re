@@ -172,7 +172,7 @@ Undoのスタックに保存されるのは「値の変更前と変更後の差�
 
 //}
 
-PropertyDiffUndoRecorderは、Unityエディターのライフサイクルの最後に Undo の Flush を呼びだします。その時に RecordObject で登録されたオブジェクトの各プロパティーと、Flush が呼び出された時の各プロパティーを使用して差分を求めます。
+PropertyDiffUndoRecorderは、Unity エディターのライフサイクルの最後に Undo の Flush を呼びだします。その時に RecordObject で登録されたオブジェクトの各プロパティーと、Flush が呼び出された時の各プロパティーを使用して差分を求めます。
 
 以下の順に実行され、図にしたものが@<img>{PropertyDiffUndoRecorder}です。
 

@@ -53,7 +53,7 @@ Monodevelop や VisualStudio のほうがソースコードの検索性に優れ
 
 ここで例として、公式 API としては用意されていない「Final Gather」へのアクセスするまでの手順を紹介します。
 
-//image[ss07][Lighting ウィンドウにある Final Gather]]{
+//image[ss07][Lighting ウィンドウにある Final Gather]{
 //}
 
 === 1. Lighting ウィンドウのクラスを探す
@@ -62,10 +62,11 @@ Monodevelop や VisualStudio のほうがソースコードの検索性に優れ
 
 === 2. プロパティー名で検索する
 
-次に、プロパティー名「 FinalGather」で検索します。この時、プロパティーに空白がある場合は、削除してください（ Final Gather ->  FinalGather）。スペースのないほうがヒット率が上がります。すると LightingWindow クラスの中で以下のコードがヒットします。
+次に、プロパティー名「FinalGather」で検索します。この時、プロパティーに空白がある場合は、削除してください（ Final Gather ->  FinalGather）。スペースのないほうがヒット率が上がります。すると LightingWindow クラスの中で以下のコードがヒットします。
 
 //emlist[BakedGUI メソッド]{
-SerializedProperty property7 = so.FindProperty("m_LightmapEditorSettings.m_FinalGather");
+SerializedProperty property7 = 
+    so.FindProperty("m_LightmapEditorSettings.m_FinalGather");
 //}
 
 これにより、BakedGUI メソッド内にて SerializedObject 経由で m_FinalGather を取得していることがわかりました。次は、どのオブジェクトの SerializedObject なのかを把握します。
@@ -77,9 +78,12 @@ BakedGUI メソッドが使用されている場所を探します。BakedGUI �
 //emlist[EnlightenBakeSettings メソッド]{
 private void EnlightenBakeSettings()
 {
-  SerializedObject so = new SerializedObject(LightmapEditorSettings.GetLightmapSettings());
-  SerializedProperty property1 = so.FindProperty("m_GISettings.m_EnableRealtimeLightmaps");
-  SerializedProperty property2 = so.FindProperty("m_GISettings.m_EnableBakedLightmaps");
+  SerializedObject so = 
+      new SerializedObject(LightmapEditorSettings.GetLightmapSettings());
+  SerializedProperty property1 = 
+      so.FindProperty("m_GISettings.m_EnableRealtimeLightmaps");
+  SerializedProperty property2 = 
+      so.FindProperty("m_GISettings.m_EnableBakedLightmaps");
   this.RealtimeGUI(so, property1, property2);
   this.BakedGUI(so, property1, property2);
   this.GeneralSettingsGUI(so, property1, property2);
@@ -103,7 +107,8 @@ internal static extern UnityEngine.Object GetLightmapSettings();
 
 //emlist{
 var flags =  BindingFlags.NonPublic | BindingFlags.Static;
-var getLightmapSettings = typeof(LightmapEditorSettings).GetMethod("GetLightmapSettings", flags);
+var getLightmapSettings = 
+    typeof(LightmapEditorSettings).GetMethod("GetLightmapSettings", flags);
 var lightmapSettings = getLightmapSettings.Invoke(null, null) as Object;
 var so = new SerializedObject(lightmapSettings);
 so.Update();

@@ -1,4 +1,4 @@
-= UnityEditor.dll の中身を見る
+= DLL をデコンパイル
 
 //indepimage[frontispiece]
 

@@ -30,9 +30,9 @@ CHAPS:
  - attach_script_to_scene.re
  - time_control.re
  - asset_database.re
- - decompile_dll.re
 
 POSTDEF:
+ - decompile_dll.re
  - past_works.re
  - license.re
  - author.re

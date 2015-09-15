@@ -35,7 +35,7 @@
 
 保存先フォルダーを指定します。このとき、プロジェクトとして開くことができるように .sln ファイルも作成することができます。
 
-//image[ss03][キャプション]{
+//image[ss03][Export to Project ウィンドウ]{
 //}
 
 デコンパイルしたものは Monodevelop や  Visual Studio で .sln を開いて見る事ができます。

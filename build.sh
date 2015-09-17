@@ -258,6 +258,7 @@ case $1 in
 	"epub") epub_maker;;
 	"jenkins") build;;
 	"release") build_release;;
+	"binding") cp -f catalog-release.yml catalog.yml&&pdf_maker ${bookname}macro-bookbinding 'b5j,twoside,openright' ${bookname}-bookbinding.pdf;;
 	*) pdf_maker ${bookname}macro 'a5paper,14pt,oneside' ${bookname}.pdf;;
 esac
 
